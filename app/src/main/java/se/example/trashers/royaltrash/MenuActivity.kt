@@ -3,7 +3,7 @@ package se.example.trashers.royaltrash
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 
-class Menu : AppCompatActivity() {
+class MenuActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

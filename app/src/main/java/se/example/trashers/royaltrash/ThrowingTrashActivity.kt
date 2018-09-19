@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import kotlinx.android.synthetic.main.activity_throwing_trash.*
+//import se.example.trashers.royaltrash.R.id.can
+//import se.example.trashers.royaltrash.R.id.dragable_test
 import java.lang.Math.pow
 
 class ThrowingTrashActivity : AppCompatActivity() {

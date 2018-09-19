@@ -12,7 +12,8 @@ class MenuActivity : AppCompatActivity() {
         var playButton: Button = findViewById(R.id.start_button);
 
         playButton.setOnClickListener {
-            val intent = Intent(this, QuizActivity::class.java)
+            //val intent = Intent(this, QuizActivity::class.java)
+            val intent = Intent(this, ThrowingTrashActivity::class.java)
             intent.putExtra("key", "Kotlin")
             startActivity(intent)
         }

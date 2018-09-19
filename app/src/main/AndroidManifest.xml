@@ -19,8 +19,9 @@
         <activity
             android:name=".ScoreBoardActivity"
             android:label="@string/title_activity_score_board"
-            android:theme="@style/AppTheme"></activity>
-        <activity android:name=".QuizActivity"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".QuizActivity" />
+        <activity android:name=".ThrowingTrashActivity"></activity>
     </application>
 
 </manifest>

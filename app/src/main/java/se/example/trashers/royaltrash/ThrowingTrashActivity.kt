@@ -12,7 +12,9 @@ import kotlinx.android.synthetic.main.activity_throwing_trash.*
 import java.lang.Math.pow
 import java.util.*
 import android.animation.ObjectAnimator
-
+import android.media.MediaPlayer
+import android.net.Uri
+import android.widget.VideoView
 
 
 class ThrowingTrashActivity : AppCompatActivity() {
@@ -43,7 +45,6 @@ class ThrowingTrashActivity : AppCompatActivity() {
         })
 
         dragable_test.setOnTouchListener(listener)
-
 
     }
 

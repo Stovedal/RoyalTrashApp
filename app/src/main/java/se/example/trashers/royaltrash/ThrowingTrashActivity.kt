@@ -10,28 +10,31 @@ import kotlinx.android.synthetic.main.activity_throwing_trash.*
 //import se.example.trashers.royaltrash.R.id.can
 //import se.example.trashers.royaltrash.R.id.dragable_test
 import java.lang.Math.pow
+import java.util.*
+import android.animation.ObjectAnimator
+
+
 
 class ThrowingTrashActivity : AppCompatActivity() {
     //ThrowingTrashIsAFunActivity
 
     var screanWidth:Int? = null
     var screanHeight:Int? = null
+    var currentScore:Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_throwing_trash)
 
-        setScreanSize();
+        if(screanWidth == null) {
+            setScreanSize();
+        }
 
         var listener = View.OnTouchListener(function = { view, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_MOVE) {
                 view.y = motionEvent.rawY - view.height/2
                 view.x = motionEvent.rawX - view.width/2
-
-                //val Pros = getObjectPosInPercent("dragable_test")
-                //println("Dist found: " + dist)
-                //println("ProsX: " + Pros.first + " ProsY: "+ Pros.second)
             }else if(motionEvent.action == MotionEvent.ACTION_UP){
                 val dist = checkCollitionState()
 
@@ -115,15 +118,58 @@ class ThrowingTrashActivity : AppCompatActivity() {
         target.y = (Ycord/100)*screanHeight!!
     }
 
+    fun increaseScore(){
+        currentScore ++
+        score.text = "Score: " + currentScore
+
+    }
+
+
+    fun shakeIcon(targetVievID: String){
+        val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
+        val target = findViewById(id) as ImageView
+        val rotate = ObjectAnimator.ofFloat(target, "rotation", 0f, 15f, 0f, -15f, 0f)
+        // repeat the loop 6 times
+        rotate.repeatCount = 6
+        // animation play time 120 ms
+        rotate.duration = 120
+        rotate.start()
+    }
+
+
+
+    fun changeObjectIcon(targetVievID: String){
+        val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
+        val target = findViewById(id) as ImageView
+
+        //this is just a placeholder
+        //TODO replace this...
+        val numbers: MutableList<Int> = mutableListOf(android.R.drawable.ic_menu_send,
+                android.R.drawable.ic_menu_camera, android.R.drawable.ic_menu_agenda)
+
+        val random = numbers.random()
+
+        target.setImageResource(random!!)
+        //target.setImageResource(@android:drawable/ic_menu_save)
+    }
+    /**
+     Returns a random element.
+     */
+    fun <L> List<L>.random(): L? = if (size > 0) get(Random().nextInt(size)) else null
+
     fun checkCollitionState():Double?{
         limitAtEdges()
         var DistToCan = getDistanceinPercent("dragable_test","can")
 
-        if(DistToCan < 8){
-            println("On the can!! :)")
+        if(DistToCan < 10){
+            println("On the can!! :) " +DistToCan)
             //user released trash on the can
+            increaseScore()
+            shakeIcon("can")
+            changeObjectIcon("dragable_test")
+            setObjectPercentLocation("dragable_test",45F,80F)
         }else{
-            println("User missed the can :(")
+            println("User missed the can :( " + DistToCan)
             setObjectPercentLocation("dragable_test",70F,70F)
         }
 

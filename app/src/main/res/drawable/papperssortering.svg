@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 2363 2363" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
+    <g transform="matrix(1,0,0,1,-2586,0)">
+        <g id="papperssortering" transform="matrix(1.20979,0,0,1.28995,2586.24,0)">
+            <rect x="0" y="0" width="1952.58" height="1831.23" style="fill:none;"/>
+            <g transform="matrix(0.826593,0,0,0.775221,0,0)">
+                <path d="M1731.28,194.412C1803.17,194.412 1861.54,252.783 1861.54,324.679L1861.54,581.694L2055.47,581.694C2118.04,581.695 2168.84,632.493 2168.84,695.063L2168.84,2087.87C2168.84,2150.44 2118.04,2201.24 2055.47,2201.24L306.735,2201.24C244.165,2201.24 193.366,2150.44 193.366,2087.87L193.366,695.063C193.366,632.493 244.164,581.695 306.735,581.694L500.662,581.694L500.662,324.679C500.662,252.783 559.033,194.412 630.93,194.412L1731.28,194.412Z" style="fill:rgb(0,132,160);"/>
+            </g>
+            <g id="fyrkantig" transform="matrix(0.826593,0,0,0.775221,-0.863974,0)">
+                <g transform="matrix(1,0,0,1.256,0,-104.175)">
+                    <rect x="605.219" y="306.839" width="1130.22" height="225.21" style="fill:rgb(1,13,20);"/>
+                </g>
+                <path d="M1709.82,345.275L1735.44,281.215L1735.44,564.079L605.219,564.079L605.219,281.215L630.843,345.275L1709.82,345.275Z" style="fill:rgb(2,36,49);"/>
+                <g transform="matrix(0.954657,0,0,0.971556,53.0665,47.1638)">
+                    <rect x="605.219" y="306.839" width="1130.22" height="225.21"/>
+                </g>
+            </g>
+            <g transform="matrix(0.826593,0,0,0.775221,2.63737,-8.0272)">
+                <rect x="390.509" y="809.104" width="1574.81" height="1174.43" style="fill:rgb(193,235,255);"/>
+            </g>
+        </g>
+    </g>
+</svg>

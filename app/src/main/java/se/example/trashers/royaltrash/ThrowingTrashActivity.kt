@@ -38,7 +38,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
                 view.y = motionEvent.rawY - view.height/2
                 view.x = motionEvent.rawX - view.width/2
             }else if(motionEvent.action == MotionEvent.ACTION_UP){
-                val dist = checkCollitionState()
+                checkCollitionState()
 
             }
             true
@@ -144,7 +144,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
         val target = findViewById(id) as ImageView
 
         //this is just a placeholder
-        //TODO replace this...
+        //FIXME replace this...
         val numbers: MutableList<Int> = mutableListOf(android.R.drawable.ic_menu_send,
                 android.R.drawable.ic_menu_camera, android.R.drawable.ic_menu_agenda)
 
@@ -158,23 +158,30 @@ class ThrowingTrashActivity : AppCompatActivity() {
      */
     fun <L> List<L>.random(): L? = if (size > 0) get(Random().nextInt(size)) else null
 
-    fun checkCollitionState():Double?{
+    fun checkCollitionState(){
         limitAtEdges()
-        var DistToCan = getDistanceinPercent("dragable_test","can")
 
-        if(DistToCan < 10){
-            println("On the can!! :) " +DistToCan)
-            //user released trash on the can
-            increaseScore()
-            shakeIcon("can")
-            changeObjectIcon("dragable_test")
-            setObjectPercentLocation("dragable_test",45F,80F)
-        }else{
-            println("User missed the can :( " + DistToCan)
+        var Collided = false
+
+
+        for (i in 1..3) {
+            var DistToCan = getDistanceinPercent("dragable_test","can_" + i.toString())
+            if(DistToCan < 10){
+                println("On the can!! :) " +DistToCan)
+                //user released trash on the can
+                increaseScore()
+                shakeIcon("can_" + i.toString())
+                changeObjectIcon("dragable_test")
+                setObjectPercentLocation("dragable_test",45F,80F)
+                Collided = true
+                break;
+            }else{//FIXME remove this else later on...
+                println("User missed the can :( " + DistToCan)
+            }
+        }
+        if(!Collided){
             setObjectPercentLocation("dragable_test",70F,70F)
         }
-
-        return DistToCan
     }
 
 

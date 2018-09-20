@@ -33,6 +33,5 @@ class MenuActivity : AppCompatActivity() {
         }
     }
 
-
 }
 

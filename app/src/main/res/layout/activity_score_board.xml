@@ -14,5 +14,4 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_score_board" />
-
 </android.support.design.widget.CoordinatorLayout>

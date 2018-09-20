@@ -121,7 +121,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
 
     fun increaseScore(){
         currentScore ++
-        score.text = "Score: " + currentScore
+        score.text = "Score:" + (currentScore).toString()
 
     }
 

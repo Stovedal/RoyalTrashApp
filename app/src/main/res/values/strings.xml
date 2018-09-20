@@ -3,4 +3,5 @@
     <string name="start_button">Play!</string>
     <string name="title_activity_score_board">ScoreBoardActivity</string>
     <string name="title_activity_menu_video">MenuVideoActivity</string>
+    <string name="highscore">Highscores!</string>
 </resources>

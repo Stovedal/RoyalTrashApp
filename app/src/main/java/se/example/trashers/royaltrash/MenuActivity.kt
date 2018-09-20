@@ -25,8 +25,13 @@ class MenuActivity : AppCompatActivity() {
             intent.putExtra("key", "Kotlin")
             startActivity(intent)
         }
-    }
 
+        highscores_button.setOnClickListener {
+            val intent = Intent(this, ScoreBoardActivity::class.java)
+            intent.putExtra("key", "Kotlin")
+            startActivity(intent)
+        }
+    }
 
 }
 

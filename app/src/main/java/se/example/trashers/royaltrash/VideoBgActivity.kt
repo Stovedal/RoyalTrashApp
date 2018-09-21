@@ -20,13 +20,11 @@ class VideoBgActivity : AppCompatActivity() {
         start_button.setOnClickListener {
             //val intent = Intent(this, QuizActivity::class.java)
             val intent = Intent(this, ThrowingTrashActivity::class.java)
-            intent.putExtra("key", "Kotlin")
             startActivity(intent)
         }
         start_button2.setOnClickListener {
             //val intent = Intent(this, QuizActivity::class.java)
             val intent = Intent(this, QuizActivity::class.java)
-            intent.putExtra("key", "Kotlin")
             startActivity(intent)
         }
 

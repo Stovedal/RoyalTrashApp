@@ -16,7 +16,7 @@ class ScoreBoardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content_score_board)
 
-        val myDataset = Array(13, {"Funky_gurkan33"})
+        val myDataset = Array(9, {"Funky_gurkan33"})
         viewManager = LinearLayoutManager(this)
         viewAdapter = ScoresAdapter(myDataset)
         recyclerView = findViewById(R.id.score_scroll)

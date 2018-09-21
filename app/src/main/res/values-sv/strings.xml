@@ -3,4 +3,6 @@
     <string name="app_name">RoyalTrash</string>
     <string name="start_button">Spela!</string>
     <string name="highscore">Topplista!</string>
+    <string name="all">Alla</string>
+    <string name="friends">Vänner</string>
 </resources>

@@ -7,14 +7,11 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_throwing_trash.*
-//import se.example.trashers.royaltrash.R.id.can
-//import se.example.trashers.royaltrash.R.id.dragable_test
 import java.lang.Math.pow
 import java.util.*
 import android.animation.ObjectAnimator
-import android.media.MediaPlayer
-import android.net.Uri
-import android.widget.VideoView
+import android.os.Handler
+
 
 
 class ThrowingTrashActivity : AppCompatActivity() {
@@ -23,17 +20,21 @@ class ThrowingTrashActivity : AppCompatActivity() {
     var screanWidth:Int? = null
     var screanHeight:Int? = null
     var currentScore:Int = 0
-    var activeTrash:Trash = getNewTrash()
-    val CanSetup = hashMapOf(1 to "ORGANIC",2 to "GLASS",3 to "PAPER")//FIXME Remove later
+    var activeTrash:Trash? = null
+    var fromOnCreat:Boolean = false
+    val CanSetup = hashMapOf<Int,String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_throwing_trash)
-
+        fromOnCreat = true
         if(screanWidth == null) {
             setScreanSize();
-            //changeObjectIcon("dragable_test",activeTrash)
+            setTrashCaregory();
+            setupTrashcanIcons();
+            activeTrash = getNewTrash()
+            changeObjectIcon("dragable_test",activeTrash!!)
         }
 
         var listener = View.OnTouchListener(function = { view, motionEvent ->
@@ -42,13 +43,27 @@ class ThrowingTrashActivity : AppCompatActivity() {
                 view.x = motionEvent.rawX - view.width/2
             }else if(motionEvent.action == MotionEvent.ACTION_UP){
                 checkCollitionState()
-
             }
             true
         })
-
         dragable_test.setOnTouchListener(listener)
+    }
 
+    public override fun onResume() {
+        super.onResume()
+        if (fromOnCreat){
+            fromOnCreat = false
+            //this is so fucking ugly, but moving objects just won't work untill the screan HAVE BEEN loaded for some ms
+            Handler().postDelayed(Runnable { setObjectPercentLocation("dragable_test",45F,80F) }, 100)
+        }
+    }
+
+    fun setTrashCaregory(){
+        val Cat = mutableListOf("GLASS","PAPER","ORGANIC","EWASTE","METAL","PLASTIC")
+        Cat.shuffle()
+        for (i in 1..3){
+            CanSetup[i] = Cat[i]
+        }
     }
 
     fun setScreanSize(){
@@ -74,7 +89,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
     }
 
     /*
-    get procentage on screan of given ImageView ID
+    get procentage on screen of given ImageView ID
     NOT!: id must be of an ImageView!
      */
     fun getObjectPosInPercent(targetVievID: String): Pair<Float,Float>{
@@ -85,6 +100,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
         val ProsY = (target.y/screanHeight!!)*100
         return Pair(ProsX,ProsY)
     }
+
     /*
         get distance betwen targetVievID and secoundTargetVievID in a normalized value based of percentage
      */
@@ -101,10 +117,8 @@ class ThrowingTrashActivity : AppCompatActivity() {
     fun getDistanceInPixels(targetVievID: String,secoundTargetVievID: String):Double{
         val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
         val target = findViewById(id) as ImageView
-
         val secoundTarget_id: Int = getResources().getIdentifier(secoundTargetVievID, "id", getPackageName())
         val secound_target = findViewById(secoundTarget_id) as ImageView
-
         var dist = pow(pow((target.x - secound_target.x).toDouble(),2.0) + pow((target.y - secound_target.y).toDouble(),2.0),0.5)
         return dist
     }
@@ -115,17 +129,19 @@ class ThrowingTrashActivity : AppCompatActivity() {
         target.x = Xcord;
         target.y = Ycord;
     }
+
     fun setObjectPercentLocation(targetVievID: String,Xcord: Float,Ycord: Float){
         val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
         val target = findViewById(id) as ImageView
         target.x = (Xcord/100)*screanWidth!!
         target.y = (Ycord/100)*screanHeight!!
+        println("Setting Xpos: "+target.x +"Setting Ypos: "+target.y)
+
     }
 
     fun increaseScore(){
         currentScore ++
         score.text = "Score:" + (currentScore).toString()
-
     }
 
 
@@ -140,85 +156,55 @@ class ThrowingTrashActivity : AppCompatActivity() {
         rotate.start()
     }
 
-
+    fun setupTrashcanIcons(){
+        val CanIcons = hashMapOf<String,String>("GLASS" to "glassortering","PAPER" to "papperssortering",
+                "ORGANIC" to "organisksortering","EWASTE" to "elektroniksortering",
+                "METAL" to "metallsortering","PLASTIC" to "plastsortering")
+        can_1.setImageResource(getResources().getIdentifier(CanIcons[CanSetup[1]], "drawable", getPackageName()))
+        can_2.setImageResource(getResources().getIdentifier(CanIcons[CanSetup[2]], "drawable", getPackageName()))
+        can_3.setImageResource(getResources().getIdentifier(CanIcons[CanSetup[3]], "drawable", getPackageName()))
+    }
 
     fun changeObjectIcon(targetVievID: String,trashObj:Trash){
         val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
         val target = findViewById(id) as ImageView
-
-        //this is just a placeholder
-        //FIXME replace this...
-        trashObj
-        println("Icon Name: " + trashObj.TrashIcon)
-        val ImgId = getResources().getIdentifier(trashObj.TrashIcon, "drawable", getPackageName());
-
-        /*
-        val numbers: MutableList<Int> = mutableListOf(android.R.drawable.ic_menu_send,
-                android.R.drawable.ic_menu_camera, android.R.drawable.ic_menu_agenda)
-
-        val random = numbers.random()
-        */
-
+        val ImgId = getResources().getIdentifier(trashObj.TrashIcon, "drawable", getPackageName())
         target.setImageResource(ImgId)
-        //target.setImageResource(@android:drawable/ic_menu_save)
     }
-    /**
+
+    /*
      Returns a random element.
      */
     fun <L> List<L>.random(): L? = if (size > 0) get(Random().nextInt(size)) else null
 
     /*
     get a new trash object
-    FIXME not possible to complete without all sets of images available
      */
     fun getNewTrash():Trash{
-        val tsh: MutableList<String> = mutableListOf("GLASS","PAPER","ORGANIC")//FIXME add remaining trash types when images exists...
+        val tsh: MutableList<String> = mutableListOf(CanSetup[1]!!,CanSetup[2]!!,CanSetup[3]!!)
         val random = tsh.random()
-        println("RandomTrash: " + random)
         val newTrash = Trash(random!!)
         return newTrash
     }
 
     fun checkCollitionState(){
         limitAtEdges()
-
-        var Collided = false
-
-
+        var collided = false
         for (i in 1..3) {
             var DistToCan = getDistanceinPercent("dragable_test","can_" + i.toString())
-            if(DistToCan < 10 && CanSetup[i] == activeTrash.trashTyp){
-                println("On the can!! :) " +DistToCan)
+            if(DistToCan < 12 && CanSetup[i] == activeTrash!!.trashTyp){
                 //user released trash on the can
                 increaseScore()
                 shakeIcon("can_" + i.toString())
-
                 activeTrash = getNewTrash()//update the trash selected
-                println("Trash updated: " + activeTrash.trashTyp + " Icon: " + activeTrash.TrashIcon)
-                changeObjectIcon("dragable_test",activeTrash)
+                changeObjectIcon("dragable_test",activeTrash!!)
                 setObjectPercentLocation("dragable_test",45F,80F)
-                Collided = true
+                collided = true
                 break;
-            }else{//FIXME remove this else later on...
-                println("User missed the can :( " + DistToCan)
             }
         }
-        if(!Collided){
+        if(!collided){
             setObjectPercentLocation("dragable_test",70F,70F)
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

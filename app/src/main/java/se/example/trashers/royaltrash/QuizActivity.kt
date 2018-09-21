@@ -1,61 +1,93 @@
 package se.example.trashers.royaltrash
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.widget.Button
+import android.os.Handler
 import kotlinx.android.synthetic.main.activity_quiz.*
+import android.view.View
+import android.widget.Button
 
 class QuizActivity : AppCompatActivity() {
-    var index = 1
+    var points = 0F
+    private val delayMillis = 1000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
-        var bundle :Bundle ?=intent.extras
-        var questionNumber: Int = intent.getIntExtra("questionNumber", 3)
+        var questionNumber: Int = intent.getIntExtra("questionNumber", 1)
 
-        questionBasedQuiz(3)
+        questionBasedQuiz(questionNumber)
     }
 
-    fun questionBasedQuiz(questionNumber: Int): Int {
-        var points = 0
+    private fun questionBasedQuiz(questionNumber: Int): Float {
+        var questions = getQuestions(questionNumber).shuffled()
 
-        getQuestions(questionNumber).shuffled()
-
-        quiz_button1.setOnClickListener {
-            it.setBackgroundResource(R.drawable.quiz_button_true)
-        }
-        quiz_button2.setOnClickListener {
-
-        }
-        quiz_button3.setOnClickListener {
-
-        }
-        quiz_button4.setOnClickListener {
-
-        }
-
+        question(0, questions)
 
         return points
     }
 
-    fun getQuestions(questionNumber: Int):List<Question> {
+    private fun getQuestions(questionNumber: Int):List<Question> {
         val questions = mutableListOf<Question>()
         for (i in 0..(questionNumber-1)) {
             val q = Question(4)
-
+            //todo check question IDs so they don't match any already in the list
             questions.add(i, q)
         }
 
         return questions
     }
 
-    fun question(question: String, answer: String, falseAnswers: List<String>):Int {
-        var points = 0
+    private fun question(round:Int, questions:List<Question>) {
+        val buttons = listOf<Button>(quiz_button1, quiz_button2, quiz_button3, quiz_button4).shuffled()
+        if (questions.size > round) {
+            val question = questions[round]
 
+            question_text.text = question.question
 
+            buttons[0].text = question.answer
+            buttons[1].text = question.falseAnswers[0]
+            buttons[2].text = question.falseAnswers[1]
+            buttons[3].text = question.falseAnswers[2]
 
-        return points
+            buttons.forEach {
+                buttonColor(it, "default")
+                it.setOnClickListener {
+                    if (buttons[0] == it) {
+                        buttonColor(it, "true")
+                        points += 10
+                    } else {
+                        buttonColor(it, "false")
+                    }
+                    removeListeners(buttons)
+
+                    Handler().postDelayed({
+                        question(round + 1, questions)
+                    }, delayMillis)
+                }
+            }
+        } else {
+            endgame()
+        }
+    }
+
+    private fun endgame() {
+        val intent = Intent(this, ThrowingTrashActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun buttonColor(button: View, color:String) {
+        when (color) {
+            "true" -> {button.setBackgroundResource(R.drawable.quiz_button_true)}
+            "false" -> {button.setBackgroundResource(R.drawable.quiz_button_false)}
+            else -> {button.setBackgroundResource(R.drawable.quiz_button)}
+        }
+    }
+
+    private fun removeListeners(views:List<View>) {
+        views.forEach {
+            it.setOnClickListener(null)
+        }
     }
 }

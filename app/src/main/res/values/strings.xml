@@ -4,4 +4,6 @@
     <string name="title_activity_score_board">ScoreBoardActivity</string>
     <string name="title_activity_menu_video">MenuVideoActivity</string>
     <string name="highscore">Highscores!</string>
+    <string name="all">All</string>
+    <string name="friends">Friends</string>
 </resources>

@@ -4,7 +4,7 @@ class Question(): QuestionAdapter {
     var questionId:Int = 0
     var question:String = ""
     var answer:String = ""
-    var falseAnswers: List<String>? = null
+    var falseAnswers: List<String> = emptyList()
 
     constructor(numberOfAnswers:Int) : this() {
         questionId = getId();

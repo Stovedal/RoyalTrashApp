@@ -27,9 +27,9 @@ class ThrowingTrashActivity : AppCompatActivity() {
     var screanWidth:Int? = null
     var screanHeight:Int? = null
     var currentScore:Int = 0
-    var activeTrash:Trash = getNewTrash()
+    var activeTrash:Trash? = null
     var fromOnCreat:Boolean = false
-    val CanSetup = hashMapOf(1 to "ORGANIC",2 to "GLASS",3 to "PAPER")//FIXME Remove later
+    val CanSetup = hashMapOf<Int,String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +38,10 @@ class ThrowingTrashActivity : AppCompatActivity() {
         fromOnCreat = true
         if(screanWidth == null) {
             setScreanSize();
-            changeObjectIcon("dragable_test",activeTrash)
+            setTrashCaregory();
+            setupTrashcanIcons();
+            activeTrash = getNewTrash()
+            changeObjectIcon("dragable_test",activeTrash!!)
             //setObjectPercentLocation("dragable_test",45F,80F)
             //changeObjectIcon("dragable_test",activeTrash)
         }
@@ -69,7 +72,15 @@ class ThrowingTrashActivity : AppCompatActivity() {
         }
     }
 
+    fun setTrashCaregory(){
+        val Cat = mutableListOf("GLASS","PAPER","ORGANIC","EWASTE","METAL","PLASTIC")
+        Cat.shuffle()
+        //val Categories = Cat.slice(0..2)
 
+        for (i in 1..3){
+            CanSetup[i] = Cat[i]
+        }
+    }
 
     fun setScreanSize(){
         val displayMetrics = DisplayMetrics()
@@ -162,7 +173,16 @@ class ThrowingTrashActivity : AppCompatActivity() {
         rotate.start()
     }
 
+    fun setupTrashcanIcons(){
+        val CanIcons = hashMapOf<String,String>("GLASS" to "glassortering","PAPER" to "papperssortering",
+                "ORGANIC" to "organisksortering","EWASTE" to "elektroniksortering",
+                "METAL" to "metallsortering","PLASTIC" to "plastsortering")
+        can_1.setImageResource(getResources().getIdentifier(CanIcons[CanSetup[1]], "drawable", getPackageName()))
+        can_2.setImageResource(getResources().getIdentifier(CanIcons[CanSetup[2]], "drawable", getPackageName()))
+        can_3.setImageResource(getResources().getIdentifier(CanIcons[CanSetup[3]], "drawable", getPackageName()))
 
+
+    }
 
     fun changeObjectIcon(targetVievID: String,trashObj:Trash){
         val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
@@ -194,7 +214,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
     FIXME not possible to complete without all sets of images available
      */
     fun getNewTrash():Trash{
-        val tsh: MutableList<String> = mutableListOf("GLASS","PAPER","ORGANIC")//FIXME add remaining trash types when images exists...
+        val tsh: MutableList<String> = mutableListOf(CanSetup[1]!!,CanSetup[2]!!,CanSetup[3]!!)//FIXME add remaining trash types when images exists...
         val random = tsh.random()
         println("RandomTrash: " + random)
         val newTrash = Trash(random!!)
@@ -209,15 +229,15 @@ class ThrowingTrashActivity : AppCompatActivity() {
 
         for (i in 1..3) {
             var DistToCan = getDistanceinPercent("dragable_test","can_" + i.toString())
-            if(DistToCan < 12 && CanSetup[i] == activeTrash.trashTyp){
+            if(DistToCan < 12 && CanSetup[i] == activeTrash!!.trashTyp){
                 println("On the can!! :) " +DistToCan)
                 //user released trash on the can
                 increaseScore()
                 shakeIcon("can_" + i.toString())
 
                 activeTrash = getNewTrash()//update the trash selected
-                println("Trash updated: " + activeTrash.trashTyp + " Icon: " + activeTrash.TrashIcon)
-                changeObjectIcon("dragable_test",activeTrash)
+                println("Trash updated: " + activeTrash!!.trashTyp + " Icon: " + activeTrash!!.TrashIcon)
+                changeObjectIcon("dragable_test",activeTrash!!)
                 setObjectPercentLocation("dragable_test",45F,80F)
                 Collided = true
                 break;

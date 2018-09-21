@@ -9,15 +9,31 @@
     tools:showIn="@layout/activity_score_board"
     android:id="@+id/highscore_top"
     >
+    <ImageView
+        android:id="@+id/highscore_crown"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:src="@drawable/crown"
+        android:layout_marginTop="20dp"
+        app:layout_constraintRight_toLeftOf="@+id/highscore_text"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/highscore" />
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
+        android:id="@+id/highscore_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:padding="20dp"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:text="@string/highscore"
-        />
+        android:layout_margin="50dp"
+        android:textColor="#000"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        android:textStyle="bold"
+        >
+    </TextView>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,28 +47,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="90dp"
-            app:layout_constraintLeft_toRightOf="@+id/left_button" />
+            android:layout_marginStart="80dp"
+            app:layout_constraintLeft_toRightOf="@+id/left_button"
+            tools:ignore="RelativeOverlap" />
 
         <ToggleButton
             android:id="@+id/left_button"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="90dp"
+            android:layout_marginEnd="80dp"
             app:layout_constraintRight_toLeftOf="@+id/right_button" />
 
     </RelativeLayout>
 
-
-    <ScrollView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/score_scroll"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:background="#e2e2e2"
         app:layout_constraintBottom_toBottomOf="parent"
-        >
-
-    </ScrollView>
-
+        />
 </android.support.constraint.ConstraintLayout>

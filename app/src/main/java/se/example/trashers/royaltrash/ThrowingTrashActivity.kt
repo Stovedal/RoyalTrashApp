@@ -23,6 +23,8 @@ class ThrowingTrashActivity : AppCompatActivity() {
     var screanWidth:Int? = null
     var screanHeight:Int? = null
     var currentScore:Int = 0
+    var activeTrash:Trash = getNewTrash()
+    val CanSetup = hashMapOf(1 to "ORGANIC",2 to "GLASS",3 to "PAPER")//FIXME Remove later
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +33,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
 
         if(screanWidth == null) {
             setScreanSize();
+            //changeObjectIcon("dragable_test",activeTrash)
         }
 
         var listener = View.OnTouchListener(function = { view, motionEvent ->
@@ -139,24 +142,42 @@ class ThrowingTrashActivity : AppCompatActivity() {
 
 
 
-    fun changeObjectIcon(targetVievID: String){
+    fun changeObjectIcon(targetVievID: String,trashObj:Trash){
         val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
         val target = findViewById(id) as ImageView
 
         //this is just a placeholder
         //FIXME replace this...
+        trashObj
+        println("Icon Name: " + trashObj.TrashIcon)
+        val ImgId = getResources().getIdentifier(trashObj.TrashIcon, "drawable", getPackageName());
+
+        /*
         val numbers: MutableList<Int> = mutableListOf(android.R.drawable.ic_menu_send,
                 android.R.drawable.ic_menu_camera, android.R.drawable.ic_menu_agenda)
 
         val random = numbers.random()
+        */
 
-        target.setImageResource(random!!)
+        target.setImageResource(ImgId)
         //target.setImageResource(@android:drawable/ic_menu_save)
     }
     /**
      Returns a random element.
      */
     fun <L> List<L>.random(): L? = if (size > 0) get(Random().nextInt(size)) else null
+
+    /*
+    get a new trash object
+    FIXME not possible to complete without all sets of images available
+     */
+    fun getNewTrash():Trash{
+        val tsh: MutableList<String> = mutableListOf("GLASS","PAPER","ORGANIC")//FIXME add remaining trash types when images exists...
+        val random = tsh.random()
+        println("RandomTrash: " + random)
+        val newTrash = Trash(random!!)
+        return newTrash
+    }
 
     fun checkCollitionState(){
         limitAtEdges()
@@ -166,12 +187,15 @@ class ThrowingTrashActivity : AppCompatActivity() {
 
         for (i in 1..3) {
             var DistToCan = getDistanceinPercent("dragable_test","can_" + i.toString())
-            if(DistToCan < 10){
+            if(DistToCan < 10 && CanSetup[i] == activeTrash.trashTyp){
                 println("On the can!! :) " +DistToCan)
                 //user released trash on the can
                 increaseScore()
                 shakeIcon("can_" + i.toString())
-                changeObjectIcon("dragable_test")
+
+                activeTrash = getNewTrash()//update the trash selected
+                println("Trash updated: " + activeTrash.trashTyp + " Icon: " + activeTrash.TrashIcon)
+                changeObjectIcon("dragable_test",activeTrash)
                 setObjectPercentLocation("dragable_test",45F,80F)
                 Collided = true
                 break;

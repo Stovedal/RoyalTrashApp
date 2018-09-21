@@ -12,6 +12,7 @@ class QuizActivity : AppCompatActivity() {
     var points = 0F
     private val delayMillis = 1000L
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
@@ -25,6 +26,7 @@ class QuizActivity : AppCompatActivity() {
 
         question(0, questions)
 
+
         return points
     }
 
@@ -33,6 +35,7 @@ class QuizActivity : AppCompatActivity() {
         for (i in 0..(questionNumber-1)) {
             val q = Question(4)
             //todo check question IDs so they don't match any already in the list
+
             questions.add(i, q)
         }
 
@@ -89,5 +92,6 @@ class QuizActivity : AppCompatActivity() {
         views.forEach {
             it.setOnClickListener(null)
         }
+
     }
 }

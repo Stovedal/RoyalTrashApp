@@ -7,52 +7,73 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ScoreBoardActivity"
     tools:showIn="@layout/activity_score_board"
-    android:id="@+id/highscore_top"
     >
-    <TextView
-        android:id="@+id/textView"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/highscore_top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:padding="20dp"
-        android:textSize="30dp"
-        android:text="@string/highscore"
-        />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/score_scroll"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
-        >
-
-        <ToggleButton
-            android:id="@+id/right_button"
+        android:layout_height="200dp">
+        <ImageView
+            android:id="@+id/highscore_crown"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:src="@drawable/crown"
+            android:layout_marginTop="20dp"
+            app:layout_constraintRight_toLeftOf="@+id/highscore_text"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/highscore" />
+        <TextView
+            android:id="@+id/highscore_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="90dp"
-            app:layout_constraintLeft_toRightOf="@+id/left_button" />
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:text="@string/highscore"
+            android:layout_margin="50dp"
+            android:textColor="#000"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.1"
+            android:textStyle="bold"
+            >
+        </TextView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/highscore_text"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            >
 
-        <ToggleButton
-            android:id="@+id/left_button"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="90dp"
-            app:layout_constraintRight_toLeftOf="@+id/right_button" />
+            <ToggleButton
+                android:id="@+id/right_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="80dp"
+                app:layout_constraintLeft_toRightOf="@+id/left_button"
+                tools:ignore="RelativeOverlap" />
 
-    </RelativeLayout>
+            <ToggleButton
+                android:id="@+id/left_button"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="80dp"
+                app:layout_constraintRight_toLeftOf="@+id/right_button" />
+
+        </RelativeLayout>
+
+    </android.support.constraint.ConstraintLayout>
 
 
-    <ScrollView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/score_scroll"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="0dp"
         android:background="#e2e2e2"
+        app:layout_constraintTop_toBottomOf="@+id/highscore_top"
         app:layout_constraintBottom_toBottomOf="parent"
-        >
-
-    </ScrollView>
-
+        />
 </android.support.constraint.ConstraintLayout>

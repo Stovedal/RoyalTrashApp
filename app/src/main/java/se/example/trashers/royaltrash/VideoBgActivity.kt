@@ -12,7 +12,7 @@ class VideoBgActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video_bg)
-        val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.earth)
+        val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.flatearth)
         BGVideo.setVideoURI(uri)
         BGVideo.start()
         BGVideo.setOnPreparedListener(MediaPlayer.OnPreparedListener { mediaPlayer -> mediaPlayer.isLooping = true })
@@ -37,7 +37,7 @@ class VideoBgActivity : AppCompatActivity() {
      */
     public override fun onResume() {
         super.onResume()
-        val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.earth)
+        val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.flatearth)
         BGVideo.setVideoURI(uri)
         BGVideo.start()
         BGVideo.setOnPreparedListener { mediaPlayer -> mediaPlayer.isLooping = true }

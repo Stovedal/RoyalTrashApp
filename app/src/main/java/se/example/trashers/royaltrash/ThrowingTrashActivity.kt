@@ -33,6 +33,8 @@ class ThrowingTrashActivity : AppCompatActivity() {
 
         if(screanWidth == null) {
             setScreanSize();
+            changeObjectIcon("dragable_test",activeTrash)
+            //setObjectPercentLocation("dragable_test",45F,80F)
             //changeObjectIcon("dragable_test",activeTrash)
         }
 
@@ -187,7 +189,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
 
         for (i in 1..3) {
             var DistToCan = getDistanceinPercent("dragable_test","can_" + i.toString())
-            if(DistToCan < 10 && CanSetup[i] == activeTrash.trashTyp){
+            if(DistToCan < 12 && CanSetup[i] == activeTrash.trashTyp){
                 println("On the can!! :) " +DistToCan)
                 //user released trash on the can
                 increaseScore()
@@ -207,18 +209,4 @@ class ThrowingTrashActivity : AppCompatActivity() {
             setObjectPercentLocation("dragable_test",70F,70F)
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

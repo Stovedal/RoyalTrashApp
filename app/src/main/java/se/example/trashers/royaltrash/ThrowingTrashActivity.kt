@@ -23,6 +23,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
     var activeTrash:Trash? = null
     var fromOnCreat:Boolean = false
     val CanSetup = hashMapOf<Int,String>()
+    var killingSpree = 0 //xD
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -187,6 +188,16 @@ class ThrowingTrashActivity : AppCompatActivity() {
         return newTrash
     }
 
+    fun updateStreak(status:Boolean){
+        if(status){
+            killingSpree++;
+        }else{
+            killingSpree = 0
+        }
+        streak.text = "Streak:" + (killingSpree).toString()
+
+    }
+
     fun checkCollitionState(){
         limitAtEdges()
         var collided = false
@@ -200,11 +211,13 @@ class ThrowingTrashActivity : AppCompatActivity() {
                 changeObjectIcon("dragable_test",activeTrash!!)
                 setObjectPercentLocation("dragable_test",45F,80F)
                 collided = true
+                updateStreak(true)
                 break;
             }
         }
         if(!collided){
             setObjectPercentLocation("dragable_test",70F,70F)
+            updateStreak(false)
         }
     }
 }

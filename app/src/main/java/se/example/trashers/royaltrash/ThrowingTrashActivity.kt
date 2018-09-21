@@ -14,7 +14,11 @@ import java.util.*
 import android.animation.ObjectAnimator
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Handler
 import android.widget.VideoView
+import android.support.v4.os.HandlerCompat.postDelayed
+
+
 
 
 class ThrowingTrashActivity : AppCompatActivity() {
@@ -24,13 +28,14 @@ class ThrowingTrashActivity : AppCompatActivity() {
     var screanHeight:Int? = null
     var currentScore:Int = 0
     var activeTrash:Trash = getNewTrash()
+    var fromOnCreat:Boolean = false
     val CanSetup = hashMapOf(1 to "ORGANIC",2 to "GLASS",3 to "PAPER")//FIXME Remove later
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_throwing_trash)
-
+        fromOnCreat = true
         if(screanWidth == null) {
             setScreanSize();
             changeObjectIcon("dragable_test",activeTrash)
@@ -52,6 +57,19 @@ class ThrowingTrashActivity : AppCompatActivity() {
         dragable_test.setOnTouchListener(listener)
 
     }
+
+    public override fun onResume() {
+        super.onResume()
+        if (fromOnCreat){
+            println("From dragable test!")
+            //setObjectPercentLocation("dragable_test",45F,80F)
+            fromOnCreat = false
+            //this is so fucking ugly, but moving objects just won't work untill the screan HAVE BEEN loaded for some ms
+            Handler().postDelayed(Runnable { setObjectPercentLocation("dragable_test",45F,80F) }, 100)
+        }
+    }
+
+
 
     fun setScreanSize(){
         val displayMetrics = DisplayMetrics()
@@ -122,6 +140,8 @@ class ThrowingTrashActivity : AppCompatActivity() {
         val target = findViewById(id) as ImageView
         target.x = (Xcord/100)*screanWidth!!
         target.y = (Ycord/100)*screanHeight!!
+        println("Setting Xpos: "+target.x +"Setting Ypos: "+target.y)
+
     }
 
     fun increaseScore(){

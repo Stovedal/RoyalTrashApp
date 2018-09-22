@@ -16,7 +16,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:contentDescription="icon"
-            android:padding="7dp"
+            android:padding="5dp"
             android:src="@drawable/trashy_last" />
 
         <TextView
@@ -24,11 +24,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/score_img"
+            android:layout_toEndOf="@id/score_img"
+            android:gravity="center"
+            android:layout_margin="5dp"
             android:text="placeholder"
-            android:textColor="#000"
+            android:textColor="@color/materialBlack"
             android:textSize="20sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/score_count"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/materialBlack"
+            android:text="0p" />
 
     </RelativeLayout>
 </android.support.design.card.MaterialCardView>

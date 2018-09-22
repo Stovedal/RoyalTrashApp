@@ -9,6 +9,8 @@
     <color name="colorBlue">#2947CF</color>
     <color name="colorMagenta">#B129CF</color>
 
+    <color name="materialBlack">#212121</color>
+
     <color name="colorTrashCanRed">#c62828</color>
     <color name="colorTrashCanGreen">#388e3c</color>
     <color name="colorTrashCanBlue">#1976d2</color>

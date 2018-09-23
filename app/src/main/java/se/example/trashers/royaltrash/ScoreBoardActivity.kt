@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import org.json.JSONObject
+import java.net.URL
 
 class ScoreBoardActivity : AppCompatActivity() {
 
@@ -16,8 +18,7 @@ class ScoreBoardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content_score_board)
         val scores = ArrayList<Score>()
-
-        scores.add(Score("Nina_cool_90", 107))
+        scores.add(Score("FunkyGurkan33", 107))
         scores.add(Score("FunkyGurkan33", 97))
         scores.add(Score("MagganBaggan", 96))
         scores.add(Score("lill-tomten", 83))
@@ -40,6 +41,18 @@ class ScoreBoardActivity : AppCompatActivity() {
             adapter = viewAdapter
 
         }
+
     }
+    private fun connectToAPI(){
+        val result = URL("http://royaltrashapp.azurewebsites.net/api/highscores1/1/").readText()
+
+
+    }
+
+
+    data class Highscore(val id: Long,
+                          val username: String, val score: Long,
+                          val trashcount: String, val City: String)
+
 
 }

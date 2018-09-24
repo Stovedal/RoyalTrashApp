@@ -18,7 +18,12 @@
     <color name="colorTrashCanOrange">#e64a19</color>
     <color name="colorTrashCanYellow">#f9a825</color>
 
-    <color name="colorButtonNormal">#299ACF</color>
+    <color name="colorButtonNormal">#303F9F</color>
+    <color name="colorButtonNormalDark">#1f2866</color>
+
     <color name="colorButtonTrue">#29CF5D</color>
+    <color name="colorButtonTrueDark">#1a823b</color>
+
     <color name="colorButtonFalse">#CF2947</color>
+    <color name="colorButtonFalseDark">#821a2d</color>
 </resources>

@@ -84,7 +84,7 @@ class QuizActivity : AppCompatActivity() {
         when (color) {
             "true" -> {button.setBackgroundResource(R.drawable.quiz_button_true)}
             "false" -> {button.setBackgroundResource(R.drawable.quiz_button_false)}
-            else -> {button.setBackgroundResource(R.drawable.quiz_button)}
+            else -> {button.setBackgroundResource(R.drawable.button)}
         }
     }
 
@@ -93,5 +93,10 @@ class QuizActivity : AppCompatActivity() {
             it.setOnClickListener(null)
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //todo restore progress and current question
     }
 }

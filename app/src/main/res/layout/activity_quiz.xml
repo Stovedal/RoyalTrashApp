@@ -24,7 +24,7 @@
             android:id="@+id/question_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Hej"
+            android:text=""
             android:textSize="24sp" />
 
     </FrameLayout>
@@ -46,32 +46,36 @@
         <Button
             android:layout_width="match_parent"
             android:id="@+id/quiz_button1"
-            android:background="@drawable/quiz_button"
+            android:background="@drawable/button"
             android:layout_height="@dimen/quiz_button"
+            android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"/>
 
         <Button
             android:layout_width="match_parent"
             android:id="@+id/quiz_button2"
-            android:background="@drawable/quiz_button"
+            android:background="@drawable/button"
             android:layout_height="@dimen/quiz_button"
+            android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"/>
 
         <Button
             android:layout_width="match_parent"
             android:id="@+id/quiz_button3"
-            android:background="@drawable/quiz_button"
+            android:background="@drawable/button"
             android:layout_height="@dimen/quiz_button"
+            android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp" />
 
         <Button
             android:layout_width="match_parent"
             android:id="@+id/quiz_button4"
-            android:background="@drawable/quiz_button"
+            android:background="@drawable/button"
             android:layout_height="@dimen/quiz_button"
+            android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp" />
     </LinearLayout>

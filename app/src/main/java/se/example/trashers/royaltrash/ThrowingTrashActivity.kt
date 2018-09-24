@@ -11,7 +11,7 @@ import java.lang.Math.pow
 import java.util.*
 import android.animation.ObjectAnimator
 import android.os.Handler
-
+import android.support.constraint.ConstraintLayout
 
 
 class ThrowingTrashActivity : AppCompatActivity() {
@@ -24,12 +24,17 @@ class ThrowingTrashActivity : AppCompatActivity() {
     var fromOnCreat:Boolean = false
     val CanSetup = hashMapOf<Int,String>()
     var killingSpree = 0 //xD
+    var constraintLayout:ConstraintLayout? =  null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_throwing_trash)
         fromOnCreat = true
+
+        constraintLayout = findViewById(R.id.playfield) as ConstraintLayout
+
+
         if(screanWidth == null) {
             setScreanSize();
             setTrashCaregory();
@@ -44,6 +49,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
                 view.x = motionEvent.rawX - view.width/2
             }else if(motionEvent.action == MotionEvent.ACTION_UP){
                 checkCollitionState()
+                addImage()
             }
             true
         })
@@ -139,6 +145,13 @@ class ThrowingTrashActivity : AppCompatActivity() {
         println("Setting Xpos: "+target.x +"Setting Ypos: "+target.y)
 
     }
+    fun setObjectPercentLocation(id: Int,Xcord: Float,Ycord: Float){
+        val target = findViewById(id) as ImageView
+        target.x = (Xcord/100)*screanWidth!!
+        target.y = (Ycord/100)*screanHeight!!
+        println("Setting Xpos: "+target.x +"Setting Ypos: "+target.y)
+
+    }
 
     fun increaseScore(){
         currentScore ++
@@ -173,6 +186,17 @@ class ThrowingTrashActivity : AppCompatActivity() {
         target.setImageResource(ImgId)
     }
 
+    fun addImage(){
+        /*var imageView = ImageView(this)
+        var mID = imageView.id
+        imageView.setImageResource(R.drawable.crown)
+        constraintLayout!!.addView(imageView)
+        setObjectPercentLocation(mID,50F,50F)
+        */
+
+
+    }
+
     /*
      Returns a random element.
      */
@@ -184,7 +208,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
     fun getNewTrash():Trash{
         val tsh: MutableList<String> = mutableListOf(CanSetup[1]!!,CanSetup[2]!!,CanSetup[3]!!)
         val random = tsh.random()
-        val newTrash = Trash(random!!)
+        val newTrash = Trash(random!!,this)
         return newTrash
     }
 

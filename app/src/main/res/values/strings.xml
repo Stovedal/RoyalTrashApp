@@ -6,4 +6,6 @@
     <string name="highscore">Highscores!</string>
     <string name="all">All</string>
     <string name="friends">Friends</string>
+    <string name="starta_trash_trow">Start Throwing Trash</string>
+    <string name="start_test">Start Quiz</string>
 </resources>

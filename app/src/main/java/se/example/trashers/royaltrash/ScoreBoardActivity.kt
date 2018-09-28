@@ -43,10 +43,11 @@ class ScoreBoardActivity : AppCompatActivity() {
         }
 
     }
-    private fun connectToAPI(){
+    private fun connectToAPI():String{
         val result = URL("http://royaltrashapp.azurewebsites.net/api/highscores1/1/").readText()
+        val username = result.substring(19,25)
 
-
+        return username
     }
 
 

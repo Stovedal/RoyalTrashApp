@@ -77,27 +77,29 @@ class ScoreBoardActivity : AppCompatActivity() {
      */
     fun apiGetHighscores():Array<Highscore>{
         val res = URL("http://royaltrashapp.azurewebsites.net/api/highscores").readText(Charsets.UTF_8)
-        println(res)
-        //val ob = Gson()
         //val highScoreUsers = ob.fromJson(res, Highscore::class.java)
-
         val gson = Gson()
         val highscoreArray = gson.fromJson(res, Array<Highscore>::class.java)
-
+        highscoreArray.sortWith(object: Comparator<Highscore>{
+            override fun compare(p1: Highscore, p2: Highscore): Int = when {
+                p1.hs_score < p2.hs_score-> 1
+                p1.hs_score== p2.hs_score -> 0
+                else -> -1
+            }
+        })
         return highscoreArray
     }
 
     fun apiGetQuiz():Array<Quiz>{
         val res = URL("http://royaltrashapp.azurewebsites.net/api/Quizs").readText(Charsets.UTF_8)
         val gson = Gson()
-        val quizArray = gson.fromJson(res, Array<Quiz>::class.java)
-
-        return quizArray
+        return gson.fromJson(res, Array<Quiz>::class.java)
     }
 
     data class Highscore(
             @SerializedName("hs_id") val hs_id: Int,
             @SerializedName("hs_username") val hs_username: String,
+            @SerializedName("hs_score") val hs_score: Int,
             @SerializedName("lat") val lat: Float,
             @SerializedName("description") val lng: Float
     )

@@ -1,8 +1,11 @@
 package se.example.trashers.royaltrash
 
+import android.util.JsonReader
+import junit.framework.Assert.assertEquals
 import org.junit.Test
+import java.io.InputStreamReader
+import java.net.URL
 
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -12,6 +15,12 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        val str = ScoreBoardActivity()
+        val str2 = str.ApiGetHighscores().hs_username
+        println(str2)
+            assertEquals(true, true);
+
+
+
     }
 }

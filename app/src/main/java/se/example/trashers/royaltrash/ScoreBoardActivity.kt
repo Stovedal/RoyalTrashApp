@@ -51,7 +51,7 @@ class ScoreBoardActivity : AppCompatActivity() {
      * Sends a HTTP POST to server to post a new highscore.
      * Param js needs to be a json string
      */
-    fun ApiHttpPostToServer(urlString: String, js: String){
+    fun apiHttpPostToServer(urlString: String, js: String){
         /* Ex URL "http://royaltrashapp.azurewebsites.net/api/highscores/"*/
         /*Ex js "{\"hs_username\":\"Test\",\"hs_score\":1,\"lat\":63.802443,\"lng\":20.320271}"*/
         val obj = URL(urlString).openConnection() as HttpURLConnection
@@ -75,7 +75,7 @@ class ScoreBoardActivity : AppCompatActivity() {
     /**
      * Retrieves a json from server and converts to Highscore class
      */
-    fun ApiGetHighscores(): Highscore{
+    fun apiGetHighscores(): Highscore{
         val res = URL("http://royaltrashapp.azurewebsites.net/api/highscores/1").readText(Charsets.UTF_8).trimStart('[').trimEnd(']')
         val ob = Gson()
         val highScoreUser = ob.fromJson(res, Highscore::class.java)

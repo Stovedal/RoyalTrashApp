@@ -73,14 +73,26 @@ class ScoreBoardActivity : AppCompatActivity() {
     }
 
     /**
-     * Retrieves a json from server and converts to Highscore class
+     * Retrieves a json from server and converts to Array with Highscore class
      */
-    fun apiGetHighscores(): Highscore{
-        val res = URL("http://royaltrashapp.azurewebsites.net/api/highscores/1").readText(Charsets.UTF_8).trimStart('[').trimEnd(']')
-        val ob = Gson()
-        val highScoreUser = ob.fromJson(res, Highscore::class.java)
+    fun apiGetHighscores():Array<Highscore>{
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/highscores").readText(Charsets.UTF_8)
+        println(res)
+        //val ob = Gson()
+        //val highScoreUsers = ob.fromJson(res, Highscore::class.java)
 
-        return highScoreUser
+        val gson = Gson()
+        val highscoreArray = gson.fromJson(res, Array<Highscore>::class.java)
+
+        return highscoreArray
+    }
+
+    fun apiGetQuiz():Array<Quiz>{
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/Quizs").readText(Charsets.UTF_8)
+        val gson = Gson()
+        val quizArray = gson.fromJson(res, Array<Quiz>::class.java)
+
+        return quizArray
     }
 
     data class Highscore(

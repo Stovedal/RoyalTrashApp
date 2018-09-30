@@ -16,8 +16,8 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         val str = ScoreBoardActivity()
-        val str2 = str.ApiGetHighscores().hs_username
-        println(str2)
+        val str2 = str.apiGetQuiz()
+        println(str2[0].question)
             assertEquals(true, true);
 
 

@@ -15,7 +15,7 @@ import java.net.URL
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        val str = ScoreBoardActivity()
+        val str = DBrequests()
         val str2 = str.apiGetHighscores()
             println(str2[0].hs_username)
 

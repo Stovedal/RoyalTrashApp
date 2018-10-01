@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import org.w3c.dom.Text
 
-class ScoresAdapter(private val scores: ArrayList<ScoreBoardActivity.Score>) :
+class ScoresAdapter(private val scores: ArrayList<ScoreBoardActivity.Highscore>) :
         RecyclerView.Adapter<ScoresAdapter.MyViewHolder>() {
 
     // Provide a reference to the views for each data item
@@ -38,8 +38,8 @@ class ScoresAdapter(private val scores: ArrayList<ScoreBoardActivity.Score>) :
             1 -> holder.score.findViewById<ImageView>(R.id.score_img).setImageResource(R.drawable.trashy_2nd)
             2 -> holder.score.findViewById<ImageView>(R.id.score_img).setImageResource(R.drawable.trashy_3d)
         }
-        holder.score.findViewById<TextView>(R.id.score_count).text = scores.get(position).score.toString() + "p"
-        holder.score.findViewById<TextView>(R.id.textContainer).text = scores.get(position).name
+        holder.score.findViewById<TextView>(R.id.score_count).text = scores.get(position).hs_score.toString() + "p"
+        holder.score.findViewById<TextView>(R.id.textContainer).text = scores.get(position).hs_username
     }
 
     // Return the size of your dataset (invoked by the layout manager)

@@ -6,9 +6,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 import java.net.HttpURLConnection
 import java.net.URL
-
+import kotlin.coroutines.experimental.*
 
 class ScoreBoardActivity : AppCompatActivity() {
 
@@ -20,31 +22,29 @@ class ScoreBoardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content_score_board)
-        val scores = ArrayList<Score>()
+        viewManager = LinearLayoutManager(this)
+
+        launch {
+            val scores =  apiGetHighscores().toCollection(ArrayList())
+                /*ArrayList<Score>()
         scores.add(Score("FunkyGurkan33", 107))
         scores.add(Score("FunkyGurkan33", 97))
         scores.add(Score("MagganBaggan", 96))
         scores.add(Score("lill-tomten", 83))
         scores.add(Score("VirreBirre", 82))
-        scores.add(Score("Luringen", 79))
+        scores.add(Score("Luringen", 79))*/
 
-        viewManager = LinearLayoutManager(this)
-        viewAdapter = ScoresAdapter(scores)
-        recyclerView = findViewById(R.id.score_scroll)
+            launch(UI){
+                viewAdapter = ScoresAdapter(scores)
+                recyclerView = findViewById(R.id.score_scroll)
 
-        recyclerView.apply {
-            // use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
-            setHasFixedSize(true)
-
-            // use a linear layout manager
-            layoutManager = viewManager
-
-            // specify an viewAdapter (see also next example)
-            adapter = viewAdapter
-
+                recyclerView.apply {
+                    setHasFixedSize(true)
+                    layoutManager = viewManager
+                    adapter = viewAdapter
+                }
+            };
         }
-
     }
 
     /**
@@ -80,13 +80,13 @@ class ScoreBoardActivity : AppCompatActivity() {
         //val highScoreUsers = ob.fromJson(res, Highscore::class.java)
         val gson = Gson()
         val highscoreArray = gson.fromJson(res, Array<Highscore>::class.java)
-        highscoreArray.sortWith(object: Comparator<Highscore>{
+        /*highscoreArray.sortWith(object: Comparator<Highscore>{
             override fun compare(p1: Highscore, p2: Highscore): Int = when {
                 p1.hs_score < p2.hs_score-> 1
                 p1.hs_score== p2.hs_score -> 0
                 else -> -1
             }
-        })
+        })*/
         return highscoreArray
     }
 

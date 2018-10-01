@@ -27,5 +27,4 @@
         <activity android:name=".ThrowingTrashActivity"
             android:screenOrientation="portrait"/>
     </application>
-
 </manifest>

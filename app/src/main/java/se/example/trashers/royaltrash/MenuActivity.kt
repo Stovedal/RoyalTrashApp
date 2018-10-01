@@ -26,7 +26,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
         }
 
         //ENABLE this to reset the username att app startup
-        resetapp()
+        //resetapp()
 
         LoadeApp()
 
@@ -51,6 +51,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
     fun resetapp(){
         data = getSharedPreferences("Data", 0)
         data!!.edit().clear().commit()
+
     }
 
 

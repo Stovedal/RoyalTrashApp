@@ -26,13 +26,13 @@ class ScoreBoardActivity : AppCompatActivity() {
 
         launch {
             val scores =  apiGetHighscores().toCollection(ArrayList())
-                /*ArrayList<Score>()
-        scores.add(Score("FunkyGurkan33", 107))
-        scores.add(Score("FunkyGurkan33", 97))
-        scores.add(Score("MagganBaggan", 96))
-        scores.add(Score("lill-tomten", 83))
-        scores.add(Score("VirreBirre", 82))
-        scores.add(Score("Luringen", 79))*/
+
+            scores.add(Highscore(1,"FunkyGurkan33", 107,1.1,3.0))
+            scores.add(Highscore(2,"FunkyGurkan33", 97))
+            scores.add(Highscore(3,"MagganBaggan", 96))
+            scores.add(Highscore(4,"lill-tomten", 83))
+            scores.add(Highscore(5,"VirreBirre", 82))
+            scores.add(Highscore(6,"Luringen", 79))
 
             launch(UI){
                 viewAdapter = ScoresAdapter(scores)
@@ -43,6 +43,7 @@ class ScoreBoardActivity : AppCompatActivity() {
                     layoutManager = viewManager
                     adapter = viewAdapter
                 }
+                viewManager.scrollToPosition(1)
             };
         }
     }

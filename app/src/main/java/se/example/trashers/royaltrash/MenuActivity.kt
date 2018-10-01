@@ -14,15 +14,10 @@ class MenuActivity : AppCompatActivity() {
 
         start_button.setOnClickListener {
             //val intent = Intent(this, QuizActivity::class.java)
-            val intent = Intent(this, ThrowingTrashActivity::class.java)
+            val intent = Intent(this, QuizActivity::class.java)
             startActivity(intent)
         }
 
-        alt_menu_button.setOnClickListener {
-            //val intent = Intent(this, QuizActivity::class.java)
-            val intent = Intent(this, VideoBgActivity::class.java)
-            startActivity(intent)
-        }
 
         highscores_button.setOnClickListener {
             val intent = Intent(this, ScoreBoardActivity::class.java)

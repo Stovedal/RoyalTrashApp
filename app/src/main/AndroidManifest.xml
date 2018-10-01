@@ -22,7 +22,6 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".QuizActivity" />
         <activity android:name=".ThrowingTrashActivity" />
-        <activity android:name=".VideoBgActivity"></activity>
     </application>
 
 </manifest>

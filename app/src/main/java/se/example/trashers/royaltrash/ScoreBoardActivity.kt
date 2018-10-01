@@ -28,7 +28,14 @@ class ScoreBoardActivity : AppCompatActivity() {
             val scores =  apiGetHighscores().toCollection(ArrayList())
 
 
+
             launch(UI){
+                scores.add(Highscore(1,"FunkyGurkan33", 107, null, null))
+                scores.add(Highscore(2,"FunkyGurkan33", 97,null, null))
+                scores.add(Highscore(3,"MagganBaggan", 96,null, null))
+                scores.add(Highscore(4,"lill-tomten", 83,null, null))
+                scores.add(Highscore(5,"VirreBirre", 82,null, null))
+                scores.add(Highscore(6,"Luringen", 79,null, null))
                 viewAdapter = ScoresAdapter(scores)
                 recyclerView = findViewById(R.id.score_scroll)
 
@@ -37,7 +44,7 @@ class ScoreBoardActivity : AppCompatActivity() {
                     layoutManager = viewManager
                     adapter = viewAdapter
                 }
-                viewManager.scrollToPosition(1)
+                viewManager.scrollToPosition(6)
             };
         }
     }
@@ -95,8 +102,8 @@ class ScoreBoardActivity : AppCompatActivity() {
             @SerializedName("hs_id") val hs_id: Int,
             @SerializedName("hs_username") val hs_username: String,
             @SerializedName("hs_score") val hs_score: Int,
-            @SerializedName("lat") val lat: Float,
-            @SerializedName("description") val lng: Float
+            @SerializedName("lat") val lat: Float?,
+            @SerializedName("description") val lng: Float?
     )
 
     data class Quiz(

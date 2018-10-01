@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ScoreBoardActivity"
+    android:fitsSystemWindows="true"
     tools:showIn="@layout/activity_score_board"
     >
     <android.support.constraint.ConstraintLayout

@@ -4,10 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#CF2947</color>
 
-    <color name="colorGreen">#29CF5D</color>
-    <color name="colorCyan">#299ACF</color>
-    <color name="colorBlue">#2947CF</color>
-    <color name="colorMagenta">#B129CF</color>
+    <color name="bg_1">#97DDE2</color>
+    <color name="bg_2">#FDBBBB</color>
 
     <color name="materialBlack">#212121</color>
 
@@ -18,12 +16,12 @@
     <color name="colorTrashCanOrange">#e64a19</color>
     <color name="colorTrashCanYellow">#f9a825</color>
 
-    <color name="colorButtonNormal">#303F9F</color>
-    <color name="colorButtonNormalDark">#1f2866</color>
+    <color name="colorButtonNormal">#7ef0fcff</color>
+    <color name="colorButtonNormalDark">#718ca8ac</color>
 
-    <color name="colorButtonTrue">#29CF5D</color>
-    <color name="colorButtonTrueDark">#1a823b</color>
+    <color name="colorButtonTrue">#7d29cf5d</color>
+    <color name="colorButtonTrueDark">#821a823b</color>
 
-    <color name="colorButtonFalse">#CF2947</color>
-    <color name="colorButtonFalseDark">#821a2d</color>
+    <color name="colorButtonFalse">#82cf2947</color>
+    <color name="colorButtonFalseDark">#82821a2d</color>
 </resources>

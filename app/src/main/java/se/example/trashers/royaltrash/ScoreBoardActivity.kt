@@ -80,13 +80,13 @@ class ScoreBoardActivity : AppCompatActivity() {
         //val highScoreUsers = ob.fromJson(res, Highscore::class.java)
         val gson = Gson()
         val highscoreArray = gson.fromJson(res, Array<Highscore>::class.java)
-        highscoreArray.sortWith(object: Comparator<Highscore>{
+        /*highscoreArray.sortWith(object: Comparator<Highscore>{
             override fun compare(p1: Highscore, p2: Highscore): Int = when {
                 p1.hs_score < p2.hs_score-> 1
                 p1.hs_score== p2.hs_score -> 0
                 else -> -1
             }
-        })
+        })*/
         return highscoreArray
     }
 

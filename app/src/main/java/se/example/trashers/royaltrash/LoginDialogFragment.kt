@@ -12,10 +12,12 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_login_dialog.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
+
 
 
 
@@ -34,40 +36,35 @@ class LoginDialogFragment : DialogFragment(){
     * */
 
 
+    interface fragmentComunication {
+        fun fragmentComunicationSetUsername(Username:String)
+    }
 
-
-
-
+    var delegate: fragmentComunication? = null
 
     private var content: String? = null
-
-    var UsernameState = 0 //0 = not cheked, 1 = username is avaliable, 2 = username is taken
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         content = arguments!!.getString("content")
-
-        // Pick a style based on the num.
         val style = DialogFragment.STYLE_NO_FRAME
         val theme = R.style.AppTheme
         setStyle(style, theme)
     }
 
-    override fun onAttach(activity: Activity?) {
-        super.onAttach(activity)
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is fragmentComunication) {
+            delegate = context
+        }
     }
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_login_dialog, container, false)
-        val btnCancel = view.findViewById<View>(R.id.buttonCancel) as Button
         val btnAccept = view.findViewById<View>(R.id.buttonAccept) as Button
-
-        val textViewContent = view.findViewById<View>(R.id.textViewContent) as TextView
-        textViewContent.text = content
         //FontUtils.setTypeface(getActivity(), textViewQuestion, "fonts/mangal.ttf");
         //FontUtils.setTypeface(getActivity(), textViewAnswer, "fonts/mangal.ttf");
-        btnCancel.setOnClickListener {
-            dismiss()
-        }
         btnAccept.setOnClickListener {
             funfun()
         }
@@ -75,67 +72,56 @@ class LoginDialogFragment : DialogFragment(){
     }
 
     fun funfun(){
-
         if (!username.text.isEmpty()){
-            println("Username: " + username.text.toString())
             chekIfUserExists(username.text.toString())
-            //dismiss()
         }
-
-
     }
+
     fun makeToast(Taost:String){
-        //activity.runOnUiThread()
-
         activity!!.runOnUiThread { Toast.makeText(activity, Taost, Toast.LENGTH_SHORT).show() }
-
-        //Toast.makeText(activity, Taost, Toast.LENGTH_SHORT).show()
     }
 
     fun chekIfUserExists(Username:String){
         var Scores:Array<ScoreBoardActivity.Highscore>? = null
         var FoundUser =false
-
+        val Username = Username.replace("[^A-Za-z0-9]+".toRegex(), "")
+        statusbar.text = "working..."
         launch {
             Scores = DBrequests().apiGetHighscores()
-            for (itm in Scores!!)
-                if(itm.hs_username == Username){
-                    FoundUser=true
+            for (itm in Scores!!) {
+                if (itm.hs_username == Username) {
+                    FoundUser = true
                     break
                 }
+            }
             if(FoundUser){
-                UsernameState = 2
                 //Toast.makeText(activity, "Username taken!", Toast.LENGTH_SHORT).show()
                 makeToast("Username alredy taken :(")
+                launch(UI) {
+                    statusbar.text = "username taken, try again"
+                }
             }else{
-                //Toast.makeText(activity, "Username free!", Toast.LENGTH_SHORT).show()
-                makeToast("Username free!:)")
+                launch(UI) {
+                    statusbar.text = "setting username.."
+                }
                 dismiss()
-                UsernameState = 1
+                //post the username
+                val PostUser = hashMapOf("hs_username" to Username, "hs_score" to 0)
+                val JsonStr = Gson().toJson(PostUser)
+                DBrequests().apiHttpPostToServer("http://royaltrashapp.azurewebsites.net/api/highscores", JsonStr)
+                delegate?.fragmentComunicationSetUsername(Username)
             }
         }
-
-
     }
-
 
 
     companion object {
-
-        /**
-         * Create a new instance of CustomDialogFragment, providing "num" as an
-         * argument.
-         */
         fun newInstance(content: String): LoginDialogFragment {
-            val f = LoginDialogFragment()
-
-            // Supply num input as an argument.
+            val fragm = LoginDialogFragment()
             val args = Bundle()
             args.putString("content", content)
-            f.arguments = args
-
-            return f
+            fragm.arguments = args
+            return fragm
         }
     }
-
 }

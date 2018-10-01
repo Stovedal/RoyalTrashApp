@@ -15,6 +15,7 @@ class MenuActivity : AppCompatActivity() {
         start_button.setOnClickListener {
             //val intent = Intent(this, QuizActivity::class.java)
             val intent = Intent(this, QuizActivity::class.java)
+            intent.putExtra("questionNumber", 3)
             startActivity(intent)
         }
 

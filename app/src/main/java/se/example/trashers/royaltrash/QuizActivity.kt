@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.Button
 
 class QuizActivity : AppCompatActivity() {
-    var points = 0F
+    var points = 0
     private val delayMillis = 1000L
 
 
@@ -21,7 +21,7 @@ class QuizActivity : AppCompatActivity() {
         questionBasedQuiz(questionNumber)
     }
 
-    private fun questionBasedQuiz(questionNumber: Int): Float {
+    private fun questionBasedQuiz(questionNumber: Int): Int {
         var questions = getQuestions(questionNumber).shuffled()
 
         question(0, questions)
@@ -59,7 +59,7 @@ class QuizActivity : AppCompatActivity() {
                 it.setOnClickListener {
                     if (buttons[0] == it) {
                         buttonColor(it, "true")
-                        points += 10
+                        points += 1
                     } else {
                         buttonColor(it, "false")
                     }
@@ -77,6 +77,7 @@ class QuizActivity : AppCompatActivity() {
 
     private fun endgame() {
         val intent = Intent(this, ThrowingTrashActivity::class.java)
+        intent.putExtra("score", points)
         startActivity(intent)
     }
 

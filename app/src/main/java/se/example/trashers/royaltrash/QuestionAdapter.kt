@@ -19,6 +19,6 @@ interface QuestionAdapter {
 
     fun getFalseAnswers(questionId: Int, amount: Int): List<String> {
         //todo get false answers from database
-        return listOf("Den är röd egentligen", "Den är gjord av vatten", "Det är fint")
+        return listOf("Den är ultraviolett egentligen, men det syns inte för att vi kan inte se den färgen", "Den är gjord av vatten", "Det är fint")
     }
 }

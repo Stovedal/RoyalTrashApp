@@ -23,6 +23,11 @@ class MenuActivity : AppCompatActivity() {
         highscores_button.setOnClickListener {
             val intent = Intent(this, ScoreBoardActivity::class.java)
             startActivity(intent)
+
+            //val ft = getSupportFragmentManager().beginTransaction()
+            //val newFragment = LoginDialogFragment.newInstance("pass content here")
+            //newFragment.show(ft, "dialog")
+
         }
     }
 

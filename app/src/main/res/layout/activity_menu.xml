@@ -11,42 +11,38 @@
         android:id="@+id/start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="93dp"
-        android:layout_marginTop="231dp"
-        android:layout_marginEnd="92dp"
-        android:layout_marginBottom="232dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginBottom="37dp"
         android:width="280dp"
         android:height="80dp"
         android:autoSizeTextType="uniform"
-        android:fontFamily="@font/pacifico"
-        android:textAllCaps="false"
         android:background="@drawable/button"
+        android:fontFamily="@font/pacifico"
         android:padding="8dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:text="@string/start_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/highscores_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:background="@drawable/button"
         android:id="@+id/highscores_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="232dp"
+        android:layout_marginStart="92dp"
         android:layout_marginEnd="92dp"
-        android:layout_marginStart="93dp"
-        android:layout_marginTop="401dp"
+        android:layout_marginBottom="113dp"
         android:width="200dp"
-        android:text="@string/highscore"
+        android:background="@drawable/button"
         android:fontFamily="@font/pacifico"
+        android:text="@string/highscore"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -60,6 +56,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    />
 
 </android.support.constraint.ConstraintLayout>

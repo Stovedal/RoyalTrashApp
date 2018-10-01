@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/playfield"
     android:fitsSystemWindows="true"
+    android:background="@drawable/bg"
     tools:context=".ThrowingTrashActivity">
 
     <ImageView

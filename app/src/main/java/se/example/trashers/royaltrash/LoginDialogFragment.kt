@@ -78,18 +78,34 @@ class LoginDialogFragment : DialogFragment(){
     }
 
     fun makeToast(Taost:String){
-        activity!!.runOnUiThread { Toast.makeText(activity, Taost, Toast.LENGTH_SHORT).show() }
+        try {
+            activity!!.runOnUiThread { Toast.makeText(activity, Taost, Toast.LENGTH_SHORT).show() }
+        }catch (E:Exception){
+            println("Accec denied to UI thread: " + E)
+        }
     }
 
     fun chekIfUserExists(Username:String){
         var Scores:Array<ScoreBoardActivity.Highscore>? = null
         var FoundUser =false
-        val Username = Username.replace("[^A-Za-z0-9]+".toRegex(), "")
+        val Username = Username.replace("[^A-Za-z0-9]+".toRegex(), "").toLowerCase()
         statusbar.text = "working..."
         launch {
-            Scores = DBrequests().apiGetHighscores()
+            try {
+                Scores = DBrequests().apiGetHighscores()
+            }catch (e: Exception){
+                println("ERROR in db connection (GET): " + e)
+            }finally {
+                try {
+                    launch(UI) {
+                        statusbar.text = "something went wrong.. check your internet connection"
+                    }
+                }catch (d: Exception){
+                    println("ERROR in UI launcher thread!!: " + d)
+                }
+            }
             for (itm in Scores!!) {
-                if (itm.hs_username == Username) {
+                if (itm.hs_username.toLowerCase() == Username) {
                     FoundUser = true
                     break
                 }
@@ -97,18 +113,30 @@ class LoginDialogFragment : DialogFragment(){
             if(FoundUser){
                 //Toast.makeText(activity, "Username taken!", Toast.LENGTH_SHORT).show()
                 makeToast("Username alredy taken :(")
-                launch(UI) {
-                    statusbar.text = "username taken, try again"
+                try {
+                    launch(UI) {
+                        statusbar.text = "username taken, try again"
+                    }
+                }catch (f:Exception){
+                    println("ERROR in UI launcher thread!: " + f)
                 }
             }else{
-                launch(UI) {
-                    statusbar.text = "setting username.."
+                try{
+                    launch(UI) {
+                        statusbar.text = "setting username.."
+                    }
+                }catch (f:Exception){
+                    println("ERROR in UI launcher thread!: " + f)
                 }
                 dismiss()
                 //post the username
                 val PostUser = hashMapOf("hs_username" to Username, "hs_score" to 0)
                 val JsonStr = Gson().toJson(PostUser)
-                DBrequests().apiHttpPostToServer("http://royaltrashapp.azurewebsites.net/api/highscores", JsonStr)
+                try {
+                    DBrequests().apiHttpPostToServer("http://royaltrashapp.azurewebsites.net/api/highscores", JsonStr)
+                }catch (g: Exception){
+                    println("ERROR in db connection (POST): " + g)
+                }
                 delegate?.fragmentComunicationSetUsername(Username)
             }
         }

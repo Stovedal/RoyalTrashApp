@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_throwing_trash.*
 import java.lang.Math.pow
 import java.util.*
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Handler
 import android.support.constraint.ConstraintLayout
 
@@ -24,12 +25,19 @@ class ThrowingTrashActivity : AppCompatActivity() {
     var fromOnCreat:Boolean = false
     val CanSetup = hashMapOf<Int,String>()
     var killingSpree = 0 //xD
+    var LongestkillingSpree = 0 //xD
     var constraintLayout:ConstraintLayout? =  null
+    var TimeLeft = 25
+    var QuizScore = 0;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_throwing_trash)
+        QuizScore = intent.getIntExtra("score", 0)
+        TimeLeft += QuizScore
+
+
         fromOnCreat = true
 
         constraintLayout = findViewById(R.id.playfield) as ConstraintLayout
@@ -62,6 +70,31 @@ class ThrowingTrashActivity : AppCompatActivity() {
             fromOnCreat = false
             //this is so fucking ugly, but moving objects just won't work untill the screan HAVE BEEN loaded for some ms
             Handler().postDelayed(Runnable { setObjectPercentLocation("dragable_test",45F,80F) }, 100)
+            TimerCountDown()
+        }
+    }
+
+    fun TimerCountDown(){
+        TimeLeft -= 1
+        timer_text.text = TimeLeft.toString()
+        if(TimeLeft > 0) {
+            Handler().postDelayed(
+                    Runnable {
+                        TimerCountDown()
+                    },
+                    1000)
+        }else{
+            //go to summary screen!
+            val intent = Intent(this, QuizSummary::class.java)
+
+
+
+
+            intent.putExtra("Score",currentScore)
+            intent.putExtra("QuizScore",QuizScore)
+            intent.putExtra("killingSpree",LongestkillingSpree)
+
+            startActivity(intent)
         }
     }
 
@@ -216,6 +249,9 @@ class ThrowingTrashActivity : AppCompatActivity() {
         if(status){
             killingSpree++;
         }else{
+            if (LongestkillingSpree < killingSpree){
+                LongestkillingSpree = killingSpree
+            }
             killingSpree = 0
         }
         streak.text = "Streak:" + (killingSpree).toString()

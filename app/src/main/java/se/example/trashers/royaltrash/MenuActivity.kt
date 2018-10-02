@@ -12,7 +12,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
 
     private var data: SharedPreferences? = null
     private var DisplayingFragment = false
-    private var Version = 1
+    private var Version = 2//hehe
 
 
     fun versionChek(){

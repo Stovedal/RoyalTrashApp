@@ -17,7 +17,7 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         val str = DBrequests()
         val str2 = str.apiGetHighscores()
-            println(str2[0].hs_username)
+            println(""+str2[0].hs_username+str2[1].hs_username)
 
             assertEquals(true, true)
     }

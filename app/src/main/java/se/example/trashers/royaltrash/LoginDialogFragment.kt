@@ -104,11 +104,15 @@ class LoginDialogFragment : DialogFragment(){
                     println("ERROR in UI launcher thread!!: " + d)
                 }
             }
-            for (itm in Scores!!) {
-                if (itm.hs_username.toLowerCase() == Username) {
-                    FoundUser = true
-                    break
+            if(Scores != null) {
+                for (itm in Scores!!) {
+                    if (itm.hs_username.toLowerCase() == Username) {
+                        FoundUser = true
+                        break
+                    }
                 }
+            }else{
+                println("WARNING! NO data from server!")
             }
             if(FoundUser){
                 //Toast.makeText(activity, "Username taken!", Toast.LENGTH_SHORT).show()

@@ -12,7 +12,17 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
 
     private var data: SharedPreferences? = null
     private var DisplayingFragment = false
+    private var Version = 1
 
+
+    fun versionChek(){
+        data = getSharedPreferences("Data", 0)
+        val CVersion = data!!.getInt("Version", -1)
+        if(CVersion != Version){
+            resetapp()
+            data!!.edit().putInt("Version", Version).commit()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +37,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
 
         //ENABLE this to reset the username att app startup
         //resetapp()
+        versionChek()
 
         LoadeApp()
 

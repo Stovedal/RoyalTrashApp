@@ -33,6 +33,8 @@ class ScoresAdapter(private val scores: ArrayList<ScoreBoardActivity.Highscore>)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+
+
         when(position){
             !in 0..2 -> holder.score.findViewById<ImageView>(R.id.score_img).setImageResource(R.drawable.trashy_last)
             0 -> holder.score.findViewById<ImageView>(R.id.score_img).setImageResource(R.drawable.trashy_1st)

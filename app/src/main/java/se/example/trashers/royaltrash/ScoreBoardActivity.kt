@@ -22,21 +22,26 @@ class ScoreBoardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content_score_board)
+        println("HALlLEOAOEÅ ")
         viewManager = LinearLayoutManager(this)
+
+        val data = getSharedPreferences("Data", 0)
+        val Username = data!!.getString("Username", null)
 
         launch {
             val scores =  DBrequests().apiGetHighscores().toCollection(ArrayList())
             launch(UI){
-                viewAdapter = ScoresAdapter(scores)
+                val user_position = scores.indexOf(scores.find { it.hs_username == Username })
+                viewAdapter = ScoresAdapter(scores, user_position)
                 recyclerView = findViewById(R.id.score_scroll)
-
                 recyclerView.apply {
                     setHasFixedSize(true)
                     layoutManager = viewManager
                     adapter = viewAdapter
                 }
-                //viewManager.scrollToPosition(6)
-            };
+                (viewManager as LinearLayoutManager).scrollToPositionWithOffset(user_position, 50)
+
+            }
         }
     }
 

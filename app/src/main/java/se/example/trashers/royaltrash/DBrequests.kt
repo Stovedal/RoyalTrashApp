@@ -55,6 +55,7 @@ class DBrequests {
         })*/
         return highscoreArray
     }
+
     fun apiGetQuiz():Array<Quiz>{
         val res = URL("http://royaltrashapp.azurewebsites.net/api/qq/getqq").readText(Charsets.UTF_8)
         val gson = Gson()

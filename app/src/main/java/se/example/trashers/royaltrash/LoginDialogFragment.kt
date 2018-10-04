@@ -86,7 +86,7 @@ class LoginDialogFragment : DialogFragment(){
     }
 
     fun chekIfUserExists(Username:String){
-        var Scores:Array<ScoreBoardActivity.Highscore>? = null
+        var Scores:Array<DBrequests.Highscore>? = null
         var FoundUser =false
         val Username = Username.replace("[^A-Za-z0-9]+".toRegex(), "").toLowerCase()
         statusbar.text = "working..."

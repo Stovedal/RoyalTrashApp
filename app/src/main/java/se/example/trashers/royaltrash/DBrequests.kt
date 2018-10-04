@@ -1,6 +1,7 @@
 package se.example.trashers.royaltrash
 
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -40,11 +41,11 @@ class DBrequests {
     /**
      * Retrieves a json from server and converts to Array with Highscore class
      */
-    fun apiGetHighscores():Array<ScoreBoardActivity.Highscore>{
+    fun apiGetHighscores():Array<Highscore>{
         val res = URL("http://royaltrashapp.azurewebsites.net/api/highscores/getbyscore").readText(Charsets.UTF_8)
         //val highScoreUsers = ob.fromJson(res, Highscore::class.java)
         val gson = Gson()
-        val highscoreArray = gson.fromJson(res, Array<ScoreBoardActivity.Highscore>::class.java)
+        val highscoreArray = gson.fromJson(res, Array<Highscore>::class.java)
         /*highscoreArray.sortWith(object: Comparator<Highscore>{
             override fun compare(p1: Highscore, p2: Highscore): Int = when {
                 p1.hs_score < p2.hs_score-> 1
@@ -54,12 +55,27 @@ class DBrequests {
         })*/
         return highscoreArray
     }
-    fun apiGetQuiz():Array<ScoreBoardActivity.Quiz>{
+    fun apiGetQuiz():Array<Quiz>{
         val res = URL("http://royaltrashapp.azurewebsites.net/api/qq/getqq").readText(Charsets.UTF_8)
         val gson = Gson()
-        return gson.fromJson(res, Array<ScoreBoardActivity.Quiz>::class.java)
+        return gson.fromJson(res, Array<Quiz>::class.java)
     }
 
+    data class Highscore(
+            @SerializedName("hs_id") val hs_id: Int,
+            @SerializedName("hs_username") val hs_username: String,
+            @SerializedName("hs_score") val hs_score: Int,
+            @SerializedName("lat") val lat: Float?,
+            @SerializedName("description") val lng: Float?
+    )
 
+    data class Quiz(
+            @SerializedName("id") val hs_id: Int,
+            @SerializedName("question") val question: String,
+            @SerializedName("C1answer") val answer1: String,
+            @SerializedName("C2answer") val answer2: String,
+            @SerializedName("C3answer") val answer3: String,
+            @SerializedName("C4answer") val answer4: String
+    )
 
 }

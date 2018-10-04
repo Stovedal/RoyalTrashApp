@@ -45,22 +45,4 @@ class ScoreBoardActivity : AppCompatActivity() {
         }
     }
 
-
-    data class Highscore(
-            @SerializedName("hs_id") val hs_id: Int,
-            @SerializedName("hs_username") val hs_username: String,
-            @SerializedName("hs_score") val hs_score: Int,
-            @SerializedName("lat") val lat: Float?,
-            @SerializedName("description") val lng: Float?
-    )
-
-    data class Quiz(
-            @SerializedName("id") val hs_id: Int,
-            @SerializedName("question") val question: String,
-            @SerializedName("C1answer") val answer1: String,
-            @SerializedName("C2answer") val answer2: String,
-            @SerializedName("C3answer") val answer3: String,
-            @SerializedName("C4answer") val answer4: String
-    )
-
 }

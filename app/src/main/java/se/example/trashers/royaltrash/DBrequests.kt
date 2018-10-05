@@ -38,6 +38,68 @@ class DBrequests {
 
     }
 
+
+    /*
+    *
+    * TODO not tested, just a ctrl+c, ctrl+v
+    *
+    * */
+
+    fun apiSetHighscoreByUsername(urlString: String, js: String){
+        /* Ex URL "http://royaltrashapp.azurewebsites.net/api/highscores/"*/
+        /*Ex js "{\"hs_username\":\"Test\",\"hs_score\":1,\"lat\":63.802443,\"lng\":20.320271}"*/
+        try {
+            val obj = URL(urlString).openConnection() as HttpURLConnection
+            obj.requestMethod = "PUT"
+            obj.doOutput=true
+            val byte = js.toByteArray()
+            val length = byte.size
+
+            obj.setFixedLengthStreamingMode(length)
+            obj.setRequestProperty("Content-Type", "application/json; charset=UTF-8")
+            obj.connect()
+            val os = obj.outputStream
+            os.write(byte)
+            os.flush()
+            os.close()
+
+            println("\nSending 'PUT' request to URL : ${obj.url}")
+            println("Response Code : ${obj.responseCode}")
+        }
+        catch (e: IOException) {
+            println(e.stackTrace)
+        }
+
+    }
+
+
+
+
+    /*
+    *
+    *
+    * TODO user id is always 0, this have to be an db error
+    *
+    *
+    * */
+
+
+    fun apiGetHighscoreByUsername(username:String):Array<Highscore>{
+
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/highscores/FindByUsername/" +username).readText(Charsets.UTF_8)
+        //val highScoreUsers = ob.fromJson(res, Highscore::class.java)
+        val gson = Gson()
+        val highscoreArray = gson.fromJson(res, Array<Highscore>::class.java)
+
+        print(highscoreArray[0].hs_id)
+        print(highscoreArray[0])
+
+
+        return highscoreArray
+    }
+
+
+
     /**
      * Retrieves a json from server and converts to Array with Highscore class
      */

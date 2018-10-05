@@ -21,4 +21,13 @@ class ExampleUnitTest {
 
             assertEquals(true, true)
     }
+
+    @Test
+    fun FindByUser() {
+        val str = DBrequests()
+        val str2 = str.apiGetHighscoreByUsername("eson")
+        println("ID: "+str2[0].hs_id + "Username: "+str2[0].hs_username)
+
+        assertEquals(true, true)
+    }
 }

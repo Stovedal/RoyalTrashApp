@@ -47,6 +47,43 @@ class QuizSummary : AppCompatActivity() {
             var FoundUser = false
             Username = Username.replace("[^A-Za-z0-9]+".toRegex(), "").toLowerCase()
             launch {
+
+                try {
+                    Scores = DBrequests().apiGetHighscoreByUsername(Username)
+                } catch (e: Exception) {
+                    println("ERROR in db connection (GET): " + e)
+                }
+                println("Username: " + Scores!![0].hs_username + " ID: " +  Scores!![0].hs_id + " points: " +  Scores!![0].hs_score)
+                //println("Username: " + Scores!![1].hs_username + " ID: " +  Scores!![1].hs_id + " points: " +  Scores!![1].hs_score)
+
+                if(Scores!![0] != null){
+                    if(Scores!![0].hs_score < Result){
+
+                        val PostUser = hashMapOf("hs_id" to Scores!![0].hs_id, "hs_username" to Username, "hs_score" to Result, "lat" to 0, "lng" to 0)
+                        val JsonStr = Gson().toJson(PostUser)
+                        try {
+                            DBrequests().apiSetHighscoreByUsername("http://royaltrashapp.azurewebsites.net/api/Highscores/PutHighscore/"+ (Scores!![0].hs_id).toString(), JsonStr)
+                        }catch (g: Exception){
+                            println("ERROR in db connection (PUT): " + g)
+                        }
+                    }
+                }
+
+
+                try {
+                    launch(UI) {
+                        button_accept.isEnabled = true
+                    }
+                }catch (f:Exception){
+                    println("ERROR in UI launcher thread!: " + f)
+
+                }
+
+
+
+
+                /*
+
                 try {
                     Scores = DBrequests().apiGetHighscores()
                 } catch (e: Exception) {
@@ -65,6 +102,11 @@ class QuizSummary : AppCompatActivity() {
                 } else {
                     println("WARNING! NO data from server!")
                 }
+
+
+
+
+
                 //got user highscore
                 println("Scores: "+ Result+ " Best " + BsetScore)
                 if(Result > BsetScore){
@@ -78,6 +120,10 @@ class QuizSummary : AppCompatActivity() {
                         println("ERROR in db connection (POST): " + g)
                     }
                 }
+
+
+
+
                 try {
                     launch(UI) {
                         button_accept.isEnabled = true
@@ -87,6 +133,13 @@ class QuizSummary : AppCompatActivity() {
 
                 }
                 println("thread done..")
+
+
+                */
+
+
+
+
             }
         }
     }

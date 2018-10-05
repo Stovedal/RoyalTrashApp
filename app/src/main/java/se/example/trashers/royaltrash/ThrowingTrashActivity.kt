@@ -10,10 +10,56 @@ import kotlinx.android.synthetic.main.activity_throwing_trash.*
 import java.lang.Math.pow
 import java.util.*
 import android.animation.ObjectAnimator
+import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.support.constraint.ConstraintLayout
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Rect
+import android.graphics.BitmapFactory
 
+
+class AnimatedObj(var frame:Int = 0,var rows:Int, var columns:Int,var imageID:Int,var width:Int,var height:Int ){
+    var save:HashMap<Int,Bitmap>? = null
+    var Running = false
+
+    init {
+        this.save = HashMap<Int,Bitmap>()
+    }
+
+    fun SetSave(save:HashMap<Int,Bitmap>){
+        this.save = save
+    }
+    fun GetNextFrame():Bitmap?{
+        if(frame < rows*columns){
+            frame++
+
+        }else{
+            frame = 0
+        }
+        if(this.save != null){
+            return this.save!![frame]
+        }
+        return null
+    }
+    fun isAnimDone():Boolean{
+        if (frame == rows*columns){
+            frame = 0
+            return true
+        }else{
+            return false
+        }
+    }
+    fun resetFrame(){
+        frame = 0
+        this.Running = false
+    }
+    fun startAnim(){
+        this.Running = true
+    }
+
+}
 
 class ThrowingTrashActivity : AppCompatActivity() {
     //ThrowingTrashIsAFunActivity
@@ -29,7 +75,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
     var constraintLayout:ConstraintLayout? =  null
     var TimeLeft = 25
     var QuizScore = 0;
-
+    var starAnim = AnimatedObj(0,4,5,R.drawable.star_sprite,256,256)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +110,63 @@ class ThrowingTrashActivity : AppCompatActivity() {
         dragable_test.setOnTouchListener(listener)
     }
 
+
+
+
+    /*
+    * ##################################
+    * Sprite animation methods start here
+    * #############################
+    * */
+    fun CreatanimateSpriteImages(obje:AnimatedObj):AnimatedObj{
+        //fun CreatanimateSpriteImages(rows:Int,columns:Int,width:Int,height:Int){
+        var save = HashMap<Int,Bitmap>()
+        val options = BitmapFactory.Options()
+        options.inScaled = false
+        var bm: Bitmap?= BitmapFactory.decodeResource(getResources(), obje.imageID, options)
+        var cframe = 0
+        for(i in 0 until obje.rows){
+            for(j in 0 until obje.columns) {
+                val bmap = Bitmap.createBitmap(obje.width, obje.height, Bitmap.Config.ARGB_8888)
+                val c = Canvas(bmap)
+                val frame = Rect((j*obje.width), (i*obje.height), (j*obje.width)+obje.width, (i*obje.height)+obje.height)
+                val dst = Rect(0, 0, obje.width, obje.height)
+                c.drawBitmap(bm, frame, dst, null)
+                save[cframe] = bmap
+                cframe ++
+            }
+        }
+        obje.SetSave(save)
+        return obje
+    }
+
+    fun startAnimateimg(obje:AnimatedObj){
+        if (obje.frame == 0){
+            obje.startAnim()
+        }
+        var Nframe = obje.GetNextFrame()
+        if(Nframe != null) {
+            animation_holder.setImageBitmap(Nframe)
+        }
+        if(!obje.isAnimDone() && obje.Running){
+            Handler().postDelayed(
+                    Runnable {
+                        if (obje.Running) {
+                            startAnimateimg(obje)
+                        }
+                    },
+                    20)
+        }
+    }
+
+    /*
+    * ##############################
+    * Sprite animation methods ends here
+    * ##################################
+    * */
+
+
+
     public override fun onResume() {
         super.onResume()
         if (fromOnCreat){
@@ -71,6 +174,8 @@ class ThrowingTrashActivity : AppCompatActivity() {
             //this is so fucking ugly, but moving objects just won't work untill the screan HAVE BEEN loaded for some ms
             Handler().postDelayed(Runnable { setObjectPercentLocation("dragable_test",45F,80F) }, 100)
             TimerCountDown()
+            starAnim = CreatanimateSpriteImages(starAnim)
+            Handler().postDelayed(Runnable { startAnimateimg(starAnim) }, 400)
         }
     }
 
@@ -86,14 +191,9 @@ class ThrowingTrashActivity : AppCompatActivity() {
         }else{
             //go to summary screen!
             val intent = Intent(this, QuizSummary::class.java)
-
-
-
-
             intent.putExtra("Score",currentScore)
             intent.putExtra("QuizScore",QuizScore)
             intent.putExtra("killingSpree",LongestkillingSpree)
-
             startActivity(intent)
         }
     }
@@ -136,8 +236,8 @@ class ThrowingTrashActivity : AppCompatActivity() {
 
         val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
         val target = findViewById(id) as ImageView
-        val ProsX = (target.x/screanWidth!!)*100
-        val ProsY = (target.y/screanHeight!!)*100
+        val ProsX = ((target.x+ (target.width/2))/screanWidth!!)*100
+        val ProsY = ((target.y+ (target.height/2))/screanHeight!!)*100
         return Pair(ProsX,ProsY)
     }
 
@@ -173,15 +273,16 @@ class ThrowingTrashActivity : AppCompatActivity() {
     fun setObjectPercentLocation(targetVievID: String,Xcord: Float,Ycord: Float){
         val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
         val target = findViewById(id) as ImageView
-        target.x = (Xcord/100)*screanWidth!!
-        target.y = (Ycord/100)*screanHeight!!
+        target.x = (Xcord/100)*screanWidth!! - target.width/2
+        target.y = (Ycord/100)*screanHeight!! - target.height/2
         println("Setting Xpos: "+target.x +"Setting Ypos: "+target.y)
 
     }
     fun setObjectPercentLocation(id: Int,Xcord: Float,Ycord: Float){
+
         val target = findViewById(id) as ImageView
-        target.x = (Xcord/100)*screanWidth!!
-        target.y = (Ycord/100)*screanHeight!!
+        target.x = (Xcord/100)*screanWidth!! - target.width/2
+        target.y = (Ycord/100)*screanHeight!! - target.height/2
         println("Setting Xpos: "+target.x +"Setting Ypos: "+target.y)
 
     }
@@ -267,6 +368,13 @@ class ThrowingTrashActivity : AppCompatActivity() {
                 //user released trash on the can
                 increaseScore()
                 shakeIcon("can_" + i.toString())
+
+                var Tpos = getObjectPosInPercent("can_" + i.toString())
+                setObjectPercentLocation("animation_holder",Tpos.first,Tpos.second)
+
+                starAnim.resetFrame()
+                startAnimateimg(starAnim)
+
                 activeTrash = getNewTrash()//update the trash selected
                 changeObjectIcon("dragable_test",activeTrash!!)
                 setObjectPercentLocation("dragable_test",45F,80F)

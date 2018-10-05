@@ -56,7 +56,13 @@ class DBrequests {
         return highscoreArray
     }
 
-    fun apiGetQuiz():Array<Quiz>{
+    fun apiGetRandomQuestion():Quiz{
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/qq/getranqq").readText(Charsets.UTF_8)
+        val gson = Gson()
+        return gson.fromJson(res, Quiz::class.java)
+    }
+
+    fun apiGetAllQuestions():Array<Quiz>{
         val res = URL("http://royaltrashapp.azurewebsites.net/api/qq/getqq").readText(Charsets.UTF_8)
         val gson = Gson()
         return gson.fromJson(res, Array<Quiz>::class.java)
@@ -71,9 +77,10 @@ class DBrequests {
     )
 
     data class Quiz(
-            @SerializedName("id") val hs_id: Int,
+            @SerializedName("id") val q_id: Int,
             @SerializedName("question") val question: String,
             @SerializedName("C1answer") val answer1: String,
+            //todo should be an array
             @SerializedName("C2answer") val answer2: String,
             @SerializedName("C3answer") val answer3: String,
             @SerializedName("C4answer") val answer4: String

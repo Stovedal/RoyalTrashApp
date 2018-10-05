@@ -9,4 +9,5 @@
     <string name="title_activity_score_board">Topplista</string>
     <string name="starta_trash_trow">Sortera Skräp</string>
     <string name="start_test">Starta Quiz</string>
+    <string name="loading">Laddar...</string>
 </resources>

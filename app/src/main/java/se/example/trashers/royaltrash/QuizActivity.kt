@@ -7,6 +7,8 @@ import android.os.Handler
 import kotlinx.android.synthetic.main.activity_quiz.*
 import android.view.View
 import android.widget.Button
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 
 class QuizActivity : AppCompatActivity() {
     var points = 0
@@ -27,13 +29,14 @@ class QuizActivity : AppCompatActivity() {
         questionBasedQuiz(questionNumber)
     }
 
-    private fun questionBasedQuiz(questionNumber: Int): Int {
-        var questions = getQuestions(questionNumber).shuffled()
+    private fun questionBasedQuiz(questionNumber: Int) {
+        launch {
+            var questions = getQuestions(questionNumber).shuffled()
+            launch(UI) {
 
-        question(0, questions)
-
-
-        return points
+                question(0, questions)
+            }
+        }
     }
 
     private fun getQuestions(questionNumber: Int):List<Question> {
@@ -69,6 +72,7 @@ class QuizActivity : AppCompatActivity() {
                         points += 1
                     } else {
                         buttonColor(it, "false")
+                        endgame()
                     }
                     removeListeners(buttons)
 
@@ -95,7 +99,9 @@ class QuizActivity : AppCompatActivity() {
             "disabled" -> {button.setBackgroundResource(R.drawable.quiz_button_disabled)
             button.setEnabled(false)}
             else -> {button.setBackgroundResource(R.drawable.button)
-                button.setEnabled(true)}
+                button.setEnabled(true)
+                button.visibility = View.VISIBLE
+            }
         }
     }
 

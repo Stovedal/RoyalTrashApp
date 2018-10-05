@@ -39,11 +39,6 @@ class DBrequests {
     }
 
 
-    /*
-    *
-    * TODO not tested, just a ctrl+c, ctrl+v
-    *
-    * */
 
     fun apiSetHighscoreByUsername(urlString: String, js: String){
         /* Ex URL "http://royaltrashapp.azurewebsites.net/api/highscores/"*/
@@ -74,14 +69,6 @@ class DBrequests {
 
 
 
-
-    /*
-    *
-    *
-    * TODO user id is always 0, this have to be an db error
-    *
-    *
-    * */
 
 
     fun apiGetHighscoreByUsername(username:String):Array<Highscore>{
@@ -131,7 +118,7 @@ class DBrequests {
     }
 
     data class Highscore(
-            @SerializedName("hs_id") val hs_id: Int,
+            @SerializedName("hs_Id") val hs_id: Int,
             @SerializedName("hs_username") val hs_username: String,
             @SerializedName("hs_score") val hs_score: Int,
             @SerializedName("lat") val lat: Float?,

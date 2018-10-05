@@ -19,6 +19,8 @@
     <color name="colorButtonNormal">#7ef0fcff</color>
     <color name="colorButtonNormalDark">#718ca8ac</color>
 
+    <color name="colorButtonDisabled">#13545454</color>
+
     <color name="colorButtonTrue">#7d29cf5d</color>
     <color name="colorButtonTrueDark">#821a823b</color>
 

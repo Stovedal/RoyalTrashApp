@@ -15,7 +15,7 @@ import org.w3c.dom.Text
 import se.example.trashers.royaltrash.R.id.parent
 import java.security.AccessController.getContext
 
-class ScoresAdapter(private val scores: ArrayList<ScoreBoardActivity.Highscore>, private val userPosition: Int) : RecyclerView.Adapter<ScoresAdapter.MyViewHolder>() {
+class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private val userPosition: Int) : RecyclerView.Adapter<ScoresAdapter.MyViewHolder>() {
 
     override fun getItemId(position: Int): Long {
         return position.toLong()

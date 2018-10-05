@@ -7,6 +7,8 @@ import android.os.Handler
 import kotlinx.android.synthetic.main.activity_quiz.*
 import android.view.View
 import android.widget.Button
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 
 class QuizActivity : AppCompatActivity() {
     var points = 0
@@ -16,18 +18,25 @@ class QuizActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
-        var questionNumber: Int = intent.getIntExtra("questionNumber", 1)
+        var questionNumber: Int = intent.getIntExtra("questionNumber", 0)
+
+        //Throw the user back to the main menu if they didn't provide a questionNumber
+        if (questionNumber == 0) {
+            val i = Intent(this, MenuActivity::class.java)
+            startActivity(i)
+        }
 
         questionBasedQuiz(questionNumber)
     }
 
-    private fun questionBasedQuiz(questionNumber: Int): Int {
-        var questions = getQuestions(questionNumber).shuffled()
+    private fun questionBasedQuiz(questionNumber: Int) {
+        launch {
+            var questions = getQuestions(questionNumber).shuffled()
+            launch(UI) {
 
-        question(0, questions)
-
-
-        return points
+                question(0, questions)
+            }
+        }
     }
 
     private fun getQuestions(questionNumber: Int):List<Question> {
@@ -57,11 +66,13 @@ class QuizActivity : AppCompatActivity() {
             buttons.forEach {
                 buttonColor(it, "default")
                 it.setOnClickListener {
+                    buttons.forEach {buttonColor(it, "disabled")}
                     if (buttons[0] == it) {
                         buttonColor(it, "true")
                         points += 1
                     } else {
                         buttonColor(it, "false")
+                        endgame()
                     }
                     removeListeners(buttons)
 
@@ -85,7 +96,12 @@ class QuizActivity : AppCompatActivity() {
         when (color) {
             "true" -> {button.setBackgroundResource(R.drawable.quiz_button_true)}
             "false" -> {button.setBackgroundResource(R.drawable.quiz_button_false)}
-            else -> {button.setBackgroundResource(R.drawable.button)}
+            "disabled" -> {button.setBackgroundResource(R.drawable.quiz_button_disabled)
+            button.setEnabled(false)}
+            else -> {button.setBackgroundResource(R.drawable.button)
+                button.setEnabled(true)
+                button.visibility = View.VISIBLE
+            }
         }
     }
 

@@ -43,7 +43,7 @@ class QuizSummary : AppCompatActivity() {
         var Username = data!!.getString("Username", null)
 
         if(Username != null) {
-            var Scores: Array<ScoreBoardActivity.Highscore>? = null
+            var Scores: Array<DBrequests.Highscore>? = null
             var FoundUser = false
             Username = Username.replace("[^A-Za-z0-9]+".toRegex(), "").toLowerCase()
             launch {

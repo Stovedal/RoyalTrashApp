@@ -4,16 +4,19 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
+import android.os.ProxyFileDescriptorCallback
 import android.support.multidex.MultiDex
+import android.support.v4.app.ActivityCompat
+import android.view.View
 import android.widget.Toast
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.activity_menu.*
 
 class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunication {
@@ -23,10 +26,12 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
     private var DisplayingFragment = false
     private var Version = 4//hehe
 
-    //
+    //Location stuffs
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
-    //
+    lateinit var locationCallback: LocationCallback
+
+    val REQUEST_CODE = 1000;
 
     fun versionChek(){
         data = getSharedPreferences("Data", 0)
@@ -40,6 +45,37 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
+
+        //Location
+        //Check permissions
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION))
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE)
+        else
+        {
+            buildLocationRequest()
+            buildLocationCallback()
+
+            //Create FusedProviderClient
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
+
+            //Set event
+            location.setOnClickListener( View.OnClickListener {
+                if(ActivityCompat.checkSelfPermission(this@MenuActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this@MenuActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                {
+                    ActivityCompat.requestPermissions(this@MenuActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_CODE)
+                    return@OnClickListener
+                }
+                fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.myLooper())
+            })
+
+            //Change State of button
+
+
+        }
+        //Location end
+
 
         start_button.setOnClickListener {
             val intent = Intent(this, QuizActivity::class.java)
@@ -58,6 +94,28 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
             startActivity(intent)
         }
     }
+
+    //Locationfunctions
+
+    private fun buildLocationCallback(){
+        locationCallback = object :LocationCallback(){
+            override fun onLocationResult(p0: LocationResult?) {
+                val location_ = p0!!.locations.get(p0!!.locations.size-1) //Get last location
+                location.text = location_.latitude.toString() + "/" + location_.longitude.toString()
+            }
+        }
+
+    }
+
+    private fun buildLocationRequest(){
+        locationRequest = LocationRequest()
+        locationRequest.priority= LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 5000
+        locationRequest.fastestInterval = 3000
+        locationRequest.smallestDisplacement = 10f
+    }
+
+    //Locationfunctions end
 
 
 

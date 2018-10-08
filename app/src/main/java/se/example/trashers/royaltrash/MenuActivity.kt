@@ -58,23 +58,18 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
             //Create FusedProviderClient
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
-
-            //Set event
-            location.setOnClickListener( View.OnClickListener {
-                if(ActivityCompat.checkSelfPermission(this@MenuActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(this@MenuActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-                {
-                    ActivityCompat.requestPermissions(this@MenuActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_CODE)
-                    return@OnClickListener
-                }
-                fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.myLooper())
-            })
-
-            //Change State of button
-
+            //Check permissions
+            if(ActivityCompat.checkSelfPermission(this@MenuActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this@MenuActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            {
+                ActivityCompat.requestPermissions(this@MenuActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_CODE)
+                return
+            }
+            //Get Location
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.myLooper())
 
         }
-        //Location end
+        //Location fetched
 
 
         start_button.setOnClickListener {
@@ -95,8 +90,6 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
         }
     }
 
-    //Locationfunctions
-
     private fun buildLocationCallback(){
         locationCallback = object :LocationCallback(){
             override fun onLocationResult(p0: LocationResult?) {
@@ -114,9 +107,6 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
         locationRequest.fastestInterval = 3000
         locationRequest.smallestDisplacement = 10f
     }
-
-    //Locationfunctions end
-
 
 
     override fun fragmentComunicationSetUsername(Username:String) {

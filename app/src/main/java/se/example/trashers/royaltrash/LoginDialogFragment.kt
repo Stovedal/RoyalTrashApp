@@ -3,6 +3,7 @@ package se.example.trashers.royaltrash
 import android.app.Activity
 import android.content.*
 import android.os.Bundle
+import android.os.Debug
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
@@ -91,28 +92,30 @@ class LoginDialogFragment : DialogFragment(){
         val Username = Username.replace("[^A-Za-z0-9]+".toRegex(), "").toLowerCase()
         statusbar.text = "working..."
         launch {
+
             try {
-                Scores = DBrequests().apiGetHighscores()
+                //Scores = DBrequests().apiGetHighscores()
+                Scores = DBrequests().apiGetHighscoreByUsername(Username)
             }catch (e: Exception){
                 println("ERROR in db connection (GET): " + e)
-            }finally {
+            }
+            if(Scores != null) {
+                try {
+                    if (Scores!![0].hs_username.toLowerCase() == Username) {
+                        FoundUser = true
+                    }
+                }catch (E:Exception){
+                    println("ERROR: " + E)
+                }
+
+            }else{
                 try {
                     launch(UI) {
                         statusbar.text = "something went wrong.. check your internet connection"
                     }
                 }catch (d: Exception){
-                    println("ERROR in UI launcher thread!!: " + d)
+                    println("WARNING! NO data from server!")
                 }
-            }
-            if(Scores != null) {
-                for (itm in Scores!!) {
-                    if (itm.hs_username.toLowerCase() == Username) {
-                        FoundUser = true
-                        break
-                    }
-                }
-            }else{
-                println("WARNING! NO data from server!")
             }
             if(FoundUser){
                 //Toast.makeText(activity, "Username taken!", Toast.LENGTH_SHORT).show()
@@ -145,8 +148,6 @@ class LoginDialogFragment : DialogFragment(){
             }
         }
     }
-
-
     companion object {
         fun newInstance(content: String): LoginDialogFragment {
             val fragm = LoginDialogFragment()

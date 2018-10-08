@@ -46,4 +46,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.20"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.20"
+    implementation 'com.android.support:multidex:1.0.1'
+    implementation 'com.google.android.gms:play-services:11.4.0'
 }

@@ -22,12 +22,13 @@ class ScoreBoardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content_score_board)
-        println("HALlLEOAOEÅ ")
         viewManager = LinearLayoutManager(this)
 
         val data = getSharedPreferences("Data", 0)
         val Username = data!!.getString("Username", null)
-
+        val user_lat = data!!.getString("lat", null)
+        val user_lng = data!!.getString("lng", null)
+        println("User lat long is " + user_lat + " " + user_lng)
         launch {
             val scores =  DBrequests().apiGetHighscores().toCollection(ArrayList())
             launch(UI){

@@ -1,19 +1,32 @@
 package se.example.trashers.royaltrash
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.location.Location
+import android.location.LocationManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.multidex.MultiDex
 import android.widget.Toast
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_menu.*
 
-class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunication  {
+class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunication {
+
 
     private var data: SharedPreferences? = null
     private var DisplayingFragment = false
-    private var Version = 2//hehe
+    private var Version = 4//hehe
 
+    //
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    lateinit var locationRequest: LocationRequest
+    //
 
     fun versionChek(){
         data = getSharedPreferences("Data", 0)
@@ -26,7 +39,6 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_menu)
 
         start_button.setOnClickListener {
@@ -87,7 +99,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
         if (DisplayingFragment){
             //fragment is displayed, do nothing!
             println("fragment displayed")
-        }else{
+        } else {
             super.onBackPressed();
             //fragment are not displayed use standard back behavior
         }

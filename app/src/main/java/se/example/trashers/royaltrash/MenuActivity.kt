@@ -17,7 +17,10 @@ import android.view.View
 import android.widget.Toast
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_menu.*
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 
 class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunication {
 
@@ -93,8 +96,24 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
     private fun buildLocationCallback(){
         locationCallback = object :LocationCallback(){
             override fun onLocationResult(p0: LocationResult?) {
-                val location_ = p0!!.locations.get(p0!!.locations.size-1) //Get last location
-                location.text = location_.latitude.toString() + "/" + location_.longitude.toString()
+                launch {
+                    val location_ = p0!!.locations.get(p0!!.locations.size-1) //Get last location
+                    val user = DBrequests().apiGetHighscoreByUsername(data!!.getString("Username", null))[0]
+                    val PostUser = hashMapOf("hs_Id" to user.hs_id, "hs_username" to user.hs_username, "hs_score" to user.hs_score, "lat" to location_.latitude, "lng" to location_.longitude)
+                    val JsonStr = Gson().toJson(PostUser)
+                    try {
+                        DBrequests().apiSetHighscoreByUsername("http://royaltrashapp.azurewebsites.net/api/Highscores/PutHighscore/"+ user.hs_id.toString(), JsonStr)
+                    }catch (g: Exception){
+                        println("ERROR in db connection (PUT): " + g)
+                    }
+                    val editor = getSharedPreferences("Data", 0).edit()
+                    editor.putString("lat", location_.latitude.toString())
+                    editor.putString("lng", location_.longitude.toString())
+                    editor.apply()
+                    launch(UI) {
+                        location.text = location_.latitude.toString() + "/" + location_.longitude.toString()
+                    }
+                }
             }
         }
 

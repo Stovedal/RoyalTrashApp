@@ -68,9 +68,6 @@ class DBrequests {
     }
 
 
-
-
-
     fun apiGetHighscoreByUsername(username:String):Array<Highscore>{
 
         val res = URL("http://royaltrashapp.azurewebsites.net/api/highscores/FindByUsername/" +username).readText(Charsets.UTF_8)

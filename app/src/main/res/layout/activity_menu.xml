@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@drawable/bg"
-    >
+    android:background="@drawable/bg">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:id="@+id/lol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginTop="68dp"
         android:adjustViewBounds="false"
@@ -72,19 +70,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0/0"
-        android:textColor="@android:color/white"
-        android:textFontWeight="bold"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/highscores_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="20dp"
-        />
-
+    <!--
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0/0"
+            android:textColor="@android:color/white"
+            android:textFontWeight="bold"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/highscores_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="20dp" />
+    -->
 </android.support.constraint.ConstraintLayout>

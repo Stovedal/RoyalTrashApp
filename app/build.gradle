@@ -48,4 +48,5 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.20"
     implementation 'com.android.support:multidex:1.0.1'
     implementation 'com.google.android.gms:play-services:11.4.0'
+    implementation 'com.google.android.gms:play-services-base:9.4.0'
 }

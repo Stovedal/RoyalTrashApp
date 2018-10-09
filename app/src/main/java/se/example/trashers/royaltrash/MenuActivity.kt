@@ -11,8 +11,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.os.ProxyFileDescriptorCallback
-import android.support.multidex.MultiDex
+//import android.support.multidex.MultiDex
 import android.support.v4.app.ActivityCompat
+
+
 import android.view.View
 import android.widget.Toast
 import com.google.android.gms.common.api.GoogleApiClient
@@ -110,9 +112,9 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
                     editor.putString("lat", location_.latitude.toString())
                     editor.putString("lng", location_.longitude.toString())
                     editor.apply()
-                    launch(UI) {
+                    /*launch(UI) {
                         location.text = location_.latitude.toString() + "/" + location_.longitude.toString()
-                    }
+                    }*/
                 }
             }
         }

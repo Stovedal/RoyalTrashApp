@@ -12,7 +12,7 @@ class ScoreBoardActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-    data class Score(val name: String, val score: Int)
+    //data class Score(val name: String, val score: Int)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,22 +20,22 @@ class ScoreBoardActivity : AppCompatActivity() {
         viewManager = LinearLayoutManager(this)
 
         val data = getSharedPreferences("Data", 0)
-        val Username = data!!.getString("Username", null)
-        val user_lat = data!!.getString("lat", null)
-        val user_lng = data!!.getString("lng", null)
-        println("User lat long is " + user_lat + " " + user_lng)
+        val username = data!!.getString("Username", null)
+        val userlat = data.getString("lat", null)
+        val userlng = data.getString("lng", null)
+        println("User lat long is $userlat  $userlng")
         launch {
             val scores =  DBrequests().apiGetHighscores().toCollection(ArrayList())
             launch(UI){
-                val user_position = scores.indexOf(scores.find { it.hs_username == Username })
-                viewAdapter = ScoresAdapter(scores, user_position)
+                val userposition = scores.indexOf(scores.find { it.hs_username == username })
+                viewAdapter = ScoresAdapter(scores, userposition)
                 recyclerView = findViewById(R.id.score_scroll)
                 recyclerView.apply {
                     setHasFixedSize(true)
                     layoutManager = viewManager
                     adapter = viewAdapter
                 }
-                (viewManager as LinearLayoutManager).scrollToPositionWithOffset(user_position, 50)
+                (viewManager as LinearLayoutManager).scrollToPositionWithOffset(userposition, 50)
 
             }
         }

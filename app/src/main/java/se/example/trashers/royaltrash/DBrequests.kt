@@ -69,10 +69,7 @@ class DBrequests {
 
 
     fun apiGetHighscoreByUsername(username:String):Array<Highscore>{
-        if(username.isEmpty()){
-            val username= "0"
-        }
-        val res = URL("http://royaltrashapp.azurewebsites.net/api/highscore/FindByUsername/"+username).readText(Charsets.UTF_8)
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/highscore/FindByUsername/$username").readText(Charsets.UTF_8)
         //val highScoreUsers = ob.fromJson(res, Highscore::class.java)
         val gson = Gson()
         val highscoreArray = gson.fromJson(res, Array<Highscore>::class.java)
@@ -109,12 +106,12 @@ class DBrequests {
         val gson = Gson()
         return gson.fromJson(res, Quiz::class.java)
     }
-
+    /*
     fun apiGetAllQuestions():Array<Quiz>{
         val res = URL("http://royaltrashapp.azurewebsites.net/api/quiz/getranquizs").readText(Charsets.UTF_8)
         val gson = Gson()
         return gson.fromJson(res, Array<Quiz>::class.java)
-    }
+    }*/
 
     data class Highscore(
             @SerializedName("hs_Id") val hs_id: Int,

@@ -15,39 +15,39 @@ class QuizSummary : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_summary)
-        val Score :Int = intent.getIntExtra("Score", 0)//trash score
-        val QuizScore :Int = intent.getIntExtra("QuizScore", 0)//quiz score
+        val score :Int = intent.getIntExtra("Score", 0)//trash score
+        val quizScore :Int = intent.getIntExtra("QuizScore", 0)//quiz score
         val killingSpree :Int = intent.getIntExtra("killingSpree", 0)//longest trash streak
-        val FScore = ((Score + QuizScore) * (1 + (0.1F*killingSpree))).roundToInt()
+        val fscore = ((score + quizScore) * (1 + (0.1F*killingSpree))).roundToInt()
         button_accept.setOnClickListener {
             val intent = Intent(this, MenuActivity::class.java)
             startActivity(intent)
         }
         button_accept.isEnabled = false
-        PostResulr(FScore)
+        postResult(fscore)
         calc.text = "(score+trashScore)*(longeststreak*0.1)"
-        final_score.text = "Score:" + FScore.toString()
+        final_score.text = "Score:" + fscore.toString()
     }
-    fun PostResulr(Result:Int){
+    private fun postResult(Result:Int){
         val data = getSharedPreferences("Data", 0)
         var Username = data!!.getString("Username", null)
         if(Username != null) {
-            var Scores: Array<DBrequests.Highscore>? = null
+            var scores: Array<DBrequests.Highscore>? = null
             Username = Username.replace("[^A-Za-z0-9]+".toRegex(), "").toLowerCase()
             launch {
                 try {
-                    Scores = DBrequests().apiGetHighscoreByUsername(Username)
+                    scores = DBrequests().apiGetHighscoreByUsername(Username)
                 } catch (e: Exception) {
-                    println("ERROR in db connection (GET): " + e)
+                    println("ERROR in db connection (GET): $e")
                 }
-                if(Scores!![0] != null){
-                    if(Scores!![0].hs_score < Result){
-                        val PostUser = hashMapOf("hs_id" to Scores!![0].hs_id, "hs_username" to Username, "hs_score" to Result, "lat" to 0, "lng" to 0)
-                        val JsonStr = Gson().toJson(PostUser)
+                if(scores!![0] != null){
+                    if(scores!![0].hs_score < Result){
+                        val postUser = hashMapOf("hs_id" to scores!![0].hs_id, "hs_username" to Username, "hs_score" to Result, "lat" to 0, "lng" to 0)
+                        val jsonStr = Gson().toJson(postUser)
                         try {
-                            DBrequests().apiSetHighscoreByUsername((Scores!![0].hs_id).toString(), JsonStr)
+                            DBrequests().apiSetHighscoreByUsername((scores!![0].hs_id).toString(), jsonStr)
                         }catch (g: Exception){
-                            println("ERROR in db connection (PUT): " + g)
+                            println("ERROR in db connection (PUT): $g")
                         }
                     }
                 }
@@ -56,7 +56,7 @@ class QuizSummary : AppCompatActivity() {
                         button_accept.isEnabled = true
                     }
                 }catch (f:Exception){
-                    println("ERROR in UI launcher thread!: " + f)
+                    println("ERROR in UI launcher thread!: $f")
 
                 }
             }

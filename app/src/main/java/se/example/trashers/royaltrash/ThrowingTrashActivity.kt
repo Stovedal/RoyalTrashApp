@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.activity_throwing_trash.*
 import java.lang.Math.pow
 import java.util.*
 import android.animation.ObjectAnimator
-import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.support.constraint.ConstraintLayout
@@ -316,7 +315,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
     fun changeObjectIcon(targetVievID: String,trashObj:Trash){
         val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
         val target = findViewById(id) as ImageView
-        val ImgId = getResources().getIdentifier(trashObj.TrashIcon, "drawable", getPackageName())
+        val ImgId = getResources().getIdentifier(trashObj.trashIcon, "drawable", getPackageName())
         target.setImageResource(ImgId)
     }
 

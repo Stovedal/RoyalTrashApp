@@ -1,7 +1,5 @@
 package se.example.trashers.royaltrash
 
-import android.content.Context
-
 enum class TrashTypes(var TrashTypeIcons: String) {
 
     Glass("glasobjekt"),

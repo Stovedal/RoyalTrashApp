@@ -5,11 +5,11 @@ import java.util.*
 
 data class Trash(val trashTyp:String, val contex:Context) {
 
-    var TrashIcon: String? = getIconNow(contex)
-    var Categories:MutableList<String> = mutableListOf("GLASS","PAPER","ORGANIC","EWASTE","METAL","PLASTIC")
+    var trashIcon: String? = getIconNow(contex)
+    var categories:MutableList<String> = mutableListOf("GLASS","PAPER","ORGANIC","EWASTE","METAL","PLASTIC")
     val foundIcons = hashMapOf<String,MutableList<String>>()
 
-    fun getIconName(typ:String): String? {
+    private fun getIconName(typ:String): String? {
         when(typ){
             "GLASS" -> return TrashTypes.Glass.TrashTypeIcons
             "PAPER" -> return TrashTypes.Paper.TrashTypeIcons
@@ -24,21 +24,21 @@ data class Trash(val trashTyp:String, val contex:Context) {
         }
     }
 
-    fun getIconNow(contex:Context):String?{
-        var FoundList:MutableList<String> = mutableListOf()
+    private fun getIconNow(contex:Context):String?{
+        val foundList:MutableList<String> = mutableListOf()
         for (i in 1..99) {
             val ID = contex.getResources().getIdentifier(getIconName(trashTyp) + i.toString(), "drawable", contex.getPackageName())
             if (ID == 0) {
                 break
             } else {
-                FoundList.add(getIconName(trashTyp) + i.toString())
+                foundList.add(getIconName(trashTyp) + i.toString())
             }
         }
-        val random = FoundList!!.random()
+        val random = foundList.random()
         return random
     }
 
 
-    fun <L> List<L>.random(): L? = if (size > 0) get(Random().nextInt(size)) else null
+    private fun <L> List<L>.random(): L? = if (size > 0) get(Random().nextInt(size)) else null
 
 }

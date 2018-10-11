@@ -1,25 +1,17 @@
 package se.example.trashers.royaltrash
 
-import android.app.Activity
-import android.content.*
+import android.content.Context
 import android.os.Bundle
-import android.os.Debug
 import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_login_dialog.*
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
-
-
 
 
 class LoginDialogFragment : DialogFragment(){
@@ -37,11 +29,11 @@ class LoginDialogFragment : DialogFragment(){
     * */
 
 
-    interface fragmentComunication {
-        fun fragmentComunicationSetUsername(Username:String)
+    interface FragmentCommunication {
+        fun fragmentCommunicationSetUsername(Username:String)
     }
 
-    var delegate: fragmentComunication? = null
+    private var delegate: FragmentCommunication? = null
 
     private var content: String? = null
 
@@ -55,14 +47,14 @@ class LoginDialogFragment : DialogFragment(){
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is fragmentComunication) {
+        if (context is FragmentCommunication) {
             delegate = context
         }
     }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_login_dialog, container, false)
+        val view = inflater.inflate(R.layout.fragment_login_dialog, container, false)
         val btnAccept = view.findViewById<View>(R.id.buttonAccept) as Button
         //FontUtils.setTypeface(getActivity(), textViewQuestion, "fonts/mangal.ttf");
         //FontUtils.setTypeface(getActivity(), textViewAnswer, "fonts/mangal.ttf");
@@ -72,13 +64,13 @@ class LoginDialogFragment : DialogFragment(){
         return view
     }
 
-    fun funfun(){
+    private fun funfun(){
         if (!username.text.isEmpty()){
             chekIfUserExists(username.text.toString())
         }
     }
 
-    fun makeToast(Taost:String){
+    private fun makeToast(Taost:String){
         try {
             activity!!.runOnUiThread { Toast.makeText(activity, Taost, Toast.LENGTH_SHORT).show() }
         }catch (E:Exception){
@@ -86,24 +78,24 @@ class LoginDialogFragment : DialogFragment(){
         }
     }
 
-    fun chekIfUserExists(Username:String){
-        var Scores:Array<DBrequests.Highscore>? = null
-        var FoundUser =false
-        val Username = Username.replace("[^A-Za-z0-9]+".toRegex(), "").toLowerCase()
+    private fun chekIfUserExists(Username:String){
+        var scores:Array<DBrequests.Highscore>? = null
+        var foundUser =false
+        val username = Username.replace("[^A-Za-z0-9]+".toRegex(), "").toLowerCase()
         statusbar.text = "working..."
         launch {
 
             try {
                 //Scores = DBrequests().apiGetHighscores()
-                Scores = DBrequests().apiGetHighscoreByUsername(Username)
+                scores = DBrequests().apiGetHighscoreByUsername(username)
             }catch (e: Exception){
-                println("Printing scores: "+Scores)
-                println("LoginDialogFragment ERROR in db connection (GET): " + e)
+                println("Printing scores: $scores")
+                println("LoginDialogFragment ERROR in db connection (GET): $e")
             }
-            if(Scores != null) {
+            if(scores != null) {
                 try {
-                    if (Scores!![0].hs_username.toLowerCase() == Username) {
-                        FoundUser = true
+                    if (scores!![0].hs_username.toLowerCase() == username) {
+                        foundUser = true
                     }
                 }catch (E:Exception){
                     println("ERROR: " + E)
@@ -118,7 +110,7 @@ class LoginDialogFragment : DialogFragment(){
                     println("WARNING! NO data from server!")
                 }
             }
-            if(FoundUser){
+            if(foundUser){
                 //Toast.makeText(activity, "Username taken!", Toast.LENGTH_SHORT).show()
                 makeToast("Username alredy taken :(")
                 try {
@@ -134,18 +126,18 @@ class LoginDialogFragment : DialogFragment(){
                         statusbar.text = "setting username.."
                     }
                 }catch (f:Exception){
-                    println("ERROR in UI launcher thread!: " + f)
+                    println("ERROR in UI launcher thread!: $f")
                 }
                 dismiss()
                 //post the username
-                val PostUser = hashMapOf("hs_username" to Username, "hs_score" to 0)
-                val JsonStr = Gson().toJson(PostUser)
+                val postUser = hashMapOf("hs_username" to username, "hs_score" to 0)
+                val jsonStr = Gson().toJson(postUser)
                 try {
-                    DBrequests().apiHttpPostToServer(JsonStr)
+                    DBrequests().apiHttpPostToServer(jsonStr)
                 }catch (g: Exception){
-                    println("ERROR in db connection (POST): " + g)
+                    println("ERROR in db connection (POST): $g")
                 }
-                delegate?.fragmentComunicationSetUsername(Username)
+                delegate?.fragmentCommunicationSetUsername(username)
             }
         }
     }

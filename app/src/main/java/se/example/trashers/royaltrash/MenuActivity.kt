@@ -1,30 +1,21 @@
 package se.example.trashers.royaltrash
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
-import android.os.ProxyFileDescriptorCallback
 //import android.support.multidex.MultiDex
 import android.support.v4.app.ActivityCompat
 
 
-import android.view.View
-import android.widget.Toast
-import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_menu.*
-import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 
-class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunication {
+class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunication {
 
 
     private var data: SharedPreferences? = null
@@ -32,16 +23,16 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
     private var Version = 3//hehe
 
     //Location stuffs
-    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    lateinit var locationRequest: LocationRequest
-    lateinit var locationCallback: LocationCallback
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
 
-    val REQUEST_CODE = 1000;
+    private val rEQUEST_CODE = 1000;
 
-    fun versionChek(){
+    private fun versionCheck(){
         data = getSharedPreferences("Data", 0)
-        val CVersion = data!!.getInt("Version", -1)
-        if(CVersion != Version){
+        val cVersion = data!!.getInt("Version", -1)
+        if(cVersion != Version){
             resetapp()
             data!!.edit().putInt("Version", Version).commit()
         }
@@ -54,7 +45,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
         //Location
         //Check permissions
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION))
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE)
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), rEQUEST_CODE)
         else
         {
             buildLocationRequest()
@@ -67,7 +58,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
             if(ActivityCompat.checkSelfPermission(this@MenuActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(this@MenuActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             {
-                ActivityCompat.requestPermissions(this@MenuActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_CODE)
+                ActivityCompat.requestPermissions(this@MenuActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION), rEQUEST_CODE)
                 return
             }
             //Get Location
@@ -85,7 +76,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
 
         //ENABLE this to reset the username att app startup
         //resetapp()
-        versionChek()
+        versionCheck()
 
         LoadeApp()
 
@@ -131,7 +122,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
     }
 
 
-    override fun fragmentComunicationSetUsername(Username:String) {
+    override fun fragmentCommunicationSetUsername(Username:String) {
         println("Setting username!")
         val editor = data!!.edit()
         editor.putString("Username", Username)

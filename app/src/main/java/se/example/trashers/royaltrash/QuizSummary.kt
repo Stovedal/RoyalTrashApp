@@ -45,7 +45,7 @@ class QuizSummary : AppCompatActivity() {
                         val PostUser = hashMapOf("hs_id" to Scores!![0].hs_id, "hs_username" to Username, "hs_score" to Result, "lat" to 0, "lng" to 0)
                         val JsonStr = Gson().toJson(PostUser)
                         try {
-                            DBrequests().apiSetHighscoreByUsername("http://royaltrashapp.azurewebsites.net/api/Highscores/PutHighscore/"+ (Scores!![0].hs_id).toString(), JsonStr)
+                            DBrequests().apiSetHighscoreByUsername((Scores!![0].hs_id).toString(), JsonStr)
                         }catch (g: Exception){
                             println("ERROR in db connection (PUT): " + g)
                         }

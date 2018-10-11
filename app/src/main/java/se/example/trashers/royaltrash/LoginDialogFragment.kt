@@ -97,7 +97,8 @@ class LoginDialogFragment : DialogFragment(){
                 //Scores = DBrequests().apiGetHighscores()
                 Scores = DBrequests().apiGetHighscoreByUsername(Username)
             }catch (e: Exception){
-                println("ERROR in db connection (GET): " + e)
+                println("Printing scores: "+Scores)
+                println("LoginDialogFragment ERROR in db connection (GET): " + e)
             }
             if(Scores != null) {
                 try {
@@ -140,7 +141,7 @@ class LoginDialogFragment : DialogFragment(){
                 val PostUser = hashMapOf("hs_username" to Username, "hs_score" to 0)
                 val JsonStr = Gson().toJson(PostUser)
                 try {
-                    DBrequests().apiHttpPostToServer("http://royaltrashapp.azurewebsites.net/api/highscores/posthighscore", JsonStr)
+                    DBrequests().apiHttpPostToServer(JsonStr)
                 }catch (g: Exception){
                     println("ERROR in db connection (POST): " + g)
                 }

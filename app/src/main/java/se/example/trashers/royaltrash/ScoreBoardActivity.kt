@@ -4,13 +4,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
-import java.net.HttpURLConnection
-import java.net.URL
-import kotlin.coroutines.experimental.*
 
 class ScoreBoardActivity : AppCompatActivity() {
 

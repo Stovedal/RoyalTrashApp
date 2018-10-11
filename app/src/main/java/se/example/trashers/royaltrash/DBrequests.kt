@@ -11,11 +11,11 @@ class DBrequests {
      * Sends a HTTP POST to server to post a new highscore.
      * Param js needs to be a json string
      */
-    fun apiHttpPostToServer(urlString: String, js: String){
+    fun apiHttpPostToServer(js: String){
         /* Ex URL "http://royaltrashapp.azurewebsites.net/api/highscores/"*/
         /*Ex js "{\"hs_username\":\"Test\",\"hs_score\":1,\"lat\":63.802443,\"lng\":20.320271}"*/
         try {
-            val obj = URL(urlString).openConnection() as HttpURLConnection
+            val obj = URL("http://royaltrashapp.azurewebsites.net/api/highscore/posthighscore/").openConnection() as HttpURLConnection
             obj.requestMethod = "POST"
             obj.doOutput=true
             val byte = js.toByteArray()
@@ -40,11 +40,11 @@ class DBrequests {
 
 
 
-    fun apiSetHighscoreByUsername(urlString: String, js: String){
+    fun apiSetHighscoreByUsername(username: String, js: String){
         /* Ex URL "http://royaltrashapp.azurewebsites.net/api/highscores/"*/
         /*Ex js "{\"hs_username\":\"Test\",\"hs_score\":1,\"lat\":63.802443,\"lng\":20.320271}"*/
         try {
-            val obj = URL(urlString).openConnection() as HttpURLConnection
+            val obj = URL("http://royaltrashapp.azurewebsites.net/api/Highscore/PutHighscore/"+username).openConnection() as HttpURLConnection
             obj.requestMethod = "PUT"
             obj.doOutput=true
             val byte = js.toByteArray()
@@ -69,8 +69,10 @@ class DBrequests {
 
 
     fun apiGetHighscoreByUsername(username:String):Array<Highscore>{
-
-        val res = URL("http://royaltrashapp.azurewebsites.net/api/highscores/FindByUsername/" +username).readText(Charsets.UTF_8)
+        if(username.isEmpty()){
+            val username= "0"
+        }
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/highscore/FindByUsername/"+username).readText(Charsets.UTF_8)
         //val highScoreUsers = ob.fromJson(res, Highscore::class.java)
         val gson = Gson()
         val highscoreArray = gson.fromJson(res, Array<Highscore>::class.java)
@@ -88,7 +90,7 @@ class DBrequests {
      * Retrieves a json from server and converts to Array with Highscore class
      */
     fun apiGetHighscores():Array<Highscore>{
-        val res = URL("http://royaltrashapp.azurewebsites.net/api/highscores/getbyscore").readText(Charsets.UTF_8)
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/highscore/getbyscore").readText(Charsets.UTF_8)
         //val highScoreUsers = ob.fromJson(res, Highscore::class.java)
         val gson = Gson()
         val highscoreArray = gson.fromJson(res, Array<Highscore>::class.java)
@@ -103,13 +105,13 @@ class DBrequests {
     }
 
     fun apiGetRandomQuestion():Quiz{
-        val res = URL("http://royaltrashapp.azurewebsites.net/api/qq/getranqq").readText(Charsets.UTF_8)
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/quiz/getranqq").readText(Charsets.UTF_8)
         val gson = Gson()
         return gson.fromJson(res, Quiz::class.java)
     }
 
     fun apiGetAllQuestions():Array<Quiz>{
-        val res = URL("http://royaltrashapp.azurewebsites.net/api/qq/getqq").readText(Charsets.UTF_8)
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/quiz/getranquizs").readText(Charsets.UTF_8)
         val gson = Gson()
         return gson.fromJson(res, Array<Quiz>::class.java)
     }

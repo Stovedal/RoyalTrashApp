@@ -29,7 +29,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
 
     private var data: SharedPreferences? = null
     private var DisplayingFragment = false
-    private var Version = 4//hehe
+    private var Version = 3//hehe
 
     //Location stuffs
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -104,14 +104,15 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.fragmentComunicatio
                     val PostUser = hashMapOf("hs_Id" to user.hs_id, "hs_username" to user.hs_username, "hs_score" to user.hs_score, "lat" to location_.latitude, "lng" to location_.longitude)
                     val JsonStr = Gson().toJson(PostUser)
                     try {
-                        DBrequests().apiSetHighscoreByUsername("http://royaltrashapp.azurewebsites.net/api/Highscores/PutHighscore/"+ user.hs_id.toString(), JsonStr)
+                        DBrequests().apiSetHighscoreByUsername(user.hs_id.toString(), JsonStr)
                     }catch (g: Exception){
-                        println("ERROR in db connection (PUT): " + g)
+                        println("MENU ACTIVITY ERROR in db connection (PUT): " + g)
                     }
                     val editor = getSharedPreferences("Data", 0).edit()
                     editor.putString("lat", location_.latitude.toString())
                     editor.putString("lng", location_.longitude.toString())
                     editor.apply()
+                    println("PRINTING LOCATION:"+location_.toString())
                     /*launch(UI) {
                         location.text = location_.latitude.toString() + "/" + location_.longitude.toString()
                     }*/

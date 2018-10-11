@@ -72,7 +72,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
     var killingSpree = 0 //xD
     var LongestkillingSpree = 0 //xD
     var constraintLayout:ConstraintLayout? =  null
-    var TimeLeft = 25
+    var TimeLeft = 10
     var QuizScore = 0;
     var starAnim = AnimatedObj(0,4,5,R.drawable.star_sprite,256,256)
 

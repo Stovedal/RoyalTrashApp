@@ -5,12 +5,15 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_quiz_summary.*
+import kotlinx.android.synthetic.main.fragment_login_dialog.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import kotlin.math.roundToInt
 
 
 class QuizSummary : AppCompatActivity() {
+
+    var impHighscore = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +26,15 @@ class QuizSummary : AppCompatActivity() {
             val intent = Intent(this, MenuActivity::class.java)
             startActivity(intent)
         }
+
         button_accept.isEnabled = false
         postResult(fscore)
-        calc.text = "(score+trashScore)*(longeststreak*0.1)"
-        final_score.text = "Score:" + fscore.toString()
+        calc.text = " Quizscore: $quizScore\n Trash Score: $score \n Trash streak: $killingSpree"//"(score+trashScore)*(longeststreak*0.1)"
+        final_score.text = " Final score: " + fscore.toString()
+        val data = getSharedPreferences("Data", 0)
+        var usern = data!!.getString("Username", null)
+        txtViewUser.text = " Bra jobbat, $usern!"
+
     }
     private fun postResult(Result:Int){
         val data = getSharedPreferences("Data", 0)
@@ -42,6 +50,8 @@ class QuizSummary : AppCompatActivity() {
                 }
                 if(scores!![0] != null){
                     if(scores!![0].hs_score < Result){
+                        impHighscore = true
+                        txtViewUser.text = "Bra jobbat, $Username! Nytt highscore!"
                         val postUser = hashMapOf("hs_id" to scores!![0].hs_id, "hs_username" to Username, "hs_score" to Result, "lat" to 0, "lng" to 0)
                         val jsonStr = Gson().toJson(postUser)
                         try {

@@ -12,14 +12,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="8dp"
         android:adjustViewBounds="false"
         android:cropToPadding="false"
-        android:src="@drawable/ic_globe"
-        app:layout_constraintBottom_toTopOf="@+id/usernamefield"
+        android:src="@drawable/trashy_1st"
+        app:layout_constraintBottom_toTopOf="@+id/start_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.508" />
 
     <TextView
         android:id="@+id/usernamefield"
@@ -37,7 +39,7 @@
     <Button
         android:id="@+id/start_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="74dp"
         android:layout_marginStart="52dp"
         android:layout_marginEnd="52dp"
         android:layout_marginBottom="37dp"
@@ -45,28 +47,28 @@
         android:height="80dp"
         android:autoSizeTextType="uniform"
         android:background="@drawable/button"
-        android:fontFamily="@font/pacifico"
         android:padding="8dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:text="@string/start_button"
         android:textAllCaps="false"
+        android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/highscores_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/highscores_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="277dp"
+        android:layout_height="70dp"
         android:layout_marginStart="92dp"
         android:layout_marginEnd="92dp"
         android:layout_marginBottom="113dp"
         android:width="200dp"
         android:background="@drawable/button"
-        android:fontFamily="@font/pacifico"
         android:text="@string/highscore"
         android:textAllCaps="false"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

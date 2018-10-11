@@ -20,17 +20,17 @@ import android.graphics.BitmapFactory
 
 
 class AnimatedObj(var frame:Int = 0,var rows:Int, var columns:Int,var imageID:Int,var width:Int,var height:Int ){
-    var save:HashMap<Int,Bitmap>? = null
-    var Running = false
+    private var save:HashMap<Int,Bitmap>? = null
+    var running = false
 
     init {
         this.save = HashMap<Int,Bitmap>()
     }
 
-    fun SetSave(save:HashMap<Int,Bitmap>){
+    fun setSave(save:HashMap<Int,Bitmap>){
         this.save = save
     }
-    fun GetNextFrame():Bitmap?{
+    fun getNextFrame():Bitmap?{
         if(frame < rows*columns){
             frame++
 
@@ -52,10 +52,10 @@ class AnimatedObj(var frame:Int = 0,var rows:Int, var columns:Int,var imageID:In
     }
     fun resetFrame(){
         frame = 0
-        this.Running = false
+        this.running = false
     }
     fun startAnim(){
-        this.Running = true
+        this.running = true
     }
 
 }
@@ -63,40 +63,40 @@ class AnimatedObj(var frame:Int = 0,var rows:Int, var columns:Int,var imageID:In
 class ThrowingTrashActivity : AppCompatActivity() {
     //ThrowingTrashIsAFunActivity
 
-    var screanWidth:Int? = null
-    var screanHeight:Int? = null
-    var currentScore:Int = 0
-    var activeTrash:Trash? = null
-    var fromOnCreat:Boolean = false
-    val CanSetup = hashMapOf<Int,String>()
-    var killingSpree = 0 //xD
-    var LongestkillingSpree = 0 //xD
-    var constraintLayout:ConstraintLayout? =  null
-    var TimeLeft = 10
-    var QuizScore = 0;
-    var starAnim = AnimatedObj(0,4,5,R.drawable.star_sprite,256,256)
+    private var screanWidth:Int? = null
+    private var screanHeight:Int? = null
+    private var currentScore:Int = 0
+    private var activeTrash:Trash? = null
+    private var fromOnCreat:Boolean = false
+    private val CanSetup = hashMapOf<Int,String>()
+    private var killingSpree = 0 //xD
+    private var longestkillingSpree = 0 //xD
+    private var constraintLayout:ConstraintLayout? =  null
+    private var timeLeft = 10
+    private var QuizScore = 0
+    private var starAnim = AnimatedObj(0,4,5,R.drawable.star_sprite,256,256)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_throwing_trash)
         QuizScore = intent.getIntExtra("score", 0)
-        TimeLeft += QuizScore
+        timeLeft += QuizScore
 
 
         fromOnCreat = true
 
-        constraintLayout = findViewById(R.id.playfield) as ConstraintLayout
+        constraintLayout = findViewById<ConstraintLayout>(R.id.playfield)
 
 
         if(screanWidth == null) {
-            setScreanSize();
-            setTrashCaregory();
-            setupTrashcanIcons();
+            setScreanSize()
+            setTrashCaregory()
+            setupTrashcanIcons()
             activeTrash = getNewTrash()
             changeObjectIcon("dragable_test",activeTrash!!)
         }
 
-        var listener = View.OnTouchListener(function = { view, motionEvent ->
+        val listener = View.OnTouchListener(function = { view, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_MOVE) {
                 view.y = motionEvent.rawY - view.height/2
                 view.x = motionEvent.rawX - view.width/2
@@ -117,12 +117,12 @@ class ThrowingTrashActivity : AppCompatActivity() {
     * Sprite animation methods start here
     * #############################
     * */
-    fun CreatanimateSpriteImages(obje:AnimatedObj):AnimatedObj{
+    private fun CreatanimateSpriteImages(obje:AnimatedObj):AnimatedObj{
         //fun CreatanimateSpriteImages(rows:Int,columns:Int,width:Int,height:Int){
-        var save = HashMap<Int,Bitmap>()
+        val save = HashMap<Int,Bitmap>()
         val options = BitmapFactory.Options()
         options.inScaled = false
-        var bm: Bitmap?= BitmapFactory.decodeResource(getResources(), obje.imageID, options)
+        val bm: Bitmap?= BitmapFactory.decodeResource(getResources(), obje.imageID, options)
         var cframe = 0
         for(i in 0 until obje.rows){
             for(j in 0 until obje.columns) {
@@ -135,22 +135,22 @@ class ThrowingTrashActivity : AppCompatActivity() {
                 cframe ++
             }
         }
-        obje.SetSave(save)
+        obje.setSave(save)
         return obje
     }
 
-    fun startAnimateimg(obje:AnimatedObj){
+    private fun startAnimateimg(obje:AnimatedObj){
         if (obje.frame == 0){
             obje.startAnim()
         }
-        var Nframe = obje.GetNextFrame()
-        if(Nframe != null) {
-            animation_holder.setImageBitmap(Nframe)
+        val nFrame = obje.getNextFrame()
+        if(nFrame != null) {
+            animation_holder.setImageBitmap(nFrame)
         }
-        if(!obje.isAnimDone() && obje.Running){
+        if(!obje.isAnimDone() && obje.running){
             Handler().postDelayed(
                     Runnable {
-                        if (obje.Running) {
+                        if (obje.running) {
                             startAnimateimg(obje)
                         }
                     },
@@ -172,19 +172,19 @@ class ThrowingTrashActivity : AppCompatActivity() {
             fromOnCreat = false
             //this is so fucking ugly, but moving objects just won't work untill the screan HAVE BEEN loaded for some ms
             Handler().postDelayed(Runnable { setObjectPercentLocation("dragable_test",45F,80F) }, 100)
-            TimerCountDown()
+            timerCountDown()
             starAnim = CreatanimateSpriteImages(starAnim)
             Handler().postDelayed(Runnable { startAnimateimg(starAnim) }, 400)
         }
     }
 
-    fun TimerCountDown(){
-        TimeLeft -= 1
-        timer_text.text = TimeLeft.toString()
-        if(TimeLeft > 0) {
+    private fun timerCountDown(){
+        timeLeft -= 1
+        timer_text.text = timeLeft.toString()
+        if(timeLeft > 0) {
             Handler().postDelayed(
                     Runnable {
-                        TimerCountDown()
+                        timerCountDown()
                     },
                     1000)
         }else{
@@ -192,27 +192,27 @@ class ThrowingTrashActivity : AppCompatActivity() {
             val intent = Intent(this, QuizSummary::class.java)
             intent.putExtra("Score",currentScore)
             intent.putExtra("QuizScore",QuizScore)
-            intent.putExtra("killingSpree",LongestkillingSpree)
+            intent.putExtra("killingSpree",longestkillingSpree)
             startActivity(intent)
         }
     }
 
-    fun setTrashCaregory(){
-        val Cat = mutableListOf("GLASS","PAPER","ORGANIC","EWASTE","METAL","PLASTIC")
-        Cat.shuffle()
+    private fun setTrashCaregory(){
+        val cat = mutableListOf("GLASS","PAPER","ORGANIC","EWASTE","METAL","PLASTIC")
+        cat.shuffle()
         for (i in 1..3){
-            CanSetup[i] = Cat[i]
+            CanSetup[i] = cat[i]
         }
     }
 
-    fun setScreanSize(){
+    private fun setScreanSize(){
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         screanWidth = displayMetrics.widthPixels
         screanHeight = displayMetrics.heightPixels
     }
 
-    fun limitAtEdges(){
+    private fun limitAtEdges(){
         if (dragable_test.x <= 0){
             dragable_test.x = 1.0F
         }
@@ -231,22 +231,22 @@ class ThrowingTrashActivity : AppCompatActivity() {
     get procentage on screen of given ImageView ID
     NOT!: id must be of an ImageView!
      */
-    fun getObjectPosInPercent(targetVievID: String): Pair<Float,Float>{
+    private fun getObjectPosInPercent(targetVievID: String): Pair<Float,Float>{
 
-        val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
-        val target = findViewById(id) as ImageView
-        val ProsX = ((target.x+ (target.width/2))/screanWidth!!)*100
-        val ProsY = ((target.y+ (target.height/2))/screanHeight!!)*100
-        return Pair(ProsX,ProsY)
+        val id: Int = resources.getIdentifier(targetVievID, "id", packageName)
+        val target = findViewById<ImageView>(id)
+        val prosX = ((target.x+ (target.width/2))/screanWidth!!)*100
+        val prosY = ((target.y+ (target.height/2))/screanHeight!!)*100
+        return Pair(prosX,prosY)
     }
 
     /*
         get distance betwen targetVievID and secoundTargetVievID in a normalized value based of percentage
      */
-    fun getDistanceinPercent(targetVievID: String,secoundTargetVievID: String):Double{
+    private fun getDistanceinPercent(targetVievID: String,secoundTargetVievID: String):Double{
         val Pros_1 = getObjectPosInPercent(targetVievID)
         val Pros_2 = getObjectPosInPercent(secoundTargetVievID)
-        var distPros = pow(pow((Pros_1.first - Pros_2.first).toDouble(),2.0) + pow((Pros_1.second - Pros_2.second).toDouble(),2.0),0.5)
+        val distPros = pow(pow((Pros_1.first - Pros_2.first).toDouble(),2.0) + pow((Pros_1.second - Pros_2.second).toDouble(),2.0),0.5)
         return distPros
     }
 
@@ -254,24 +254,24 @@ class ThrowingTrashActivity : AppCompatActivity() {
         get distance betwen targetVievID and secoundTargetVievID in pixels
      */
     fun getDistanceInPixels(targetVievID: String,secoundTargetVievID: String):Double{
-        val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
-        val target = findViewById(id) as ImageView
-        val secoundTarget_id: Int = getResources().getIdentifier(secoundTargetVievID, "id", getPackageName())
-        val secound_target = findViewById(secoundTarget_id) as ImageView
-        var dist = pow(pow((target.x - secound_target.x).toDouble(),2.0) + pow((target.y - secound_target.y).toDouble(),2.0),0.5)
+        val id: Int = resources.getIdentifier(targetVievID, "id", packageName)
+        val target = findViewById<ImageView>(id)
+        val secoundTarget_id: Int = resources.getIdentifier(secoundTargetVievID, "id", packageName)
+        val secound_target = findViewById<ImageView>(secoundTarget_id)
+        val dist = pow(pow((target.x - secound_target.x).toDouble(),2.0) + pow((target.y - secound_target.y).toDouble(),2.0),0.5)
         return dist
     }
 
     fun setObjectPixelLocation(targetVievID: String,Xcord: Float,Ycord: Float){
-        val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
-        val target = findViewById(id) as ImageView
-        target.x = Xcord;
-        target.y = Ycord;
+        val id: Int = resources.getIdentifier(targetVievID, "id", packageName)
+        val target = findViewById<ImageView>(id)
+        target.x = Xcord
+        target.y = Ycord
     }
 
-    fun setObjectPercentLocation(targetVievID: String,Xcord: Float,Ycord: Float){
-        val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
-        val target = findViewById(id) as ImageView
+    private fun setObjectPercentLocation(targetVievID: String, Xcord: Float, Ycord: Float){
+        val id: Int = resources.getIdentifier(targetVievID, "id", packageName)
+        val target = findViewById<ImageView>(id)
         target.x = (Xcord/100)*screanWidth!! - target.width/2
         target.y = (Ycord/100)*screanHeight!! - target.height/2
         println("Setting Xpos: "+target.x +"Setting Ypos: "+target.y)
@@ -279,22 +279,22 @@ class ThrowingTrashActivity : AppCompatActivity() {
     }
     fun setObjectPercentLocation(id: Int,Xcord: Float,Ycord: Float){
 
-        val target = findViewById(id) as ImageView
+        val target = findViewById<ImageView>(id)
         target.x = (Xcord/100)*screanWidth!! - target.width/2
         target.y = (Ycord/100)*screanHeight!! - target.height/2
         println("Setting Xpos: "+target.x +"Setting Ypos: "+target.y)
 
     }
 
-    fun increaseScore(){
+    private fun increaseScore(){
         currentScore ++
         score.text = "Score:" + (currentScore).toString()
     }
 
 
-    fun shakeIcon(targetVievID: String){
-        val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
-        val target = findViewById(id) as ImageView
+    private fun shakeIcon(targetVievID: String){
+        val id: Int = resources.getIdentifier(targetVievID, "id", packageName)
+        val target = findViewById<ImageView>(id)
         val rotate = ObjectAnimator.ofFloat(target, "rotation", 0f, 15f, 0f, -15f, 0f)
         // repeat the loop 6 times
         rotate.repeatCount = 6
@@ -303,23 +303,23 @@ class ThrowingTrashActivity : AppCompatActivity() {
         rotate.start()
     }
 
-    fun setupTrashcanIcons(){
-        val CanIcons = hashMapOf<String,String>("GLASS" to "glassortering","PAPER" to "papperssortering",
+    private fun setupTrashcanIcons(){
+        val canIcons = hashMapOf<String,String>("GLASS" to "glassortering","PAPER" to "papperssortering",
                 "ORGANIC" to "organisksortering","EWASTE" to "elektroniksortering",
                 "METAL" to "metallsortering","PLASTIC" to "plastsortering")
-        can_1.setImageResource(getResources().getIdentifier(CanIcons[CanSetup[1]], "drawable", getPackageName()))
-        can_2.setImageResource(getResources().getIdentifier(CanIcons[CanSetup[2]], "drawable", getPackageName()))
-        can_3.setImageResource(getResources().getIdentifier(CanIcons[CanSetup[3]], "drawable", getPackageName()))
+        can_1.setImageResource(resources.getIdentifier(canIcons[CanSetup[1]], "drawable", packageName))
+        can_2.setImageResource(resources.getIdentifier(canIcons[CanSetup[2]], "drawable", packageName))
+        can_3.setImageResource(resources.getIdentifier(canIcons[CanSetup[3]], "drawable", packageName))
     }
 
-    fun changeObjectIcon(targetVievID: String,trashObj:Trash){
-        val id: Int = getResources().getIdentifier(targetVievID, "id", getPackageName())
-        val target = findViewById(id) as ImageView
-        val ImgId = getResources().getIdentifier(trashObj.trashIcon, "drawable", getPackageName())
+    private fun changeObjectIcon(targetVievID: String,trashObj:Trash){
+        val id: Int = resources.getIdentifier(targetVievID, "id", packageName)
+        val target = findViewById<ImageView>(id)
+        val ImgId = resources.getIdentifier(trashObj.trashIcon, "drawable", packageName)
         target.setImageResource(ImgId)
     }
 
-    fun addImage(){
+    private fun addImage(){
         /*var imageView = ImageView(this)
         var mID = imageView.id
         imageView.setImageResource(R.drawable.crown)
@@ -338,19 +338,19 @@ class ThrowingTrashActivity : AppCompatActivity() {
     /*
     get a new trash object
      */
-    fun getNewTrash():Trash{
+    private fun getNewTrash():Trash{
         val tsh: MutableList<String> = mutableListOf(CanSetup[1]!!,CanSetup[2]!!,CanSetup[3]!!)
         val random = tsh.random()
         val newTrash = Trash(random!!,this)
         return newTrash
     }
 
-    fun updateStreak(status:Boolean){
+    private fun updateStreak(status:Boolean){
         if(status){
-            killingSpree++;
+            killingSpree++
         }else{
-            if (LongestkillingSpree < killingSpree){
-                LongestkillingSpree = killingSpree
+            if (longestkillingSpree < killingSpree){
+                longestkillingSpree = killingSpree
             }
             killingSpree = 0
         }
@@ -358,12 +358,12 @@ class ThrowingTrashActivity : AppCompatActivity() {
 
     }
 
-    fun checkCollitionState(){
+    private fun checkCollitionState(){
         limitAtEdges()
         var collided = false
         for (i in 1..3) {
-            var DistToCan = getDistanceinPercent("dragable_test","can_" + i.toString())
-            if(DistToCan < 12 && CanSetup[i] == activeTrash!!.trashTyp){
+            var distToCan = getDistanceinPercent("dragable_test","can_" + i.toString())
+            if(distToCan < 12 && CanSetup[i] == activeTrash!!.trashTyp){
                 //user released trash on the can
                 increaseScore()
                 shakeIcon("can_" + i.toString())
@@ -379,7 +379,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
                 setObjectPercentLocation("dragable_test",45F,80F)
                 collided = true
                 updateStreak(true)
-                break;
+                break
             }
         }
         if(!collided){

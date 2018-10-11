@@ -13,7 +13,7 @@ import kotlin.math.roundToInt
 
 class QuizSummary : AppCompatActivity() {
 
-    var impHighscore = false
+    private var impHighscore = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

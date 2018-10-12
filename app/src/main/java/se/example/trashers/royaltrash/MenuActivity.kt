@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
-//import android.support.multidex.MultiDex
 import android.support.v4.app.ActivityCompat
 
 
@@ -17,10 +16,9 @@ import kotlinx.coroutines.experimental.launch
 
 class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunication {
 
-
     private var data: SharedPreferences? = null
     private var DisplayingFragment = false
-    private var Version = 3//hehe
+    private var Version = 12//hehe
 
     //Location stuffs
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -70,7 +68,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
 
         start_button.setOnClickListener {
             val intent = Intent(this, QuizActivity::class.java)
-            intent.putExtra("questionNumber", 3)
+            intent.putExtra("questionNumber", 10)
             startActivity(intent)
         }
 
@@ -91,22 +89,26 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
             override fun onLocationResult(p0: LocationResult?) {
                 launch {
                     val location_ = p0!!.locations.get(p0!!.locations.size-1) //Get last location
-                    val user = DBrequests().apiGetHighscoreByUsername(data!!.getString("Username", null))[0]
-                    val PostUser = hashMapOf("hs_Id" to user.hs_id, "hs_username" to user.hs_username, "hs_score" to user.hs_score, "lat" to location_.latitude, "lng" to location_.longitude)
-                    val JsonStr = Gson().toJson(PostUser)
-                    try {
-                        DBrequests().apiSetHighscoreByUsername(user.hs_id.toString(), JsonStr)
-                    }catch (g: Exception){
-                        println("MENU ACTIVITY ERROR in db connection (PUT): " + g)
+                    val username = data!!.getString("Username", null)
+                    if (username != null) {
+                        val user = DBrequests().apiGetHighscoreByUsername(username)[0]
+
+                        val PostUser = hashMapOf("hs_Id" to user.hs_id, "hs_username" to user.hs_username, "hs_score" to user.hs_score, "lat" to location_.latitude, "lng" to location_.longitude)
+                        val JsonStr = Gson().toJson(PostUser)
+                        try {
+                            DBrequests().apiSetHighscoreByUsername(user.hs_id.toString(), JsonStr)
+                        }catch (g: Exception){
+                            println("MENU ACTIVITY ERROR in db connection (PUT): " + g)
+                        }
+                        val editor = getSharedPreferences("Data", 0).edit()
+                        editor.putString("lat", location_.latitude.toString())
+                        editor.putString("lng", location_.longitude.toString())
+                        editor.apply()
+                        println("PRINTING LOCATION:"+location_.toString())
+                        /*launch(UI) {
+                            location.text = location_.latitude.toString() + "/" + location_.longitude.toString()
+                        }*/
                     }
-                    val editor = getSharedPreferences("Data", 0).edit()
-                    editor.putString("lat", location_.latitude.toString())
-                    editor.putString("lng", location_.longitude.toString())
-                    editor.apply()
-                    println("PRINTING LOCATION:"+location_.toString())
-                    /*launch(UI) {
-                        location.text = location_.latitude.toString() + "/" + location_.longitude.toString()
-                    }*/
                 }
             }
         }

@@ -29,8 +29,8 @@ class DBrequests {
             os.flush()
             os.close()
 
-            println("\nSending 'Post' request to URL : ${obj.url}")
-            println("Response Code : ${obj.responseCode}")
+            //println("\nSending 'Post' request to URL : ${obj.url}")
+            //println("Response Code : ${obj.responseCode}")
         }
         catch (e: IOException) {
             println(e.stackTrace)
@@ -74,8 +74,8 @@ class DBrequests {
         val gson = Gson()
         val highscoreArray = gson.fromJson(res, Array<Highscore>::class.java)
 
-        print(highscoreArray[0].hs_id)
-        print(highscoreArray[0])
+        println(highscoreArray[0].hs_id)
+        println(highscoreArray[0])
 
 
         return highscoreArray
@@ -101,17 +101,18 @@ class DBrequests {
         return highscoreArray
     }
 
-    fun apiGetRandomQuestion():Quiz{
+    fun getRandomQuestion():Question{
         val res = URL("http://royaltrashapp.azurewebsites.net/api/quiz/getranqq").readText(Charsets.UTF_8)
         val gson = Gson()
-        return gson.fromJson(res, Quiz::class.java)
+        return gson.fromJson(res, Question::class.java)
     }
-    /*
-    fun apiGetAllQuestions():Array<Quiz>{
-        val res = URL("http://royaltrashapp.azurewebsites.net/api/quiz/getranquizs").readText(Charsets.UTF_8)
+
+    fun getQuestions(number: Int): List<Question> {
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/quiz/GetRanQuizs/$number").readText(Charsets.UTF_8)
         val gson = Gson()
-        return gson.fromJson(res, Array<Quiz>::class.java)
-    }*/
+        val questions:List<Question> = gson.fromJson(res, Array<Question>::class.java).toList()
+        return questions
+    }
 
     data class Highscore(
             @SerializedName("hs_Id") val hs_id: Int,
@@ -121,14 +122,14 @@ class DBrequests {
             @SerializedName("description") val lng: Float?
     )
 
-    data class Quiz(
+    data class Question(
             @SerializedName("id") val q_id: Int,
             @SerializedName("question") val question: String,
-            @SerializedName("C1answer") val answer1: String,
+            @SerializedName("C1answer") val answer: String,
             //todo should be an array
-            @SerializedName("C2answer") val answer2: String,
-            @SerializedName("C3answer") val answer3: String,
-            @SerializedName("C4answer") val answer4: String
+            @SerializedName("C2answer") val alternative1: String,
+            @SerializedName("C3answer") val alternative2: String,
+            @SerializedName("C4answer") val alternative3: String
     )
 
 }

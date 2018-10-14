@@ -17,6 +17,7 @@ import java.security.AccessController.getContext
 
 class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private val userPosition: Int) : RecyclerView.Adapter<ScoresAdapter.MyViewHolder>() {
 
+
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
@@ -45,7 +46,6 @@ class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-
         when(position){
             !in 0..2 -> {
                 holder.score.findViewById<ImageView>(R.id.score_img).setImageResource(android.R.color.transparent)
@@ -65,6 +65,7 @@ class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private
             holder.score.strokeWidth = 10
         }
     }
+
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = scores.size

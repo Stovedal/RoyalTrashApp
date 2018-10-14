@@ -15,4 +15,10 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="hs_button">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">#00FFFFFF</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+
 </resources>

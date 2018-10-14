@@ -1,5 +1,6 @@
 package se.example.trashers.royaltrash
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -29,12 +30,13 @@ class ScoreBoardActivity : AppCompatActivity() {
         val userlng = data.getString("lng", null)
         println("User lat long is $userlat  $userlng")
 
+        all_button.run {
+            setBackgroundColor(getColor(R.color.colorAccent))
+            setTextColor(Color.WHITE)
+        }
         launch {
             scores =  DBrequests().apiGetHighscores().toCollection(ArrayList())
             launch(UI){
-                for (score in scores){
-                    println(score.hs_username + " " + score.lat + " " + score.lng)
-                }
                 val userposition = scores.indexOf(scores.find { it.hs_username == username })
                 viewAdapter = ScoresAdapter(scores, userposition)
                 recyclerView = findViewById(R.id.score_scroll)
@@ -53,6 +55,14 @@ class ScoreBoardActivity : AppCompatActivity() {
             val userposition = filtered.indexOf(filtered.find { it.hs_username == username })
             recyclerView.adapter = ScoresAdapter(filtered.toCollection(ArrayList()), userposition)
             (viewManager as LinearLayoutManager).scrollToPositionWithOffset(userposition, 50)
+            close_by_button.run {
+                setBackgroundColor(getColor(R.color.colorAccent))
+                setTextColor(Color.WHITE)
+            }
+            all_button.run {
+                setBackgroundColor(Color.TRANSPARENT)
+                setTextColor(getColor(R.color.colorAccent))
+            }
         }
 
         all_button.setOnClickListener {
@@ -60,6 +70,14 @@ class ScoreBoardActivity : AppCompatActivity() {
             val userposition = scores.indexOf(scores.find { it.hs_username == username })
             recyclerView.adapter = ScoresAdapter(scores.toCollection(ArrayList()), userposition)
             (viewManager as LinearLayoutManager).scrollToPositionWithOffset(userposition, 50)
+            all_button.run {
+                setBackgroundColor(getColor(R.color.colorAccent))
+                setTextColor(Color.WHITE)
+            }
+            close_by_button.run {
+                setBackgroundColor(Color.TRANSPARENT)
+                setTextColor(getColor(R.color.colorAccent))
+            }
         }
     }
 

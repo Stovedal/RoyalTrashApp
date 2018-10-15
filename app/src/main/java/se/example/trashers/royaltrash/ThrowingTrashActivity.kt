@@ -169,9 +169,12 @@ class ThrowingTrashActivity : AppCompatActivity() {
     public override fun onResume() {
         super.onResume()
         if (fromOnCreat){
-            fromOnCreat = false
+
             //this is so fucking ugly, but moving objects just won't work untill the screan HAVE BEEN loaded for some ms
-            Handler().postDelayed(Runnable { setObjectPercentLocation("dragable_test",45F,80F) }, 100)
+            if(!fromOnCreat) {
+                Handler().postDelayed(Runnable { setObjectPercentLocation("dragable_test", 45F, 80F) }, 200)
+            }
+            fromOnCreat = false
             timerCountDown()
             starAnim = CreatanimateSpriteImages(starAnim)
             Handler().postDelayed(Runnable { startAnimateimg(starAnim) }, 400)

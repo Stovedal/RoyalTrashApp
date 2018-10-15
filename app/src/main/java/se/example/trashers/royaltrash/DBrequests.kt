@@ -118,7 +118,7 @@ class DBrequests {
             @SerializedName("hs_username") val hs_username: String,
             @SerializedName("hs_score") val hs_score: Int,
             @SerializedName("lat") val lat: Float?,
-            @SerializedName("description") val lng: Float?
+            @SerializedName("lng") val lng: Float?
     )
 
     data class Quiz(

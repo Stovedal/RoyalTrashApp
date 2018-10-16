@@ -16,8 +16,8 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         val str = DBrequests()
-        val str2 = str.apiGetHighscores()
-            println(""+str2[0].hs_username+str2[1].hs_username)
+        var str2 = str.apiHttpPostToServer("{\"hs_username\":\"Test\",\"hs_score\":1,\"lat\":63.802443,\"lng\":20.320271}")
+        val str3 = str.apiGetHighscoreByUsername("Test")
 
             assertEquals(true, true)
     }

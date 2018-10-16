@@ -9,19 +9,20 @@
 
     <ImageView
         android:id="@+id/lol"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="159dp"
         android:layout_margin="16dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="60dp"
         android:adjustViewBounds="false"
         android:cropToPadding="false"
         android:src="@drawable/trashy_1st"
         app:layout_constraintBottom_toTopOf="@+id/start_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.508" />
+        app:layout_constraintVertical_bias="0.319" />
 
     <TextView
         android:id="@+id/usernamefield"
@@ -40,8 +41,8 @@
         android:id="@+id/start_button"
         android:layout_width="wrap_content"
         android:layout_height="74dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="52dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginEnd="92dp"
         android:layout_marginBottom="37dp"
         android:width="280dp"
         android:height="80dp"
@@ -52,7 +53,7 @@
         android:paddingRight="16dp"
         android:text="@string/start_button"
         android:textAllCaps="false"
-        android:textSize="10sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/highscores_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

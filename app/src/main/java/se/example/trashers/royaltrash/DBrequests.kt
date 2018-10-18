@@ -74,14 +74,11 @@ class DBrequests {
         val gson = Gson()
         val highscoreArray = gson.fromJson(res, Array<Highscore>::class.java)
 
-        println(highscoreArray[0].hs_id)
-        println(highscoreArray[0])
-
+        //println(highscoreArray[0].hs_id)
+        //println(highscoreArray[0])
 
         return highscoreArray
     }
-
-
 
     /**
      * Retrieves a json from server and converts to Array with Highscore class

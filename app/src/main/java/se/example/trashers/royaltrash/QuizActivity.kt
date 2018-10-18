@@ -45,52 +45,48 @@ class QuizActivity : AppCompatActivity() {
                 question(firstQuestion)
             }
 
-            println(this.coroutineContext)
+            println("first Q")
         }
-        launch {
+        val loadedQs = launch {
             //todo handle network fail
             println(DBrequests().getQuestions(questionNumber - 1))
-            //questions = DBrequests().getQuestions(questionNumber - 1)
-            //allQuestionsLoaded = true
-
-            println(this.coroutineContext)
+            questions = DBrequests().getQuestions(questionNumber - 1)
         }
 
         launch {
-            while (!allQuestionsLoaded) {}
-            val qLoaded = questions!! // move questions into a non-null variable
+            var currentRound = answers.round
+            loadedQs.join()
+            println("All Qs fetched")
+            while (currentRound == answers.round) {
+            }
+            delay(delayMillis)
 
-            qLoaded.forEach {
-                println('Q')
-                val currentRound = answers.round
-                val qCoroutine = launch(UI) {
-                    question(it)
-                }
-                println("$currentRound of ${qLoaded.size}")
+            questions!!.forEach {
+                if (answers.latestCorrect) {
+                    currentRound = answers.round
+                    val qCoroutine = launch(UI) {
+                        question(it)
+                    }
+                    println("$currentRound of ${questions!!.size}")
 
-                if (currentRound == qLoaded.size) {
+                    if (currentRound == questions!!.size) {
+                        delay(delayMillis)
+                        endgame()
+                    }
+
+                    while (currentRound == answers.round) {
+                    }
                     delay(delayMillis)
+                    qCoroutine.join()
+                } else {
                     endgame()
                 }
-                while (currentRound == answers.round) {}
-                delay(delayMillis)
-                qCoroutine.join()
-
             }
 
             println(this.coroutineContext)
+
         }
     }
-
-    /*private fun getQuestions(questionNumber: Int):List<Question> {
-        val questions = mutableListOf<Question>()
-        for (i in 0..(questionNumber-1)) {
-            val q = Question()
-            questions.add(i, q)
-        }
-
-        return questions
-    }*/
 
     /**
      * @param question
@@ -116,11 +112,11 @@ class QuizActivity : AppCompatActivity() {
                 if (buttons[0] == clickedButton) {
                     buttonColor(clickedButton, "true")
                     points += 1
-                    answers.addAnswer(0)
+                    answers.addAnswer(0, true)
                 } else {
                     buttonColor(clickedButton, "false")
                     buttonColor(buttons[0], "true")
-                    answers.addAnswer(1)
+                    answers.addAnswer(1, false)
                 }
                 removeListeners(buttons)
             }
@@ -164,15 +160,16 @@ class QuizActivity : AppCompatActivity() {
 class Answers {
     private var answers = mutableListOf<Int>()
     var round = 0
+    var latestCorrect = true
 
     init {
         answers.add(0)
     }
 
-    fun addAnswer(answer:Int) {
+    fun addAnswer(answer:Int, correct:Boolean) {
         answers.add(round, answer)
+        latestCorrect = correct
         round++
-
     }
 
     fun getAnswers(): List<Int> {

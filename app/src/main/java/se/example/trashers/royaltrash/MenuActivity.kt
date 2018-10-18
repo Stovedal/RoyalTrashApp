@@ -97,7 +97,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
                         val JsonStr = Gson().toJson(PostUser)
                         try {
                             DBrequests().apiSetHighscoreByUsername(user.hs_id.toString(), JsonStr)
-                        }catch (g: Exception){
+                        } catch (g: Exception){
                             println("MENU ACTIVITY ERROR in db connection (PUT): " + g)
                         }
                         val editor = getSharedPreferences("Data", 0).edit()

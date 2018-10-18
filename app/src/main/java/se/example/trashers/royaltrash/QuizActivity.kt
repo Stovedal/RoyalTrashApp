@@ -3,22 +3,28 @@ package se.example.trashers.royaltrash
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import kotlinx.android.synthetic.main.activity_quiz.*
 import android.view.View
 import android.widget.Button
 import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.defer
+import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 
 class QuizActivity : AppCompatActivity() {
     var points = 0
-    private val delayMillis = 1000L
+    private val delayMillis = 2000L
+    var questions:List<DBrequests.Question>? = null
+    private var answers: Answers = Answers()
+    lateinit var buttons:List<Button>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
-        var questionNumber: Int = intent.getIntExtra("questionNumber", 0)
+        buttons = listOf(quiz_button1, quiz_button2, quiz_button3, quiz_button4)
+
+        val questionNumber: Int = intent.getIntExtra("questionNumber", 0)
 
         //Throw the user back to the main menu if they didn't provide a questionNumber
         if (questionNumber == 0) {
@@ -30,59 +36,90 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun questionBasedQuiz(questionNumber: Int) {
+        var allQuestionsLoaded = false
+
         launch {
-            var questions = getQuestions(questionNumber).shuffled()
+            //todo handle network fail
+            val firstQuestion = DBrequests().getRandomQuestion()
             launch(UI) {
-
-                question(0, questions)
+                question(firstQuestion)
             }
+
+            println("first Q")
         }
-    }
-
-    private fun getQuestions(questionNumber: Int):List<Question> {
-        val questions = mutableListOf<Question>()
-        for (i in 0..(questionNumber-1)) {
-            val q = Question(4)
-            //todo check question IDs so they don't match any already in the list
-
-            questions.add(i, q)
+        val loadedQs = launch {
+            //todo handle network fail
+            println(DBrequests().getQuestions(questionNumber - 1))
+            questions = DBrequests().getQuestions(questionNumber - 1)
         }
 
-        return questions
-    }
+        launch {
+            var currentRound = answers.round
+            loadedQs.join()
+            println("All Qs fetched")
+            while (currentRound == answers.round) {
+            }
+            delay(delayMillis)
 
-    private fun question(round:Int, questions:List<Question>) {
-        val buttons = listOf<Button>(quiz_button1, quiz_button2, quiz_button3, quiz_button4).shuffled()
-        if (questions.size > round) {
-            val question = questions[round]
+            questions!!.forEach {
+                if (answers.latestCorrect) {
+                    currentRound = answers.round
+                    val qCoroutine = launch(UI) {
+                        question(it)
+                    }
+                    println("$currentRound of ${questions!!.size}")
 
-            question_text.text = question.question
-
-            buttons[0].text = question.answer
-            buttons[1].text = question.falseAnswers[0]
-            buttons[2].text = question.falseAnswers[1]
-            buttons[3].text = question.falseAnswers[2]
-
-            buttons.forEach {
-                buttonColor(it, "default")
-                it.setOnClickListener {
-                    buttons.forEach {buttonColor(it, "disabled")}
-                    if (buttons[0] == it) {
-                        buttonColor(it, "true")
-                        points += 1
-                    } else {
-                        buttonColor(it, "false")
+                    if (currentRound == questions!!.size) {
+                        delay(delayMillis)
                         endgame()
                     }
-                    removeListeners(buttons)
 
-                    Handler().postDelayed({
-                        question(round + 1, questions)
-                    }, delayMillis)
+                    while (currentRound == answers.round) {
+                    }
+                    delay(delayMillis)
+                    qCoroutine.join()
+                } else {
+                    endgame()
                 }
             }
-        } else {
-            endgame()
+
+            println(this.coroutineContext)
+
+        }
+    }
+
+    /**
+     * @param question
+     */
+    private fun question(question: DBrequests.Question) {
+        buttons = buttons.shuffled()
+
+        question_text.text = question.question
+
+        buttons[0].text = question.answer
+        buttons[1].text = question.alternative1
+        buttons[2].text = question.alternative2
+        buttons[3].text = question.alternative3
+
+        buttons.forEach { button ->
+
+            buttonColor(button, "default")
+            button.setOnClickListener { clickedButton ->
+
+                buttons.forEach {
+                    buttonColor(it, "disabled")}
+
+                if (buttons[0] == clickedButton) {
+                    buttonColor(clickedButton, "true")
+                    points += 1
+                    answers.addAnswer(0, true)
+                } else {
+                    buttonColor(clickedButton, "false")
+                    buttonColor(buttons[0], "true")
+                    answers.addAnswer(1, false)
+                }
+                removeListeners(buttons)
+            }
         }
     }
 
@@ -96,8 +133,10 @@ class QuizActivity : AppCompatActivity() {
         when (color) {
             "true" -> {button.setBackgroundResource(R.drawable.quiz_button_true)}
             "false" -> {button.setBackgroundResource(R.drawable.quiz_button_false)}
-            "disabled" -> {button.setBackgroundResource(R.drawable.quiz_button_disabled)
-            button.setEnabled(false)}
+            "disabled" -> {
+                button.setBackgroundResource(R.drawable.quiz_button_disabled)
+                button.setEnabled(false)
+            }
             else -> {button.setBackgroundResource(R.drawable.button)
                 button.setEnabled(true)
                 button.visibility = View.VISIBLE
@@ -115,5 +154,25 @@ class QuizActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         //todo restore progress and current question
+    }
+}
+
+class Answers {
+    private var answers = mutableListOf<Int>()
+    var round = 0
+    var latestCorrect = true
+
+    init {
+        answers.add(0)
+    }
+
+    fun addAnswer(answer:Int, correct:Boolean) {
+        answers.add(round, answer)
+        latestCorrect = correct
+        round++
+    }
+
+    fun getAnswers(): List<Int> {
+        return answers
     }
 }

@@ -18,7 +18,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
 
     private var data: SharedPreferences? = null
     private var DisplayingFragment = false
-    private var Version = 12//hehe
+    private var Version = 2//hehe
 
     //Location stuffs
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient

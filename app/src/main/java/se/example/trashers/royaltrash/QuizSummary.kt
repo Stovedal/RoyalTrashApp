@@ -52,21 +52,12 @@ class QuizSummary : AppCompatActivity() {
                 if(scores!![0] != null){
                     if(scores!![0].hs_score < Result){
                         impHighscore = true
-<<<<<<< HEAD
                         launch(UI) {
-=======
-                        try {
->>>>>>> master
                             txtViewUser.text = "Bra jobbat, $Username!\n Nytt highscore!"
                             imageView.setImageDrawable(getDrawable(R.drawable.trashy_1st))
                             imageView.setImageResource(R.drawable.trashy_1st)
                         }
-<<<<<<< HEAD
-=======
-                        catch(e: Exception){
-                           //do nothing
-                        }
->>>>>>> master
+
                         val postUser = hashMapOf("hs_id" to scores!![0].hs_id, "hs_username" to Username, "hs_score" to Result, "lat" to 0, "lng" to 0)
                         val jsonStr = Gson().toJson(postUser)
                         try {

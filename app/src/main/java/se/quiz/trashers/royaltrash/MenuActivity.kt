@@ -40,6 +40,17 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
+        start_button.setOnClickListener {
+            val intent = Intent(this, QuizActivity::class.java)
+            intent.putExtra("questionNumber", 10)
+            startActivity(intent)
+        }
+
+        highscores_button.setOnClickListener {
+            val intent = Intent(this, ScoreBoardActivity::class.java)
+            startActivity(intent)
+        }
+
         //ENABLE this to reset the username att app startup
         //resetapp()
         versionCheck()
@@ -70,18 +81,6 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
 
         }
         //Location fetched
-
-
-        start_button.setOnClickListener {
-            val intent = Intent(this, QuizActivity::class.java)
-            intent.putExtra("questionNumber", 10)
-            startActivity(intent)
-        }
-
-        highscores_button.setOnClickListener {
-            val intent = Intent(this, ScoreBoardActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     private fun buildLocationCallback(){

@@ -61,6 +61,7 @@ class QuizActivity : AppCompatActivity() {
             val qLoaded = questions!! // move questions into a non-null variable
 
             qLoaded.forEach {
+                println('Q')
                 val currentRound = answers.round
                 val qCoroutine = launch(UI) {
                     question(it)

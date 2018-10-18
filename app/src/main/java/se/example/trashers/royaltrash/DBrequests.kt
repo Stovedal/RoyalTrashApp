@@ -111,6 +111,13 @@ class DBrequests {
         return questions
     }
 
+    fun getDescription(number: Int): List<Question> {
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/QuExp/GetQuExp/$number").readText(Charsets.UTF_8)
+        val gson = Gson()
+        val questions:List<Question> = gson.fromJson(res, Array<Question>::class.java).toList()
+        return questions
+    }
+
     data class Highscore(
             @SerializedName("hs_Id") val hs_id: Int,
             @SerializedName("hs_username") val hs_username: String,
@@ -123,7 +130,6 @@ class DBrequests {
             @SerializedName("id") val q_id: Int,
             @SerializedName("question") val question: String,
             @SerializedName("C1answer") val answer: String,
-            //todo should be an array
             @SerializedName("C2answer") val alternative1: String,
             @SerializedName("C3answer") val alternative2: String,
             @SerializedName("C4answer") val alternative3: String

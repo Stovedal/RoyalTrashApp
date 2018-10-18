@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.activity_quiz.*
 import android.view.View
 import android.widget.Button
 import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.cancel
 import kotlinx.coroutines.experimental.defer
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
@@ -26,65 +27,48 @@ class QuizActivity : AppCompatActivity() {
 
         val questionNumber: Int = intent.getIntExtra("questionNumber", 0)
 
-        //Throw the user back to the main menu if they didn't provide a questionNumber
-        if (questionNumber == 0) {
-            val i = Intent(this, MenuActivity::class.java)
-            startActivity(i)
-        }
-
         questionBasedQuiz(questionNumber)
     }
 
     private fun questionBasedQuiz(questionNumber: Int) {
-        var allQuestionsLoaded = false
-
         launch {
             //todo handle network fail
             val firstQuestion = DBrequests().getRandomQuestion()
             launch(UI) {
                 question(firstQuestion)
             }
-
-            println("first Q")
         }
         val loadedQs = launch {
             //todo handle network fail
-            println(DBrequests().getQuestions(questionNumber - 1))
             questions = DBrequests().getQuestions(questionNumber - 1)
         }
 
         launch {
             var currentRound = answers.round
             loadedQs.join()
-            println("All Qs fetched")
-            while (currentRound == answers.round) {
-            }
+            while (currentRound == answers.round) {}
             delay(delayMillis)
 
             questions!!.forEach {
-                if (answers.latestCorrect) {
+                if (currentRound != questions!!.size && answers.latestCorrect) {
                     currentRound = answers.round
                     val qCoroutine = launch(UI) {
                         question(it)
                     }
-                    println("$currentRound of ${questions!!.size}")
+                    val description = ""
+                    val qDescription = launch {
 
-                    if (currentRound == questions!!.size) {
-                        delay(delayMillis)
-                        endgame()
                     }
+                    qCoroutine.join()
+                    while (currentRound == answers.round) {}
+                    if (description.isEmpty()) {
 
-                    while (currentRound == answers.round) {
                     }
                     delay(delayMillis)
-                    qCoroutine.join()
                 } else {
                     endgame()
                 }
             }
-
-            println(this.coroutineContext)
-
         }
     }
 

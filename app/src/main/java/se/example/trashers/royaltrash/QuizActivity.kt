@@ -58,12 +58,15 @@ class QuizActivity : AppCompatActivity() {
                     }
                     val description = ""
                     val qDescription = launch {
-
+                        //todo get description
                     }
                     qCoroutine.join()
                     while (currentRound == answers.round) {}
-                    if (description.isEmpty()) {
-
+                    qDescription.cancel()
+                    if (!description.isEmpty()) {
+                        launch(UI) {
+                            question_text.text = description
+                        }
                     }
                     delay(delayMillis)
                 } else {

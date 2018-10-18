@@ -1,5 +1,6 @@
 package se.quiz.trashers.royaltrash
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -25,6 +26,8 @@ class QuizActivity : AppCompatActivity() {
 
         val questionNumber: Int = intent.getIntExtra("questionNumber", 0)
 
+        progressBar.max = questionNumber * 100
+        progressBar.progress = 0
 
         questionBasedQuiz(questionNumber)
     }
@@ -49,7 +52,8 @@ class QuizActivity : AppCompatActivity() {
             delay(delayMillis)
 
             questions!!.forEach {
-                if (currentRound != questions!!.size && answers.latestCorrect) {
+                if (currentRound != (questions!!.size - 1) && answers.latestCorrect) {
+                    println("$currentRound != ${questions!!.size}")
                     currentRound = answers.round
                     val qCoroutine = launch(UI) {
                         question(it)
@@ -68,8 +72,9 @@ class QuizActivity : AppCompatActivity() {
                     }
                     delay(delayMillis)
                 } else {
+                    println("hi")
                     if(blocker == false) {
-                        blocker = true;
+                        blocker = true
                         endgame()
                     }
                 }
@@ -102,6 +107,9 @@ class QuizActivity : AppCompatActivity() {
                     buttonColor(clickedButton, "true")
                     points += 1
                     answers.addAnswer(0, true)
+                    val progressAnimator = ObjectAnimator.ofInt(progressBar, "progress", progressBar.progress, progressBar.progress + 100)
+                    progressAnimator.setDuration(1000)
+                    progressAnimator.start()
                 } else {
                     buttonColor(clickedButton, "false")
                     buttonColor(buttons[0], "true")

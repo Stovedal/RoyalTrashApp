@@ -17,6 +17,13 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.BitmapFactory
+import android.text.format.Time
+import android.widget.Toast
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
+import java.util.Calendar.MILLISECOND
 
 
 class AnimatedObj(var frame:Int = 0,var rows:Int, var columns:Int,var imageID:Int,var width:Int,var height:Int ){
@@ -68,12 +75,14 @@ class ThrowingTrashActivity : AppCompatActivity() {
     private var currentScore:Int = 0
     private var activeTrash:Trash? = null
     private var fromOnCreat:Boolean = false
+    private var IsStoped:Boolean = false
     private val CanSetup = hashMapOf<Int,String>()
     private var killingSpree = 0 //xD
     private var longestkillingSpree = 0 //xD
     private var constraintLayout:ConstraintLayout? =  null
     private var timeLeft = 10
     private var QuizScore = 0
+    private var TimeHandler = Handler()
     private var starAnim = AnimatedObj(0,4,5,R.drawable.star_sprite,256,256)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +91,7 @@ class ThrowingTrashActivity : AppCompatActivity() {
         QuizScore = intent.getIntExtra("score", 0)
         timeLeft += QuizScore
 
-
+        countController();
         fromOnCreat = true
 
         constraintLayout = findViewById<ConstraintLayout>(R.id.playfield)
@@ -169,37 +178,127 @@ class ThrowingTrashActivity : AppCompatActivity() {
     public override fun onResume() {
         super.onResume()
         if (fromOnCreat){
-
             //this is so fucking ugly, but moving objects just won't work untill the screan HAVE BEEN loaded for some ms
             if(!fromOnCreat) {
                 Handler().postDelayed(Runnable { setObjectPercentLocation("dragable_test", 45F, 80F) }, 200)
             }
             fromOnCreat = false
-            timerCountDown()
+            //countController()
+            // countDown()
+            //timerCountDown()
             starAnim = CreatanimateSpriteImages(starAnim)
             Handler().postDelayed(Runnable { startAnimateimg(starAnim) }, 400)
         }
     }
 
-    private fun timerCountDown(){
-        timeLeft -= 1
-        timer_text.text = timeLeft.toString()
-        if(timeLeft > 0) {
-            Handler().postDelayed(
-                    Runnable {
-                        timerCountDown()
-                    },
-                    1000)
-        }else{
-            //go to summary screen!
-            val intent = Intent(this, QuizSummary::class.java)
-            intent.putExtra("Score",currentScore)
-            intent.putExtra("QuizScore",QuizScore)
-            intent.putExtra("killingSpree",longestkillingSpree)
-            startActivity(intent)
+    var timer:Job? = null;
+
+    private fun countController(){
+        if(timer == null) {
+            timer = launch(UI) {
+                while (timeLeft > 0 && IsStoped == false) {
+                    timer_text.text = timeLeft.toString()
+                    delay(1000)
+                    println("timeLeft: " + timeLeft)
+                    timeLeft -= 1
+                }
+                if (IsStoped == false) {
+                    IsStoped = true
+                    startSummary()
+                }
+            }
         }
     }
+    private fun startSummary(){
+        val intent = Intent(this, QuizSummary::class.java)
+        intent.putExtra("Score", currentScore)
+        intent.putExtra("QuizScore", QuizScore)
+        intent.putExtra("killingSpree", longestkillingSpree)
+        startActivity(intent)
+    }
 
+
+
+    /*
+        private fun countDown(){
+            timeLeft -= 1
+            launch(UI) {
+                timer_text.text = timeLeft.toString()
+            }
+            if(IsStoped == false) {
+                if (timeLeft > 0) {
+                    launch {
+                        delay(1000)
+                        timeLeft -= 1
+                        countDown()
+                    }
+                }else{
+                    IsStoped = true
+                    val intent = Intent(this, QuizSummary::class.java)
+                    intent.putExtra("Score", currentScore)
+                    intent.putExtra("QuizScore", QuizScore)
+                    intent.putExtra("killingSpree", longestkillingSpree)
+                    startActivity(intent)
+                }
+            }else{
+
+            }
+
+
+
+
+
+            /*
+            if(IsStoped == false) {
+                if (timeLeft > 0) {
+                    if(timer == null){
+                        timer = launch {
+                            delay(1000)
+                            timeLeft -= 1
+                            countDown();
+                        }
+                    }else{
+                        launch {
+                            delay(1000)
+                            timeLeft -= 1
+                            countDown();
+                        }
+                    }
+                }else {
+                    IsStoped = true
+                    val intent = Intent(this, QuizSummary::class.java)
+                    intent.putExtra("Score", currentScore)
+                    intent.putExtra("QuizScore", QuizScore)
+                    intent.putExtra("killingSpree", longestkillingSpree)
+                    startActivity(intent)
+                }
+            }
+            */
+        }
+        private fun timerCountDown_dead(){
+            timeLeft -= 1
+            timer_text.text = timeLeft.toString()
+            if(timeLeft > 0) {
+                if(IsStoped == false) {
+                    TimeHandler.postDelayed(
+                        Runnable {
+                            timerCountDown_dead()
+                        },
+                        1000)
+                }
+            }else{
+                //go to summary screen!
+                if(IsStoped == false) {
+                    IsStoped = true
+                    val intent = Intent(this, QuizSummary::class.java)
+                    intent.putExtra("Score", currentScore)
+                    intent.putExtra("QuizScore", QuizScore)
+                    intent.putExtra("killingSpree", longestkillingSpree)
+                    startActivity(intent)
+                }
+            }
+        }
+    */
     private fun setTrashCaregory(){
         val cat = mutableListOf("GLASS","PAPER","ORGANIC","EWASTE","METAL","PLASTIC")
         cat.shuffle()
@@ -389,5 +488,26 @@ class ThrowingTrashActivity : AppCompatActivity() {
             setObjectPercentLocation("dragable_test",70F,70F)
             updateStreak(false)
         }
+    }
+
+    var ClickTime = 0L
+    override fun onBackPressed() {
+        //ClickTime = System.currentTimeMillis();
+        var Tmp_Time = System.currentTimeMillis();
+        if(Tmp_Time-ClickTime < 2000L && IsStoped == false){
+            IsStoped = true
+
+            try {
+                timer!!.cancel()
+            }catch (E:Exception){
+
+            }
+            val intent = Intent(this, MenuActivity::class.java)
+            startActivity(intent)
+        }else{
+            Toast.makeText(this, "tryck bakåt igen för att avsluta", Toast.LENGTH_SHORT).show()
+            ClickTime = System.currentTimeMillis();
+        }
+        //fragment are not displayed use standard back behavior
     }
 }

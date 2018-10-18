@@ -27,9 +27,10 @@ class QuizActivity : AppCompatActivity() {
 
         val questionNumber: Int = intent.getIntExtra("questionNumber", 0)
 
+
         questionBasedQuiz(questionNumber)
     }
-
+    var blocker = false
     private fun questionBasedQuiz(questionNumber: Int) {
         launch {
             //todo handle network fail
@@ -66,7 +67,10 @@ class QuizActivity : AppCompatActivity() {
                     }
                     delay(delayMillis)
                 } else {
-                    endgame()
+                    if(blocker == false) {
+                        blocker = true;
+                        endgame()
+                    }
                 }
             }
         }
@@ -108,6 +112,7 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun endgame() {
+        println("startar aktivitet!")
         val intent = Intent(this, ThrowingTrashActivity::class.java)
         intent.putExtra("score", points)
         startActivity(intent)

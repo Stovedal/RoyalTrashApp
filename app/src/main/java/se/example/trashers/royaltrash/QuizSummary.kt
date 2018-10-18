@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_quiz_summary.*
 import kotlinx.android.synthetic.main.fragment_login_dialog.*
@@ -75,6 +76,17 @@ class QuizSummary : AppCompatActivity() {
 
                 }
             }
+        }
+    }
+    var ClickTime = 0L
+    override fun onBackPressed() {
+        var Tmp_Time = System.currentTimeMillis();
+        if(Tmp_Time-ClickTime < 2000L){
+            val intent = Intent(this, MenuActivity::class.java)
+            startActivity(intent)
+        }else{
+            Toast.makeText(this, "tryck bakåt igen för att avsluta", Toast.LENGTH_SHORT).show()
+            ClickTime = System.currentTimeMillis();
         }
     }
 }

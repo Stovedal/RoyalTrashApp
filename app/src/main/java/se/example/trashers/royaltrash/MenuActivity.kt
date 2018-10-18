@@ -40,6 +40,12 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
+        //ENABLE this to reset the username att app startup
+        //resetapp()
+        versionCheck()
+
+        LoadeApp()
+
         //Location
         //Check permissions
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION))
@@ -71,12 +77,6 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
             intent.putExtra("questionNumber", 10)
             startActivity(intent)
         }
-
-        //ENABLE this to reset the username att app startup
-        //resetapp()
-        versionCheck()
-
-        LoadeApp()
 
         highscores_button.setOnClickListener {
             val intent = Intent(this, ScoreBoardActivity::class.java)

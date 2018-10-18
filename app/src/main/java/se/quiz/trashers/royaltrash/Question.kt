@@ -1,4 +1,4 @@
-package se.example.trashers.royaltrash
+package se.quiz.trashers.royaltrash
 
 class Question() {
 

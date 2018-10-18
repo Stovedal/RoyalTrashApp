@@ -1,13 +1,11 @@
-package se.example.trashers.royaltrash
+package se.quiz.trashers.royaltrash
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_quiz_summary.*
-import kotlinx.android.synthetic.main.fragment_login_dialog.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import kotlin.math.roundToInt

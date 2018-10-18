@@ -1,4 +1,4 @@
-package se.example.trashers.royaltrash
+package se.quiz.trashers.royaltrash
 
 enum class TrashTypes(var TrashTypeIcons: String) {
 

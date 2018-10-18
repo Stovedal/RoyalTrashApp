@@ -1,4 +1,4 @@
-package se.example.trashers.royaltrash
+package se.quiz.trashers.royaltrash
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -17,13 +17,11 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.BitmapFactory
-import android.text.format.Time
 import android.widget.Toast
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
-import java.util.Calendar.MILLISECOND
 
 
 class AnimatedObj(var frame:Int = 0,var rows:Int, var columns:Int,var imageID:Int,var width:Int,var height:Int ){

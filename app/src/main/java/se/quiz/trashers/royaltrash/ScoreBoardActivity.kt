@@ -1,4 +1,4 @@
-package se.example.trashers.royaltrash
+package se.quiz.trashers.royaltrash
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_score_board.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
-import se.example.trashers.royaltrash.R.id.close_by_button
 
 class ScoreBoardActivity : AppCompatActivity() {
 

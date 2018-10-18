@@ -1,4 +1,4 @@
-package se.example.trashers.royaltrash
+package se.quiz.trashers.royaltrash
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName

@@ -1,10 +1,7 @@
-package se.example.trashers.royaltrash
+package se.quiz.trashers.royaltrash
 
-import android.util.JsonReader
 import junit.framework.Assert.assertEquals
 import org.junit.Test
-import java.io.InputStreamReader
-import java.net.URL
 
 
 /**

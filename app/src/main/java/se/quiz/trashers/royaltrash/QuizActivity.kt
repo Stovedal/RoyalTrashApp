@@ -1,4 +1,4 @@
-package se.example.trashers.royaltrash
+package se.quiz.trashers.royaltrash
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -7,8 +7,6 @@ import kotlinx.android.synthetic.main.activity_quiz.*
 import android.view.View
 import android.widget.Button
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.cancel
-import kotlinx.coroutines.experimental.defer
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 

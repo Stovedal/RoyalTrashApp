@@ -10,4 +10,5 @@
     <string name="starta_trash_trow">Sortera Skräp</string>
     <string name="start_test">Starta Quiz</string>
     <string name="loading">Laddar...</string>
+    <string name="ok">Ok!</string>
 </resources>

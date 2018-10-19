@@ -18,13 +18,8 @@ class LoginDialogFragment : DialogFragment(){
 
     /*
     *
-    *
-    *
-    * DONT
-    * MIND
-    * THIS
-    * FRAGMENT
-    *
+    * "Sucking at something is the first step towards being sorta good at something."
+    *   - Adventure times
     *
     * */
 
@@ -81,7 +76,10 @@ class LoginDialogFragment : DialogFragment(){
     private fun chekIfUserExists(Username:String){
         var scores:Array<DBrequests.Highscore>? = null
         var foundUser =false
-        val username = Username.replace("[^A-Za-z0-9]+".toRegex(), "").toLowerCase()
+        var username = Username.replace("[^A-ZÅÄÖa-zåäö0-9]+".toRegex(), "").toLowerCase()
+        if(username.length > 10){
+            username = username.substring(0,9)
+        }
         statusbar.text = "working..."
         launch {
 
@@ -128,7 +126,7 @@ class LoginDialogFragment : DialogFragment(){
                 }catch (f:Exception){
                     println("ERROR in UI launcher thread!: $f")
                 }
-                dismiss()
+
                 //post the username
                 val postUser = hashMapOf("hs_username" to username, "hs_score" to 0)
                 val jsonStr = Gson().toJson(postUser)
@@ -137,7 +135,9 @@ class LoginDialogFragment : DialogFragment(){
                 }catch (g: Exception){
                     println("ERROR in db connection (POST): $g")
                 }
+                dismiss()
                 delegate?.fragmentCommunicationSetUsername(username)
+
             }
         }
     }

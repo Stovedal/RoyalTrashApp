@@ -6,6 +6,9 @@
 
     <color name="bg_1">#97dde2</color>
     <color name="bg_2">#fdbbbb</color>
+    <color name="bg_3">#c0454545</color>
+
+    <color name="white">#ffffff</color>
 
     <color name="materialBlack">#212121</color>
 

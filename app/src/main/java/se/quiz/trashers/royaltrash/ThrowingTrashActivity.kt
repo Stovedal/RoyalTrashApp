@@ -65,7 +65,7 @@ class AnimatedObj(var frame:Int = 0,var rows:Int, var columns:Int,var imageID:In
 
 }
 
-class ThrowingTrashActivity : AppCompatActivity() {
+class ThrowingTrashActivity : AppCompatActivity(),PauseDialogFragment.FragmentCommunication {
     //ThrowingTrashIsAFunActivity
 
     private var screanWidth:Int? = null
@@ -88,8 +88,8 @@ class ThrowingTrashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_throwing_trash)
         QuizScore = intent.getIntExtra("score", 0)
         timeLeft += QuizScore
-
-        countController();
+        DisplayInstructions()
+        //countController();
         fromOnCreat = true
 
         constraintLayout = findViewById<ConstraintLayout>(R.id.playfield)
@@ -116,7 +116,16 @@ class ThrowingTrashActivity : AppCompatActivity() {
         dragable_test.setOnTouchListener(listener)
     }
 
-
+    override fun fragmentCommunicationStart() {
+        countController();
+        println("Fragment done!, starting!")
+    }
+    private fun DisplayInstructions(){
+        val ft = getSupportFragmentManager().beginTransaction()
+        val newFragment = PauseDialogFragment.newInstance("placeholder...")
+        newFragment.isCancelable = false
+        newFragment.show(ft, "dialog")
+    }
 
 
     /*
@@ -215,88 +224,6 @@ class ThrowingTrashActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
-
-    /*
-        private fun countDown(){
-            timeLeft -= 1
-            launch(UI) {
-                timer_text.text = timeLeft.toString()
-            }
-            if(IsStoped == false) {
-                if (timeLeft > 0) {
-                    launch {
-                        delay(1000)
-                        timeLeft -= 1
-                        countDown()
-                    }
-                }else{
-                    IsStoped = true
-                    val intent = Intent(this, QuizSummary::class.java)
-                    intent.putExtra("Score", currentScore)
-                    intent.putExtra("QuizScore", QuizScore)
-                    intent.putExtra("killingSpree", longestkillingSpree)
-                    startActivity(intent)
-                }
-            }else{
-
-            }
-
-
-
-
-
-            /*
-            if(IsStoped == false) {
-                if (timeLeft > 0) {
-                    if(timer == null){
-                        timer = launch {
-                            delay(1000)
-                            timeLeft -= 1
-                            countDown();
-                        }
-                    }else{
-                        launch {
-                            delay(1000)
-                            timeLeft -= 1
-                            countDown();
-                        }
-                    }
-                }else {
-                    IsStoped = true
-                    val intent = Intent(this, QuizSummary::class.java)
-                    intent.putExtra("Score", currentScore)
-                    intent.putExtra("QuizScore", QuizScore)
-                    intent.putExtra("killingSpree", longestkillingSpree)
-                    startActivity(intent)
-                }
-            }
-            */
-        }
-        private fun timerCountDown_dead(){
-            timeLeft -= 1
-            timer_text.text = timeLeft.toString()
-            if(timeLeft > 0) {
-                if(IsStoped == false) {
-                    TimeHandler.postDelayed(
-                        Runnable {
-                            timerCountDown_dead()
-                        },
-                        1000)
-                }
-            }else{
-                //go to summary screen!
-                if(IsStoped == false) {
-                    IsStoped = true
-                    val intent = Intent(this, QuizSummary::class.java)
-                    intent.putExtra("Score", currentScore)
-                    intent.putExtra("QuizScore", QuizScore)
-                    intent.putExtra("killingSpree", longestkillingSpree)
-                    startActivity(intent)
-                }
-            }
-        }
-    */
     private fun setTrashCaregory(){
         val cat = mutableListOf("GLASS","PAPER","ORGANIC","EWASTE","METAL","PLASTIC")
         cat.shuffle()
@@ -449,10 +376,10 @@ class ThrowingTrashActivity : AppCompatActivity() {
         if(status){
             killingSpree++
         }else{
-            if (longestkillingSpree < killingSpree){
-                longestkillingSpree = killingSpree
-            }
             killingSpree = 0
+        }
+        if (longestkillingSpree < killingSpree){
+            longestkillingSpree = killingSpree
         }
         streak.text = "Streak:" + (killingSpree).toString()
 

@@ -29,7 +29,7 @@ class QuizSummary : AppCompatActivity() {
 
         button_accept.isEnabled = false
         postResult(fscore)
-        calc.text = " Quiz Score: $quizScore\n Trash Score: $score \n Trash Streak: $killingSpree"//"(score+trashScore)*(longeststreak*0.1)"
+        calc.text = " Quiz Score: $quizScore\n Trash Score: $score \n Streak: $killingSpree"//"(score+trashScore)*(longeststreak*0.1)"
         final_score.text = " Final score: " + fscore.toString()
         val data = getSharedPreferences("Data", 0)
         var usern = data!!.getString("Username", null)

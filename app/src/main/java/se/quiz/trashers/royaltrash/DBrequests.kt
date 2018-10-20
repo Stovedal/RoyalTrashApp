@@ -111,11 +111,11 @@ class DBrequests {
         return questions
     }
 
-    fun getDescription(number: Int): List<Question> {
-        val res = URL("http://royaltrashapp.azurewebsites.net/api/QuExp/GetQuExp/$number").readText(Charsets.UTF_8)
+    fun getDescription(number: Int): Description {
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/QuExp/FindByQuId/$number").readText(Charsets.UTF_8)
         val gson = Gson()
-        val questions:List<Question> = gson.fromJson(res, Array<Question>::class.java).toList()
-        return questions
+        val description:List<Description> = gson.fromJson(res, Array<Description>::class.java).toList()
+        return description.first()
     }
 
     data class Highscore(
@@ -127,12 +127,18 @@ class DBrequests {
     )
 
     data class Question(
-            @SerializedName("id") val q_id: Int,
+            @SerializedName("Id") val q_id: Int,
             @SerializedName("question") val question: String,
             @SerializedName("C1answer") val answer: String,
             @SerializedName("C2answer") val alternative1: String,
             @SerializedName("C3answer") val alternative2: String,
             @SerializedName("C4answer") val alternative3: String
+    )
+
+    data class Description(
+            @SerializedName("Id") val id: Int,
+            @SerializedName("question") val description: String,
+            @SerializedName("QuId") val q_id: Int
     )
 
 }

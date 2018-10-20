@@ -95,12 +95,19 @@ class QuizActivity : AppCompatActivity() {
      * @param question
      */
     private fun question(question: DBrequests.Question) {
-        val buttonAdresses = mutableListOf(0, 1, 2, 3).shuffled()
-        val alternatives:List<String> = listOf(question.answer, question.alternative1, question.alternative2, question.alternative3)
+        val alternatives:MutableList<String> = mutableListOf(question.answer, question.alternative1)
+        if (question.alternative2 != "") {
+            alternatives.add(question.alternative2)
+        }
+        if (question.alternative3 != "") {
+            alternatives.add(question.alternative3)
+        }
 
         question_text.text = question.question
 
-        println(buttonAdresses)
+        val buttonAdresses = mutableListOf(0, 1, 2, 3).subList(0, alternatives.size).shuffled()
+
+        println("$buttonAdresses, $alternatives")
 
         buttons.forEach {
             buttonColor(it, "default")

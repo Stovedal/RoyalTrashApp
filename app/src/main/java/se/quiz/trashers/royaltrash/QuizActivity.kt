@@ -100,16 +100,20 @@ class QuizActivity : AppCompatActivity() {
 
         question_text.text = question.question
 
+        println(buttonAdresses)
+
         buttons.forEach {
             buttonColor(it, "default")
             it.visibility = View.INVISIBLE
         }
 
-        alternatives.forEachIndexed{index, alternative ->
+        var index = 0
+        alternatives.forEach{alternative ->
             if (alternative != "") {
                 val button = buttons[buttonAdresses.get(index)]
                 button.text = alternative
                 button.visibility = View.VISIBLE
+                index++
             }
         }
 
@@ -130,7 +134,7 @@ class QuizActivity : AppCompatActivity() {
                     progressAnimator.start()
                 } else {
                     buttonColor(clickedButton, "false")
-                    buttonColor(buttons[0], "true")
+                    buttonColor(buttons[buttonAdresses.get(0)], "true")
                     answers.addAnswer(1, false)
                 }
                 removeListeners(buttons)

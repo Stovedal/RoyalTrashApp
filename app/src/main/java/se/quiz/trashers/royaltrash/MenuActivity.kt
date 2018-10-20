@@ -42,7 +42,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
 
         start_button.setOnClickListener {
             val intent = Intent(this, QuizActivity::class.java)
-            intent.putExtra("questionNumber", 10)
+            intent.putExtra("questionNumber", 30)
             startActivity(intent)
         }
 

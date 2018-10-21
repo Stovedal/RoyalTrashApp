@@ -15,7 +15,7 @@ class DBrequests {
         /* Ex URL "http://royaltrashapp.azurewebsites.net/api/highscores/"*/
         /*Ex js "{\"hs_username\":\"Test\",\"hs_score\":1,\"lat\":63.802443,\"lng\":20.320271}"*/
         try {
-            val obj = URL("http://royaltrashapp.azurewebsites.net/api/highscore/posthighscore/").openConnection() as HttpURLConnection
+            val obj = URL("http://royaltrashapp.azurewebsites.net/api/highscore/posthighscore/1").openConnection() as HttpURLConnection
             obj.requestMethod = "POST"
             obj.doOutput=true
             val byte = js.toByteArray()

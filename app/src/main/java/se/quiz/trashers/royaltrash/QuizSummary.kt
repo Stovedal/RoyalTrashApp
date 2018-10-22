@@ -21,7 +21,7 @@ class QuizSummary : AppCompatActivity() {
         val score :Int = intent.getIntExtra("Score", 0)//trash score
         val quizScore :Int = intent.getIntExtra("QuizScore", 0)//quiz score
         val killingSpree :Int = intent.getIntExtra("killingSpree", 0)//longest trash streak
-        val fscore = ((score + quizScore) * (1 + (0.1F*killingSpree))).roundToInt()
+        val fscore = ((quizScore * 5) + score * (1 + killingSpree))
         button_accept.setOnClickListener {
             val intent = Intent(this, MenuActivity::class.java)
             startActivity(intent)

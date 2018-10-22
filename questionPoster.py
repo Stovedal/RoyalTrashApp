@@ -2,11 +2,11 @@ import requests
 
 r = requests.post("http://royaltrashapp.azurewebsites.net/api/Quiz/PostQuiz",
                   json={
-                      "question": "Om man förbränner 1 kilo bensin ger det upphov till...",
-                      "C1answer": "cirka 3 kilo koldioxid",
-                      "C2answer": "cirka 1 kilo koldioxid",
-                      "C3answer": "cirka 5 kilo koldioxid",
-                      "C4answer": "cirka 10 kilo koldioxid"
+                      "question": "Hur lång tid tar det för en flaska att brytas ned av naturen?",
+                      "C1answer": "4000 år",
+                      "C2answer": "300 år",
+                      "C3answer": "25000 år",
+                      "C4answer": "10000 år"
                         })
 
 print(r.status_code, r.reason)

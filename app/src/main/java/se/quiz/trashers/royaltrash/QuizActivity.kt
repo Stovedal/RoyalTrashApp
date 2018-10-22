@@ -58,7 +58,6 @@ class QuizActivity : AppCompatActivity() {
             questions!!.forEach {
                 delay(delayMillis)
                 if (currentRound != (questions!!.size - 1) && answers.latestCorrect) {
-                    println("$currentRound != ${questions!!.size}")
                     currentRound = answers.round
                     var description: DBrequests.Description? = null
                     val qDescription = launch {
@@ -107,8 +106,6 @@ class QuizActivity : AppCompatActivity() {
 
         val buttonAdresses = mutableListOf(0, 1, 2, 3).subList(0, alternatives.size).shuffled()
 
-        println("$buttonAdresses, $alternatives")
-
         buttons.forEach {
             buttonColor(it, "default")
             it.visibility = View.INVISIBLE
@@ -150,7 +147,6 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun endgame() {
-        println("startar aktivitet!")
         val intent = Intent(this, ThrowingTrashActivity::class.java)
         intent.putExtra("score", points)
         startActivity(intent)

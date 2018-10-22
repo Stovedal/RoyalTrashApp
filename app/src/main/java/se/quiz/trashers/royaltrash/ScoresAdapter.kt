@@ -1,12 +1,21 @@
 package se.quiz.trashers.royaltrash
 
+import android.animation.Animator
+import android.animation.ValueAnimator
+import android.animation.ValueAnimator.INFINITE
 import android.graphics.Color
 import android.support.design.card.MaterialCardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import android.widget.TextView
+import kotlinx.coroutines.experimental.NonCancellable.cancel
+import kotlinx.coroutines.experimental.withTimeout
+import org.w3c.dom.Text
+import java.lang.Thread.sleep
 
 class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private val userPosition: Int) : RecyclerView.Adapter<ScoresAdapter.MyViewHolder>() {
 
@@ -53,9 +62,34 @@ class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private
         holder.score.findViewById<TextView>(R.id.textContainer).text = scores.get(position).hs_username
 
         if(position.equals(userPosition)){
-            holder.score.findViewById<TextView>(R.id.textContainer).setTextColor(Color.parseColor("#29CFAF"))
-            holder.score.strokeColor = Color.parseColor("#29CFAF")
+            val color = "#29CFAF"
+            holder.score.findViewById<TextView>(R.id.textContainer).setTextColor(Color.parseColor(color))
+            holder.score.strokeColor = Color.parseColor(color)
             holder.score.strokeWidth = 10
+        }
+        if(position.equals(0)){
+            val color = "#D6BD3E"
+            holder.score.findViewById<TextView>(R.id.textContainer).setTextColor(Color.parseColor(color))
+            holder.score.findViewById<TextView>(R.id.textContainer).setTextSize(30f)
+            holder.score.findViewById<MaterialCardView>(R.id.score_container).setPadding(20,20,20,20)
+            holder.score.findViewById<MaterialCardView>(R.id.score_container).setRadius(150f)
+            holder.score.strokeColor = Color.parseColor(color)
+            holder.score.strokeWidth = 10
+            holder.score.findViewById<TextView>(R.id.leader).text = "LEDARE!"
+            val valueAnimator = ValueAnimator.ofFloat(-20f, 20f)
+            valueAnimator.repeatMode = ValueAnimator.REVERSE
+            valueAnimator.repeatCount = ValueAnimator.INFINITE
+            valueAnimator.addUpdateListener {
+                val value = it.animatedValue as Float
+                holder.score.findViewById<ImageView>(R.id.score_img).rotation = value
+                if(value==0f){
+                    valueAnimator.pause()
+                    valueAnimator.resume()
+                }
+            }
+            valueAnimator.interpolator = AccelerateInterpolator()
+            valueAnimator.duration = 200
+            valueAnimator.start()
         }
     }
 

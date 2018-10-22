@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/score_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    >
+    app:cardCornerRadius="40dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="4dp">
+        android:layout_margin="4dp"
+        >
 
         <ImageView
             android:id="@+id/score_img"
@@ -17,26 +19,27 @@
             android:layout_height="80dp"
             android:contentDescription="icon"
             android:padding="5dp"
+            android:rotation="0"
             android:src="@drawable/trashy_last" />
+
         <TextView
             android:id="@+id/score_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="20dp"
             android:layout_alignParentStart="true"
             android:gravity="center"
+            android:padding="20dp"
             android:text=""
             android:textColor="@color/materialBlack"
             android:textSize="30sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/textContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/score_img"
+            android:layout_centerInParent="true"
             android:gravity="center"
-            android:layout_margin="5dp"
             android:text="placeholder"
             android:textColor="@color/materialBlack"
             android:textSize="20sp"
@@ -46,14 +49,31 @@
             android:id="@+id/score_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:layout_alignParentEnd="true"
-            android:gravity="center"
             android:layout_alignEnd="@id/score_count"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="false"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="20dp"
             android:text="0p"
+            android:textAlignment="center"
             android:textColor="@color/materialBlack"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/leader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text=""
+            android:textColor="#D6BD3E" />
 
     </RelativeLayout>
 </android.support.design.card.MaterialCardView>

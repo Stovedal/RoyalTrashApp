@@ -67,6 +67,7 @@ class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private
             val color = "#29CFAF"
             holder.score.findViewById<TextView>(R.id.textContainer).setTextColor(Color.parseColor(color))
             holder.score.findViewById<TextView>(R.id.leader).text = "DU!"
+            holder.score.findViewById<TextView>(R.id.leader).setTextColor(Color.parseColor(color))
             holder.score.strokeColor = Color.parseColor(color)
             holder.score.strokeWidth = 10
             
@@ -76,6 +77,7 @@ class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private
             holder.score.findViewById<TextView>(R.id.textContainer).setTextColor(Color.parseColor(color))
             holder.score.findViewById<TextView>(R.id.textContainer).setTextSize(30f)
             holder.score.findViewById<MaterialCardView>(R.id.score_container).setPadding(20,20,20,20)
+            holder.score.findViewById<MaterialCardView>(R.id.score_container).radius = 150f
 
             holder.score.strokeColor = Color.parseColor(color)
             holder.score.strokeWidth = 10
@@ -86,10 +88,6 @@ class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private
             valueAnimator.addUpdateListener {
                 val value = it.animatedValue as Float
                 holder.score.findViewById<ImageView>(R.id.score_img).rotation = value
-                if(value==0f){
-                    valueAnimator.pause()
-                    valueAnimator.resume()
-                }
             }
             valueAnimator.interpolator = AccelerateInterpolator()
             valueAnimator.duration = 200

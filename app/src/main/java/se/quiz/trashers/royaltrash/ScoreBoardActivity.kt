@@ -11,6 +11,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import android.support.v7.widget.DividerItemDecoration
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout.HORIZONTAL
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -64,22 +65,31 @@ class ScoreBoardActivity : AppCompatActivity() {
 
                 }
 
+                score_item_leader.findViewById<TextView>(R.id.down_text).text = scores.get(userposition).hs_username
+                score_item_leader.findViewById<TextView>(R.id.score_count).text = scores.get(userposition).hs_score.toString() + 'p'
                 recyclerView.setOnScrollChangeListener({
                     v, scrollX, scrollY, oldScrollX, oldScrollY ->
                     if((recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()<userposition &&
                             (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()>userposition){
-                        println("hellooo")
                         score_item_leader.visibility= View.INVISIBLE
-
                     } else {
-                        println("mndp")
                         score_item_leader.visibility= View.VISIBLE
+                        if((recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()<userposition){
+                            ic_down.rotation= 0f
+                        } else {
+                            ic_down.rotation= 180f
+                        }
                     }
                 })
 
-                (viewManager as LinearLayoutManager).scrollToPositionWithOffset(userposition, 50)
+                score_item_leader.setOnClickListener{
+                    if((recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() < userposition){
+                        recyclerView.smoothScrollToPosition(userposition+2)
+                    } else {
+                        recyclerView.smoothScrollToPosition(userposition-2)
+                    }
+                }
             }
-
         }
 
 
@@ -88,7 +98,6 @@ class ScoreBoardActivity : AppCompatActivity() {
             val filtered = scores.filter{ it.lat != null }
             val userposition = filtered.indexOf(filtered.find { it.hs_username == username })
             recyclerView.adapter = ScoresAdapter(filtered.toCollection(ArrayList()), userposition)
-            (viewManager as LinearLayoutManager).scrollToPositionWithOffset(userposition, 50)
             close_by_button.run {
                 setBackgroundColor(getColor(R.color.colorAccent))
                 setTextColor(Color.WHITE)
@@ -106,7 +115,6 @@ class ScoreBoardActivity : AppCompatActivity() {
             recyclerView.adapter.apply {  }
             val userposition = scores.indexOf(scores.find { it.hs_username == username })
             recyclerView.adapter = ScoresAdapter(scores.toCollection(ArrayList()), userposition)
-            (viewManager as LinearLayoutManager).scrollToPositionWithOffset(userposition, 50)
             all_button.run {
                 setBackgroundColor(getColor(R.color.colorAccent))
                 setTextColor(Color.WHITE)

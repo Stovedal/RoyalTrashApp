@@ -99,7 +99,7 @@ class DBrequests {
     }
 
     fun getRandomQuestion():Question{
-        val res = URL("http://royaltrashapp.azurewebsites.net/api/quiz/getranqq").readText(Charsets.UTF_8)
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/quiz/GetSimFirQu").readText(Charsets.UTF_8)
         val gson = Gson()
         return gson.fromJson(res, Question::class.java)
     }

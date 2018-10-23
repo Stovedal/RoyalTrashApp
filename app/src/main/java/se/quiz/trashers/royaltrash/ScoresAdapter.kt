@@ -5,6 +5,7 @@ import android.animation.ValueAnimator
 import android.animation.ValueAnimator.INFINITE
 import android.graphics.Color
 import android.support.design.card.MaterialCardView
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import java.lang.Thread.sleep
 
 class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private val userPosition: Int) : RecyclerView.Adapter<ScoresAdapter.MyViewHolder>() {
 
+    public val userPos = userPosition
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
@@ -64,15 +66,17 @@ class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private
         if(position.equals(userPosition)){
             val color = "#29CFAF"
             holder.score.findViewById<TextView>(R.id.textContainer).setTextColor(Color.parseColor(color))
+            holder.score.findViewById<TextView>(R.id.leader).text = "DU!"
             holder.score.strokeColor = Color.parseColor(color)
             holder.score.strokeWidth = 10
+            
         }
         if(position.equals(0)){
             val color = "#D6BD3E"
             holder.score.findViewById<TextView>(R.id.textContainer).setTextColor(Color.parseColor(color))
             holder.score.findViewById<TextView>(R.id.textContainer).setTextSize(30f)
             holder.score.findViewById<MaterialCardView>(R.id.score_container).setPadding(20,20,20,20)
-            holder.score.findViewById<MaterialCardView>(R.id.score_container).setRadius(150f)
+
             holder.score.strokeColor = Color.parseColor(color)
             holder.score.strokeWidth = 10
             holder.score.findViewById<TextView>(R.id.leader).text = "LEDARE!"

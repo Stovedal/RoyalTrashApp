@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/show_my_score"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="25dp"
+    app:cardCornerRadius="50dp"
+    app:strokeColor="@color/colorPrimary"
+    app:strokeWidth="5dp">
+
+    <RelativeLayout
+        android:id="@+id/p"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:gravity="center"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/ic_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+
+            android:layout_marginStart="23dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_down" />
+
+        <TextView
+            android:id="@+id/down_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="PLACEHOLDER"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/score_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="0p"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+
+    </RelativeLayout>
+</android.support.design.card.MaterialCardView>

@@ -53,7 +53,8 @@
             android:text="@string/loading"
             android:textSize="24sp"
             android:textIsSelectable="false"
-            android:autoSizeTextType="uniform"/>
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="24dp"/>
 
     </FrameLayout>
 

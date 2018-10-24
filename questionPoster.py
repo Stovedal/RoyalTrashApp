@@ -2,7 +2,7 @@ import requests
 
 r = requests.post("http://royaltrashapp.azurewebsites.net/api/Quiz/PostQuiz",
                   json={
-                      "question": "Hur lång tid tar det för en glasflaska att brytas ned av naturen?",
+                      "question": "",
                       "C1answer": "",
                       "C2answer": "",
                       "C3answer": "",

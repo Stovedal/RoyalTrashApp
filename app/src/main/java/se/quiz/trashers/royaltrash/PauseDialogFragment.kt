@@ -51,9 +51,8 @@ class PauseDialogFragment : DialogFragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.puase_dialog_layout, container, false)
-        val btnAccept = view.findViewById<View>(R.id.startTrashTrowing) as Button
         val text = view.findViewById<View>(R.id.description) as TextView
-        text.text = getString(R.string.trash_sort_help)
+        text.text = getString(R.string.trash_sort_help, content)
         dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         /* btnAccept.setOnClickListener {
             funfun()

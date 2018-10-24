@@ -76,7 +76,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
         //resetapp()
         versionCheck()
 
-        LoadeApp()
+        LoadApp()
 
         //Location
         //Check permissions
@@ -112,25 +112,28 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
                 launch {
                     val location_ = p0!!.locations.get(p0!!.locations.size-1) //Get last location
                     val username = data!!.getString("Username", null)
-                    if (username != null) {
+                    try {
                         val user = DBrequests().apiGetHighscoreByUsername(username)[0]
 
                         val PostUser = hashMapOf("hs_Id" to user.hs_id, "hs_username" to user.hs_username, "hs_score" to user.hs_score, "lat" to location_.latitude, "lng" to location_.longitude)
                         val JsonStr = Gson().toJson(PostUser)
                         try {
                             DBrequests().apiSetHighscoreByUsername(user.hs_id.toString(), JsonStr)
-                        } catch (g: Exception){
+                        } catch (g: Exception) {
                             println("MENU ACTIVITY ERROR in db connection (PUT): " + g)
                         }
                         val editor = getSharedPreferences("Data", 0).edit()
                         editor.putString("lat", location_.latitude.toString())
                         editor.putString("lng", location_.longitude.toString())
                         editor.apply()
-                        println("PRINTING LOCATION:"+location_.toString())
+                        println("PRINTING LOCATION:" + location_.toString())
                         /*launch(UI) {
-                            location.text = location_.latitude.toString() + "/" + location_.longitude.toString()
-                        }*/
+                        location.text = location_.latitude.toString() + "/" + location_.longitude.toString()
+                    }*/
+                    } catch (e:ArrayIndexOutOfBoundsException) {
+                        usernameFragment()
                     }
+
                 }
             }
         }
@@ -152,7 +155,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
         editor.putString("Username", Username)
         editor.commit()
         DisplayingFragment = false
-        this.runOnUiThread { LoadeApp() }
+        this.runOnUiThread { LoadApp() }
     }
 
 
@@ -163,7 +166,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
     }
 
 
-    fun LoadeApp(){
+    fun LoadApp(){
         data = getSharedPreferences("Data", 0)
 
         val Username = data!!.getString("Username", null)
@@ -172,12 +175,16 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
             usernamefield.text = Username
         }else{
             //oppen name fragment
-            DisplayingFragment = true
-            val ft = getSupportFragmentManager().beginTransaction()
-            val newFragment = LoginDialogFragment.newInstance("placeholder...")
-            newFragment.isCancelable = false
-            newFragment.show(ft, "dialog")
+            usernameFragment()
         }
+    }
+
+    fun usernameFragment() {
+        DisplayingFragment = true
+        val ft = getSupportFragmentManager().beginTransaction()
+        val newFragment = LoginDialogFragment.newInstance("placeholder...")
+        newFragment.isCancelable = false
+        newFragment.show(ft, "dialog")
     }
 
     override fun onBackPressed() {

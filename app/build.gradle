@@ -13,7 +13,7 @@ kotlin {
 android {
     compileSdkVersion 28
 
-    defaultConfig {
+    defaultConfig { 
         applicationId "se.quiz.trashers.royaltrash"
         minSdkVersion 23
         targetSdkVersion 28

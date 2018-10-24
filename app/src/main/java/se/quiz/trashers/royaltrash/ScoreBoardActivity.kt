@@ -97,14 +97,16 @@ class ScoreBoardActivity : AppCompatActivity() {
                             // Display the current progress of SeekBar
 
                             score_radius_text.text = "Progress : $i"
-                            val delta = i.toFloat()/100000
+                            val delta = i.toFloat()
                             val newScores = scores.filter{
                                 it ->
                                 if(it.hs_username == data!!.getString("Username", null)){
                                     true
                                 } else if(it.lat!=null && it.lng!=null){
                                     println("lat: " + abs(userlat.toFloat()-it.lat.toFloat()) + " lng: " + abs(userlat.toFloat()-it.lng.toFloat()) + " i: " + delta)
+                                    println("lat " + userlat.toFloat() + " - " + it.lat.toFloat() + " is " + abs(userlat.toFloat()-it.lat.toFloat()))
                                     abs(userlat.toFloat()-it.lat.toFloat()) < delta && abs(userlat.toFloat()-it.lng.toFloat()) < delta
+
                                 } else {
                                     false
                                 }

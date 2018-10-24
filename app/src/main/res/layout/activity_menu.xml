@@ -8,7 +8,7 @@
     android:background="@drawable/bg">
 
     <ImageView
-        android:id="@+id/lol"
+        android:id="@+id/animation_holder2"
         android:layout_width="125dp"
         android:layout_height="159dp"
         android:layout_margin="16dp"
@@ -22,7 +22,9 @@
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.319" />
+        app:layout_constraintVertical_bias="0.319"
+
+        />
 
     <TextView
         android:id="@+id/usernamefield"

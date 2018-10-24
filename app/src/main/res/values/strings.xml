@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">RoyalTrash</string>
-    <string name="start_button">Play</string>
+    <string name="start_button">Spela</string>
     <string name="title_activity_score_board">ScoreBoardActivity</string>
-    <string name="highscore">Highscores</string>
+    <string name="highscore">Topplista</string>
     <string name="all">All</string>
     <string name="friends">Close by</string>
-    <string name="starta_trash_trow">Start Throwing Trash</string>
-    <string name="start_test">Start Quiz</string>
-    <string name="loading">Loading...</string>
-    <string name="ok">Ok!</string>
-    <string name="score">Score</string>
+    <string name="starta_trash_trow">Starta kasta skräp</string>
+    <string name="start_test">Starta Quiz</string>
+    <string name="loading">Laddar...</string>
+    <string name="ok">Okej</string>
+    <string name="score">Poäng</string>
 </resources>

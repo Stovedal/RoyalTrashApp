@@ -82,12 +82,13 @@ class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private
             holder.score.strokeColor = Color.parseColor(color)
             holder.score.strokeWidth = 10
             holder.score.findViewById<TextView>(R.id.leader).text = "LEDARE!"
-            val valueAnimator = ValueAnimator.ofFloat(-20f, 20f)
+            val valueAnimator = ValueAnimator.ofFloat(0f, -50f)
             valueAnimator.repeatMode = ValueAnimator.REVERSE
             valueAnimator.repeatCount = ValueAnimator.INFINITE
+            var direction = false
             valueAnimator.addUpdateListener {
                 val value = it.animatedValue as Float
-                holder.score.findViewById<ImageView>(R.id.score_img).rotation = value
+                holder.score.findViewById<ImageView>(R.id.score_img).translationY = value
             }
             valueAnimator.interpolator = AccelerateInterpolator()
             valueAnimator.duration = 200

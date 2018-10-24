@@ -11,14 +11,13 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import android.support.v7.widget.DividerItemDecoration
 import android.view.View
-import android.widget.ImageView
+import android.widget.*
 import android.widget.LinearLayout.HORIZONTAL
-import android.widget.LinearLayout
-import android.widget.TextView
 import com.google.android.gms.vision.text.Line
 import kotlinx.android.synthetic.main.score_item.*
 import kotlinx.android.synthetic.main.score_item_leader.*
 import org.w3c.dom.Text
+import java.lang.Math.abs
 
 
 class ScoreBoardActivity : AppCompatActivity() {
@@ -43,19 +42,11 @@ class ScoreBoardActivity : AppCompatActivity() {
         val userlng = data.getString("lng", null)
         println("User lat long is $userlat  $userlng")
 
-        all_button.run {
-            setBackgroundColor(getColor(R.color.colorAccent))
-            setTextColor(Color.WHITE)
-        }
-
-        if(findViewById<MaterialCardView>(R.id.show_my_score)!=null){
-            println("IN rifnaoi")
-        }
 
         launch {
             scores =  DBrequests().apiGetHighscores().toCollection(ArrayList())
             launch(UI){
-                val userposition = scores.indexOf(scores.find { it.hs_username == username })
+                var userposition = scores.indexOf(scores.find { it.hs_username == username })
                 viewAdapter = ScoresAdapter(scores, userposition)
                 recyclerView = findViewById(R.id.score_scroll)
                 recyclerView.apply {
@@ -89,41 +80,51 @@ class ScoreBoardActivity : AppCompatActivity() {
                         recyclerView.smoothScrollToPosition(userposition-2)
                     }
                 }
+
+                if(userlat!=null && userlng!=null){
+                    score_radius.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                        override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                            println("hej") //To change body of created functions use File | Settings | File Templates.
+                        }
+
+                        override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                            println("hej") //To change body of created functions use File | Settings | File Templates.
+                        }
+
+                        override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+                            // Display the current progress of SeekBar
+
+                            score_radius_text.text = "Progress : $i"
+                            val delta = i.toFloat()/100000
+                            val newScores = scores.filter{
+                                it ->
+                                if(it.hs_username == data!!.getString("Username", null)){
+                                    true
+                                } else if(it.lat!=null && it.lng!=null){
+                                    println("lat: " + abs(userlat.toFloat()-it.lat.toFloat()) + " lng: " + abs(userlat.toFloat()-it.lng.toFloat()) + " i: " + delta)
+                                    abs(userlat.toFloat()-it.lat.toFloat()) < delta && abs(userlat.toFloat()-it.lng.toFloat()) < delta
+                                } else {
+                                    false
+                                }
+                            }
+
+                            userposition = newScores.indexOf(newScores.find { it.hs_username == username })
+
+                            recyclerView.adapter = ScoresAdapter(newScores.toCollection(
+                                    ArrayList<DBrequests.Highscore>()
+                            ), userposition);
+                        }
+
+                    })
+                } else {
+                    score_radius.isEnabled = false
+                }
+
+
             }
         }
 
 
 
-        close_by_button.setOnClickListener {
-            val filtered = scores.filter{ it.lat != null }
-            val userposition = filtered.indexOf(filtered.find { it.hs_username == username })
-            recyclerView.adapter = ScoresAdapter(filtered.toCollection(ArrayList()), userposition)
-            close_by_button.run {
-                setBackgroundColor(getColor(R.color.colorAccent))
-                setTextColor(Color.WHITE)
-            }
-            all_button.run {
-                setBackgroundColor(Color.TRANSPARENT)
-                setTextColor(getColor(R.color.colorAccent))
-            }
-        }
-
-
-
-
-        all_button.setOnClickListener {
-            recyclerView.adapter.apply {  }
-            val userposition = scores.indexOf(scores.find { it.hs_username == username })
-            recyclerView.adapter = ScoresAdapter(scores.toCollection(ArrayList()), userposition)
-            all_button.run {
-                setBackgroundColor(getColor(R.color.colorAccent))
-                setTextColor(Color.WHITE)
-            }
-            close_by_button.run {
-                setBackgroundColor(Color.TRANSPARENT)
-                setTextColor(getColor(R.color.colorAccent))
-            }
-        }
     }
-
 }

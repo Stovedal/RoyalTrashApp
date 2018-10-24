@@ -88,7 +88,7 @@ class ThrowingTrashActivity : AppCompatActivity(),PauseDialogFragment.FragmentCo
         setContentView(R.layout.activity_throwing_trash)
         QuizScore = intent.getIntExtra("score", 0)
         timeLeft += QuizScore
-        DisplayInstructions()
+        DisplayInstructions(timeLeft.toString())
         //countController();
         fromOnCreat = true
 
@@ -120,9 +120,9 @@ class ThrowingTrashActivity : AppCompatActivity(),PauseDialogFragment.FragmentCo
         countController();
         println("Fragment done!, starting!")
     }
-    private fun DisplayInstructions(){
+    private fun DisplayInstructions(Score:String){
         val ft = getSupportFragmentManager().beginTransaction()
-        val newFragment = PauseDialogFragment.newInstance("placeholder...")
+        val newFragment = PauseDialogFragment.newInstance(Score)
         newFragment.isCancelable = false
         newFragment.show(ft, "dialog")
     }

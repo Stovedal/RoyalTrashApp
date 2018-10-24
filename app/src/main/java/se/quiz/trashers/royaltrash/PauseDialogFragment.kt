@@ -33,6 +33,7 @@ class PauseDialogFragment : DialogFragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         content = arguments!!.getString("content")
+        //content is now a string of the time given
         //getDialog().window.setBackgroundDrawableResource(android.R.color.transparent);
         val style = DialogFragment.STYLE_NO_FRAME
         val theme = R.style.AppTheme

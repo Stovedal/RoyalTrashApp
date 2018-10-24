@@ -79,7 +79,7 @@ class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private
             valueAnimator.repeatCount = ValueAnimator.INFINITE
             valueAnimator.addUpdateListener {
                 val value = it.animatedValue as Float
-                if(scores.get(position).hs_score == 1337){
+                if(scores.get(position).hs_score == 1337 && position == userPosition){
                     holder.score.findViewById<ImageView>(R.id.score_img).rotation = value
                 } else {
                     holder.score.findViewById<ImageView>(R.id.score_img).translationY = value

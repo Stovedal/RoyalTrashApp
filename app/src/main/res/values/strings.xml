@@ -11,7 +11,6 @@
     <string name="ok">Okej</string>
     <string name="score">Poäng</string>
     <string name="brajobbat">Bra jobbat, %1$s!</string>
-    <string name="nytthighscore">Bra jobbat, %1$s!
-        Nytt highscore!</string>
+    <string name="nytthighscore">Bra jobbat, %1$s\nNytt highscore!</string>
     <string name="final_score">Du fick %1$d poäng!</string>
 </resources>

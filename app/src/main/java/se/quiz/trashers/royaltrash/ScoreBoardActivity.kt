@@ -63,6 +63,8 @@ class ScoreBoardActivity : AppCompatActivity() {
                     if((recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()<userposition &&
                             (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()>userposition){
                         score_item_leader.visibility= View.INVISIBLE
+                    } else if (userposition==0){
+                        score_item_leader.visibility= View.INVISIBLE
                     } else {
                         score_item_leader.visibility= View.VISIBLE
                         if((recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()<userposition){

@@ -15,6 +15,7 @@ import kotlinx.coroutines.experimental.launch
 class QuizActivity : AppCompatActivity() {
     var points = 0
     private val delayMillis = 1000L
+    private val delayLongMillis = 5000L
     var questions:List<DBrequests.Question>? = null
     private var answers: Answers = Answers()
     lateinit var buttons:List<Button>
@@ -54,9 +55,9 @@ class QuizActivity : AppCompatActivity() {
             var currentRound = answers.round
             loadedQs.join()
             while (currentRound == answers.round) {}
-
+            //todo description for forts question
+            delay(delayMillis)
             questions!!.forEach {
-                delay(delayMillis)
                 if (currentRound != (questions!!.size - 1) && answers.latestCorrect) {
                     currentRound = answers.round
                     var description: DBrequests.Description? = null
@@ -74,14 +75,28 @@ class QuizActivity : AppCompatActivity() {
                     qCoroutine.join()
                     while (currentRound == answers.round) {}
                     qDescription.cancel()
-                    if (description != null) {
+
+
+                    if (description == null) {
+                        delay(delayMillis)
+                    } else {
                         launch(UI) {
                             question_text.text = description!!.description
                         }
-                        delay(delayMillis)
+                        val waitingThing = launch {
+                            delay(delayLongMillis)
+                        }
+                        val quizLayout = findViewById<View>(R.id.quizLayout)
+
+                        launch(UI) {
+                            quizLayout.setOnClickListener {
+                                waitingThing.cancel()
+                            }
+                        }
+                        waitingThing.join()
                     }
                 } else {
-                    if(blocker == false) {
+                    if(!blocker) {
                         blocker = true
                         endgame()
                     }

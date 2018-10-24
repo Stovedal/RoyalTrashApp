@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-
+import android.widget.TextView
 
 
 class PauseDialogFragment : DialogFragment(){
@@ -51,10 +51,17 @@ class PauseDialogFragment : DialogFragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.puase_dialog_layout, container, false)
         val btnAccept = view.findViewById<View>(R.id.startTrashTrowing) as Button
+        val text = view.findViewById<View>(R.id.description) as TextView
+        text.text = getString(R.string.trash_sort_help)
         dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        btnAccept.setOnClickListener {
+        /* btnAccept.setOnClickListener {
+            funfun()
+        }*/
+
+        view.setOnClickListener {
             funfun()
         }
+
         return view
     }
 

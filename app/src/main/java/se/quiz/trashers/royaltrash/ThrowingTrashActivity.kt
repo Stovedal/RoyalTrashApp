@@ -11,6 +11,7 @@ import java.lang.Math.pow
 import java.util.*
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Handler
 import android.support.constraint.ConstraintLayout
 import android.graphics.Bitmap
@@ -133,12 +134,12 @@ class ThrowingTrashActivity : AppCompatActivity(),PauseDialogFragment.FragmentCo
     * Sprite animation methods start here
     * #############################
     * */
-    private fun CreatanimateSpriteImages(obje:AnimatedObj):AnimatedObj{
+    fun CreatanimateSpriteImages(obje:AnimatedObj, res: Resources):AnimatedObj{
         //fun CreatanimateSpriteImages(rows:Int,columns:Int,width:Int,height:Int){
         val save = HashMap<Int,Bitmap>()
         val options = BitmapFactory.Options()
         options.inScaled = false
-        val bm: Bitmap?= BitmapFactory.decodeResource(getResources(), obje.imageID, options)
+        val bm: Bitmap?= BitmapFactory.decodeResource(res, obje.imageID, options)
         var cframe = 0
         for(i in 0 until obje.rows){
             for(j in 0 until obje.columns) {
@@ -155,19 +156,20 @@ class ThrowingTrashActivity : AppCompatActivity(),PauseDialogFragment.FragmentCo
         return obje
     }
 
-    private fun startAnimateimg(obje:AnimatedObj){
+     fun startAnimateimg(obje:AnimatedObj, holder:ImageView){
         if (obje.frame == 0){
             obje.startAnim()
         }
         val nFrame = obje.getNextFrame()
         if(nFrame != null) {
-            animation_holder.setImageBitmap(nFrame)
+            //animation_holder.setImageBitmap(nFrame)
+            holder.setImageBitmap(nFrame)
         }
         if(!obje.isAnimDone() && obje.running){
             Handler().postDelayed(
                     Runnable {
                         if (obje.running) {
-                            startAnimateimg(obje)
+                            startAnimateimg(obje, holder)
                         }
                     },
                     20)
@@ -193,8 +195,8 @@ class ThrowingTrashActivity : AppCompatActivity(),PauseDialogFragment.FragmentCo
             //countController()
             // countDown()
             //timerCountDown()
-            starAnim = CreatanimateSpriteImages(starAnim)
-            Handler().postDelayed(Runnable { startAnimateimg(starAnim) }, 400)
+            starAnim = CreatanimateSpriteImages(starAnim, getResources())
+            Handler().postDelayed(Runnable { startAnimateimg(starAnim, animation_holder) }, 400)
         }
     }
 
@@ -399,7 +401,7 @@ class ThrowingTrashActivity : AppCompatActivity(),PauseDialogFragment.FragmentCo
                 setObjectPercentLocation("animation_holder",Tpos.first,Tpos.second)
 
                 starAnim.resetFrame()
-                startAnimateimg(starAnim)
+                startAnimateimg(starAnim, animation_holder)
 
                 activeTrash = getNewTrash()//update the trash selected
                 changeObjectIcon("dragable_test",activeTrash!!)

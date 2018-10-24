@@ -5,24 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@drawable/bg"
     tools:context=".QuizSummary">
 
     <TextView
         android:id="@+id/final_score"
         android:layout_width="265dp"
-        android:layout_height="50dp"
+        android:layout_height="47dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/text_backdrop"
         android:elevation="5dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="5dp"
         android:text="@string/score"
         android:textAlignment="viewStart"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toEndOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@+id/guideline6" />
 
@@ -35,6 +40,11 @@
         android:layout_marginBottom="12dp"
         android:background="@drawable/text_backdrop"
         android:elevation="5dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="5dp"
+        app:autoSizeTextType="uniform"
         android:text=""
         android:textAlignment="viewStart"
         android:textAllCaps="false"
@@ -116,7 +126,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.37"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/trashy_last" />
 
     <TextView

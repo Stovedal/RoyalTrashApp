@@ -80,7 +80,7 @@ class LoginDialogFragment : DialogFragment(){
         if(username.length > 10){
             username = username.substring(0,9)
         }
-        statusbar.text = "working..."
+        statusbar.text = "Laddar..."
         launch {
 
             try {
@@ -102,7 +102,7 @@ class LoginDialogFragment : DialogFragment(){
             }else{
                 try {
                     launch(UI) {
-                        statusbar.text = "something went wrong.. check your internet connection"
+                        statusbar.text = "Något gick fel. Har du internetuppkoppling?"
                     }
                 }catch (d: Exception){
                     println("WARNING! NO data from server!")
@@ -110,10 +110,10 @@ class LoginDialogFragment : DialogFragment(){
             }
             if(foundUser){
                 //Toast.makeText(activity, "Username taken!", Toast.LENGTH_SHORT).show()
-                makeToast("Username alredy taken :(")
+                makeToast("Användarnamnet taget. :(")
                 try {
                     launch(UI) {
-                        statusbar.text = "username taken, try again"
+                        statusbar.text = "Användarnamnet är upptaget, tyvärr."
                     }
                 }catch (f:Exception){
                     println("ERROR in UI launcher thread!: " + f)
@@ -121,7 +121,7 @@ class LoginDialogFragment : DialogFragment(){
             }else{
                 try{
                     launch(UI) {
-                        statusbar.text = "setting username.."
+                        statusbar.text = "Sätter användarnamn.."
                     }
                 }catch (f:Exception){
                     println("ERROR in UI launcher thread!: $f")

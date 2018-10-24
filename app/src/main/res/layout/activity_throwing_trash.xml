@@ -70,13 +70,21 @@
 
     <TextView
         android:id="@+id/timer_text"
-        android:layout_width="157dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:text="Time:0"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="2dp"
+        android:height="12dp"
+        android:background="@drawable/quiz_button_true"
+        android:elevation="8dp"
+        android:paddingStart="10dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="8dp"
+        android:textAlignment="center"
         android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="parent" />
@@ -98,7 +106,7 @@
     <ImageView
         android:id="@+id/dragable_test"
         android:layout_width="117dp"
-        android:layout_height="103dp"
+        android:layout_height="117dp"
         android:layout_marginStart="125dp"
         android:layout_marginTop="259dp"
         android:layout_marginEnd="125dp"
@@ -108,14 +116,12 @@
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.484"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        app:layout_constraintVertical_bias="0.484" />
 
     <ImageView
         android:id="@+id/animation_holder"
         android:layout_width="172dp"
         android:layout_height="164dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
@@ -124,8 +130,7 @@
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.875"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        app:layout_constraintVertical_bias="0.875" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline5"

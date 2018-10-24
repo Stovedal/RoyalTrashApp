@@ -21,7 +21,7 @@ class QuizSummary : AppCompatActivity() {
         val score :Int = intent.getIntExtra("Score", 0)//trash score
         val quizScore :Int = intent.getIntExtra("QuizScore", 0)//quiz score
         val killingSpree :Int = intent.getIntExtra("killingSpree", 0)//longest trash streak
-        val fscore = ((score + quizScore) * (1 + (0.1F*killingSpree))).roundToInt()
+        val fscore = ((quizScore * 5) + score * (1 + killingSpree))
         button_accept.setOnClickListener {
             val intent = Intent(this, MenuActivity::class.java)
             startActivity(intent)
@@ -30,10 +30,10 @@ class QuizSummary : AppCompatActivity() {
         button_accept.isEnabled = false
         postResult(fscore)
         calc.text = " Quiz Score: $quizScore\n Trash Score: $score \n Streak: $killingSpree"//"(score+trashScore)*(longeststreak*0.1)"
-        final_score.text = " Final score: " + fscore.toString()
+        final_score.text = getString(R.string.final_score, fscore)
         val data = getSharedPreferences("Data", 0)
-        var usern = data!!.getString("Username", null)
-        txtViewUser.text = " Bra jobbat, $usern!"
+        val username = data!!.getString("Username", null)
+        txtViewUser.text = getString(R.string.brajobbat, username)
 
     }
     private fun postResult(Result:Int){
@@ -52,7 +52,7 @@ class QuizSummary : AppCompatActivity() {
                     if(scores!![0].hs_score < Result){
                         impHighscore = true
                         launch(UI) {
-                            txtViewUser.text = "Bra jobbat, $Username!\n Nytt highscore!"
+                            txtViewUser.text = getString(R.string.nytthighscore, Username)
                             imageView.setImageDrawable(getDrawable(R.drawable.trashy_1st))
                             imageView.setImageResource(R.drawable.trashy_1st)
                         }

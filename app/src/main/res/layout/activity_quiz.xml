@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@drawable/bg"
+    android:id="@+id/quizLayout"
     tools:context=".QuizActivity">
 
     <FrameLayout
@@ -51,7 +52,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/loading"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textIsSelectable="false"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="24dp"/>
 
     </FrameLayout>
 

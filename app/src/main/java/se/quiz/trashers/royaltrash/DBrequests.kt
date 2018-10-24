@@ -15,7 +15,7 @@ class DBrequests {
         /* Ex URL "http://royaltrashapp.azurewebsites.net/api/highscores/"*/
         /*Ex js "{\"hs_username\":\"Test\",\"hs_score\":1,\"lat\":63.802443,\"lng\":20.320271}"*/
         try {
-            val obj = URL("http://royaltrashapp.azurewebsites.net/api/highscore/posthighscore/").openConnection() as HttpURLConnection
+            val obj = URL("http://royaltrashapp.azurewebsites.net/api/highscore/posthighscore/1").openConnection() as HttpURLConnection
             obj.requestMethod = "POST"
             obj.doOutput=true
             val byte = js.toByteArray()
@@ -99,7 +99,7 @@ class DBrequests {
     }
 
     fun getRandomQuestion():Question{
-        val res = URL("http://royaltrashapp.azurewebsites.net/api/quiz/getranqq").readText(Charsets.UTF_8)
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/quiz/GetSimFirQu").readText(Charsets.UTF_8)
         val gson = Gson()
         return gson.fromJson(res, Question::class.java)
     }
@@ -111,11 +111,11 @@ class DBrequests {
         return questions
     }
 
-    fun getDescription(number: Int): List<Question> {
-        val res = URL("http://royaltrashapp.azurewebsites.net/api/QuExp/GetQuExp/$number").readText(Charsets.UTF_8)
+    fun getDescription(number: Int): Description {
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/QuExp/FindByQuId/$number").readText(Charsets.UTF_8)
         val gson = Gson()
-        val questions:List<Question> = gson.fromJson(res, Array<Question>::class.java).toList()
-        return questions
+        val description:List<Description> = gson.fromJson(res, Array<Description>::class.java).toList()
+        return description.first()
     }
 
     data class Highscore(
@@ -127,12 +127,18 @@ class DBrequests {
     )
 
     data class Question(
-            @SerializedName("id") val q_id: Int,
+            @SerializedName("Id") val q_id: Int,
             @SerializedName("question") val question: String,
             @SerializedName("C1answer") val answer: String,
             @SerializedName("C2answer") val alternative1: String,
             @SerializedName("C3answer") val alternative2: String,
             @SerializedName("C4answer") val alternative3: String
+    )
+
+    data class Description(
+            @SerializedName("Id") val id: Int,
+            @SerializedName("question") val description: String,
+            @SerializedName("QuId") val q_id: Int
     )
 
 }

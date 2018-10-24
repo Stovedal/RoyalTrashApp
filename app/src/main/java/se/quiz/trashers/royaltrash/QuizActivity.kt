@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.transition.Visibility
 import kotlinx.android.synthetic.main.activity_quiz.*
 import android.view.View
 import android.widget.Button
@@ -13,7 +14,8 @@ import kotlinx.coroutines.experimental.launch
 
 class QuizActivity : AppCompatActivity() {
     var points = 0
-    private val delayMillis = 2000L
+    private val delayMillis = 1000L
+    private val delayLongMillis = 5000L
     var questions:List<DBrequests.Question>? = null
     private var answers: Answers = Answers()
     lateinit var buttons:List<Button>
@@ -22,12 +24,16 @@ class QuizActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
-        buttons = listOf(quiz_button1, quiz_button2, quiz_button3, quiz_button4)
 
         val questionNumber: Int = intent.getIntExtra("questionNumber", 0)
+        buttons = listOf(quiz_button1, quiz_button2, quiz_button3, quiz_button4)
 
         progressBar.max = questionNumber * 100
         progressBar.progress = 0
+        val progressAnimator = ObjectAnimator.ofInt(progressBar,
+                "progress", progressBar.progress, progressBar.progress + 100)
+        progressAnimator.setDuration(1000)
+        progressAnimator.start()
 
         questionBasedQuiz(questionNumber)
     }
@@ -49,31 +55,48 @@ class QuizActivity : AppCompatActivity() {
             var currentRound = answers.round
             loadedQs.join()
             while (currentRound == answers.round) {}
+            //todo description for forts question
             delay(delayMillis)
-
             questions!!.forEach {
                 if (currentRound != (questions!!.size - 1) && answers.latestCorrect) {
-                    println("$currentRound != ${questions!!.size}")
                     currentRound = answers.round
+                    var description: DBrequests.Description? = null
+                    val qDescription = launch {
+                        try {
+                            description = DBrequests().getDescription(it.q_id)
+                        } catch (e:Exception) {
+                            println(e.message)
+                        }
+                    }
+
                     val qCoroutine = launch(UI) {
                         question(it)
-                    }
-                    val description = ""
-                    val qDescription = launch {
-                        //todo get description
                     }
                     qCoroutine.join()
                     while (currentRound == answers.round) {}
                     qDescription.cancel()
-                    if (!description.isEmpty()) {
+
+
+                    if (description == null) {
+                        delay(delayMillis)
+                    } else {
                         launch(UI) {
-                            question_text.text = description
+                            question_text.text = description!!.description
                         }
+                        val waitingThing = launch {
+                            delay(delayLongMillis)
+                        }
+                        val quizLayout = findViewById<View>(R.id.quizLayout)
+
+                        launch(UI) {
+                            quizLayout.setOnClickListener {
+                                waitingThing.cancel()
+                            }
+                        }
+                        waitingThing.join()
                     }
-                    delay(delayMillis)
                 } else {
-                    println("hi")
-                    if(blocker == false) {
+                    if(!blocker) {
                         blocker = true
                         endgame()
                     }
@@ -86,33 +109,51 @@ class QuizActivity : AppCompatActivity() {
      * @param question
      */
     private fun question(question: DBrequests.Question) {
-        buttons = buttons.shuffled()
+        val alternatives:MutableList<String> = mutableListOf(question.answer, question.alternative1)
+        if (question.alternative2 != "") {
+            alternatives.add(question.alternative2)
+        }
+        if (question.alternative3 != "") {
+            alternatives.add(question.alternative3)
+        }
 
         question_text.text = question.question
 
-        buttons[0].text = question.answer
-        buttons[1].text = question.alternative1
-        buttons[2].text = question.alternative2
-        buttons[3].text = question.alternative3
+        val buttonAdresses = mutableListOf(0, 1, 2, 3).subList(0, alternatives.size).shuffled()
+
+        buttons.forEach {
+            buttonColor(it, "default")
+            it.visibility = View.INVISIBLE
+        }
+
+        var index = 0
+        alternatives.forEach{alternative ->
+            if (alternative != "") {
+                val button = buttons[buttonAdresses.get(index)]
+                button.text = alternative
+                button.visibility = View.VISIBLE
+                index++
+            }
+        }
 
         buttons.forEach { button ->
 
-            buttonColor(button, "default")
             button.setOnClickListener { clickedButton ->
 
                 buttons.forEach {
                     buttonColor(it, "disabled")}
 
-                if (buttons[0] == clickedButton) {
+                if (buttons[buttonAdresses.get(0)] == clickedButton) {
                     buttonColor(clickedButton, "true")
                     points += 1
                     answers.addAnswer(0, true)
-                    val progressAnimator = ObjectAnimator.ofInt(progressBar, "progress", progressBar.progress, progressBar.progress + 100)
+                    val progressAnimator = ObjectAnimator.ofInt(progressBar,
+                            "progress", progressBar.progress, progressBar.progress + 100)
                     progressAnimator.setDuration(1000)
                     progressAnimator.start()
                 } else {
                     buttonColor(clickedButton, "false")
-                    buttonColor(buttons[0], "true")
+                    buttonColor(buttons[buttonAdresses.get(0)], "true")
                     answers.addAnswer(1, false)
                 }
                 removeListeners(buttons)
@@ -121,7 +162,6 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun endgame() {
-        println("startar aktivitet!")
         val intent = Intent(this, ThrowingTrashActivity::class.java)
         intent.putExtra("score", points)
         startActivity(intent)

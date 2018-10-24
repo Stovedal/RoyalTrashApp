@@ -1,10 +1,16 @@
 package se.quiz.trashers.royaltrash
 
+import android.animation.TimeAnimator
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Rect
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.os.Looper
 import android.support.v4.app.ActivityCompat
 
@@ -12,7 +18,13 @@ import android.support.v4.app.ActivityCompat
 import com.google.android.gms.location.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_menu.*
+import kotlinx.android.synthetic.main.activity_throwing_trash.*
+import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
+import java.util.HashMap
+import android.widget.Toast
+
+
 
 class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunication {
 
@@ -36,13 +48,22 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
         }
     }
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
+            var starAnim = AnimatedObj(0, 4, 5, R.drawable.trashyrotate_sprite4, 338, 480)
+            starAnim = ThrowingTrashActivity().CreatanimateSpriteImages(starAnim, getResources())
+            ThrowingTrashActivity().startAnimateimg(starAnim, animation_holder2)
+        animation_holder2.setOnClickListener {
+            ThrowingTrashActivity().startAnimateimg(starAnim, animation_holder2)
+        }
+
         start_button.setOnClickListener {
             val intent = Intent(this, QuizActivity::class.java)
-            intent.putExtra("questionNumber", 10)
+            intent.putExtra("questionNumber", 30)
             startActivity(intent)
         }
 
@@ -55,7 +76,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
         //resetapp()
         versionCheck()
 
-        LoadeApp()
+        LoadApp()
 
         //Location
         //Check permissions
@@ -80,8 +101,10 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
             fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.myLooper())
 
         }
-        //Location fetched
+
     }
+
+
 
     private fun buildLocationCallback(){
         locationCallback = object :LocationCallback(){
@@ -89,25 +112,28 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
                 launch {
                     val location_ = p0!!.locations.get(p0!!.locations.size-1) //Get last location
                     val username = data!!.getString("Username", null)
-                    if (username != null) {
+                    try {
                         val user = DBrequests().apiGetHighscoreByUsername(username)[0]
 
                         val PostUser = hashMapOf("hs_Id" to user.hs_id, "hs_username" to user.hs_username, "hs_score" to user.hs_score, "lat" to location_.latitude, "lng" to location_.longitude)
                         val JsonStr = Gson().toJson(PostUser)
                         try {
                             DBrequests().apiSetHighscoreByUsername(user.hs_id.toString(), JsonStr)
-                        } catch (g: Exception){
+                        } catch (g: Exception) {
                             println("MENU ACTIVITY ERROR in db connection (PUT): " + g)
                         }
                         val editor = getSharedPreferences("Data", 0).edit()
                         editor.putString("lat", location_.latitude.toString())
                         editor.putString("lng", location_.longitude.toString())
                         editor.apply()
-                        println("PRINTING LOCATION:"+location_.toString())
+                        println("PRINTING LOCATION:" + location_.toString())
                         /*launch(UI) {
-                            location.text = location_.latitude.toString() + "/" + location_.longitude.toString()
-                        }*/
+                        location.text = location_.latitude.toString() + "/" + location_.longitude.toString()
+                    }*/
+                    } catch (e:ArrayIndexOutOfBoundsException) {
+                        usernameFragment()
                     }
+
                 }
             }
         }
@@ -129,7 +155,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
         editor.putString("Username", Username)
         editor.commit()
         DisplayingFragment = false
-        this.runOnUiThread { LoadeApp() }
+        this.runOnUiThread { LoadApp() }
     }
 
 
@@ -140,7 +166,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
     }
 
 
-    fun LoadeApp(){
+    fun LoadApp(){
         data = getSharedPreferences("Data", 0)
 
         val Username = data!!.getString("Username", null)
@@ -149,12 +175,16 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
             usernamefield.text = Username
         }else{
             //oppen name fragment
-            DisplayingFragment = true
-            val ft = getSupportFragmentManager().beginTransaction()
-            val newFragment = LoginDialogFragment.newInstance("placeholder...")
-            newFragment.isCancelable = false
-            newFragment.show(ft, "dialog")
+            usernameFragment()
         }
+    }
+
+    fun usernameFragment() {
+        DisplayingFragment = true
+        val ft = getSupportFragmentManager().beginTransaction()
+        val newFragment = LoginDialogFragment.newInstance("placeholder...")
+        newFragment.isCancelable = false
+        newFragment.show(ft, "dialog")
     }
 
     override fun onBackPressed() {

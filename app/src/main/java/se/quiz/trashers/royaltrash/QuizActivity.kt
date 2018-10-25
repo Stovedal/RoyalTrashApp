@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.transition.Visibility
 import kotlinx.android.synthetic.main.activity_quiz.*
 import android.view.View
 import android.widget.Button
@@ -14,8 +13,7 @@ import kotlinx.coroutines.experimental.launch
 
 class QuizActivity : AppCompatActivity() {
     var points = 0
-    private val delayMillis = 1000L
-    private val delayLongMillis = 5000L
+    private val delayMillis = 15000L
     var questions:List<DBrequests.Question>? = null
     private var answers: Answers = Answers()
     lateinit var buttons:List<Button>
@@ -56,52 +54,55 @@ class QuizActivity : AppCompatActivity() {
             loadedQs.join()
             while (currentRound == answers.round) {}
             //todo description for forts question
-            delay(delayMillis)
+            waitForTimeoutOrTap()
             questions!!.forEach {
-                if (currentRound != (questions!!.size - 1) && answers.latestCorrect) {
-                    currentRound = answers.round
-                    var description: DBrequests.Description? = null
-                    val qDescription = launch {
-                        try {
-                            description = DBrequests().getDescription(it.q_id)
-                        } catch (e:Exception) {
-                            println(e.message)
-                        }
-                    }
-
-                    val qCoroutine = launch(UI) {
-                        question(it)
-                    }
-                    qCoroutine.join()
-                    while (currentRound == answers.round) {}
-                    qDescription.cancel()
-
-
-                    if (description == null) {
-                        delay(delayMillis)
-                    } else {
-                        launch(UI) {
-                            question_text.text = description!!.description
-                        }
-                        val waitingThing = launch {
-                            delay(delayLongMillis)
-                        }
-                        val quizLayout = findViewById<View>(R.id.quizLayout)
-
-                        launch(UI) {
-                            quizLayout.setOnClickListener {
-                                waitingThing.cancel()
-                            }
-                        }
-                        waitingThing.join()
-                    }
-                } else {
-                    if(!blocker) {
-                        blocker = true
-                        endgame()
+                if ((currentRound == (questions!!.size - 1) && !blocker) || !answers.latestCorrect) {
+                    blocker = true
+                    endgame()
+                }
+                currentRound = answers.round
+                var description: DBrequests.Description? = null
+                val qDescription = launch {
+                    try {
+                        description = DBrequests().getDescription(it.q_id)
+                    } catch (e:Exception) {
+                        println(e.message)
                     }
                 }
+
+                val qCoroutine = launch(UI) {
+                    question(it)
+                }
+                qCoroutine.join()
+                while (currentRound == answers.round) {}
+                qDescription.cancel()
+
+
+                if (description != null) {
+                    launch(UI) {
+                        question_text.text = description!!.description
+                    }
+                }
+                waitForTimeoutOrTap()
             }
+        }
+    }
+
+    suspend fun waitForTimeoutOrTap() {
+        val waitingThing = launch {
+            delay(delayMillis)
+        }
+        val nextButton = findViewById<View>(R.id.next_button)
+
+        launch(UI) {
+            nextButton.visibility = View.VISIBLE
+            nextButton.setOnClickListener {
+                waitingThing.cancel()
+            }
+        }
+        waitingThing.join()
+        launch(UI) {
+            nextButton.visibility = View.GONE
         }
     }
 

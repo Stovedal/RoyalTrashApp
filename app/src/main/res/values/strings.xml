@@ -9,6 +9,7 @@
     <string name="start_test">Starta Quiz</string>
     <string name="loading">Laddar...</string>
     <string name="ok">Okej</string>
+    <string name="next">Nästa</string>
     <string name="score">Poäng</string>
     <string name="brajobbat">Bra jobbat, %1$s!</string>
     <string name="nytthighscore">Bra jobbat, %1$s\nNytt highscore!</string>

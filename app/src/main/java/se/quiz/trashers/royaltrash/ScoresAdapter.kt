@@ -91,11 +91,11 @@ class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private
             valueAnimator.start()
         } else if(position.equals(userPosition)){
             val color = "#29CFAF"
-            holder.score.findViewById<TextView>(R.id.textContainer).setTextColor(Color.parseColor(color))
-            holder.score.findViewById<TextView>(R.id.leader).text = "DU!"
+            holder.score.findViewById<TextView>(R.id.textContainer).setTextColor(Color.BLACK)
+            holder.score.findViewById<TextView>(R.id.leader).text = "DIN POÄNG"
             holder.score.findViewById<TextView>(R.id.leader).setTextColor(Color.parseColor(color))
             holder.score.strokeColor = Color.parseColor(color)
-            holder.score.strokeWidth = 10
+            holder.score.strokeWidth = 5
 
         }
     }

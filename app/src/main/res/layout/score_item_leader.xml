@@ -2,12 +2,12 @@
 <android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/show_my_score"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="25dp"
-    app:cardCornerRadius="50dp"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="45dp"
     app:strokeColor="@color/colorPrimary"
-    app:strokeWidth="0dp">
+    app:strokeWidth="2dp">
 
     <RelativeLayout
         android:id="@+id/p"
@@ -19,8 +19,8 @@
 
         <ImageView
             android:id="@+id/ic_down"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
 
@@ -41,7 +41,8 @@
             android:layout_margin="0dp"
             android:gravity="center"
             android:text=" "
-            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textColor="@color/materialBlack"
             android:textSize="20dp" />
 
         <TextView
@@ -54,7 +55,8 @@
             android:gravity="center"
             android:paddingRight="30dp"
             android:text="0p"
-            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textColor="@color/materialBlack"
             android:textSize="20sp" />
 
         <TextView

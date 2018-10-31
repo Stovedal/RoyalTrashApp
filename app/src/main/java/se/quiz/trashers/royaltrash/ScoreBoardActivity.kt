@@ -84,6 +84,8 @@ class ScoreBoardActivity : AppCompatActivity() {
                 }
 
                 if(userlat!=null && userlng!=null){
+                    score_radius_text.text = "Visar toppspelare inom : 100 km radie"
+                    score_radius.setProgress(100);
                     score_radius.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                         override fun onStartTrackingTouch(seekBar: SeekBar?) {
                             println("hej") //To change body of created functions use File | Settings | File Templates.
@@ -96,8 +98,8 @@ class ScoreBoardActivity : AppCompatActivity() {
                         override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                             // Display the current progress of SeekBar
 
-                            score_radius_text.text = "Progress : $i"
-                            val delta = i.toFloat()
+                            score_radius_text.text = "Visar toppspelare inom : $i km radie"
+                            val delta = i.toFloat()*2
                             val newScores = scores.filter{
                                 it ->
                                 if(it.hs_username == data!!.getString("Username", null)){

@@ -54,10 +54,10 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
-            var starAnim = AnimatedObj(0, 4, 5, R.drawable.trashyrotate_sprite4, 338, 480)
+        var starAnim = AnimatedObj(0, 4, 5, R.drawable.trashyrotate_sprite4, 338, 480)
             starAnim = ThrowingTrashActivity().CreatanimateSpriteImages(starAnim, getResources())
             ThrowingTrashActivity().startAnimateimg(starAnim, animation_holder2)
-        animation_holder2.setOnClickListener {
+            animation_holder2.setOnClickListener {
             ThrowingTrashActivity().startAnimateimg(starAnim, animation_holder2)
         }
 
@@ -80,8 +80,9 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
 
         //Location
         //Check permissions
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION))
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)){
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), rEQUEST_CODE)
+        }
         else
         {
             buildLocationRequest()
@@ -98,6 +99,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
                 return
             }
             //Get Location
+
             fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.myLooper())
 
         }
@@ -127,9 +129,6 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
                         editor.putString("lng", location_.longitude.toString())
                         editor.apply()
                         println("PRINTING LOCATION:" + location_.toString())
-                        /*launch(UI) {
-                        location.text = location_.latitude.toString() + "/" + location_.longitude.toString()
-                    }*/
                     } catch (e:ArrayIndexOutOfBoundsException) {
                         usernameFragment()
                     }

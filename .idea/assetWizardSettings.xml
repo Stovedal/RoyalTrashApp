@@ -64,8 +64,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_glasobjekt1" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/app/src/main/res/drawable/glasobjekt1.svg" />
+                            <entry key="outputName" value="ic_map_icon" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/app/src/main/res/drawable/map_icon.svg" />
                           </map>
                         </option>
                       </PersistentState>

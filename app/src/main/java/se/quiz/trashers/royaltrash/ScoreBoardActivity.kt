@@ -55,6 +55,7 @@ class ScoreBoardActivity : AppCompatActivity() {
              * and fill the recycleview.
              */
             scores =  DBrequests().apiGetHighscores().toCollection(ArrayList())
+            score_radius.isEnabled = true;
 
             launch(UI){
                 var userposition = scores.indexOf(scores.find { it.hs_username == username })

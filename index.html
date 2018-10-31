@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <title></title>
+        <style>
+            body{
+                margin: 0;
+                padding: 0;
+                font-family: sans-serif;
+                font-variant: small-caps;
+                background-color: black;
+                height: 100%;
+                color: aliceblue;
+            }
+
+            h1 {
+                margin: 1em;
+            }
+
+
+            #scorelist .item {
+                box-shadow: 0.1em 0.3em 0.5em #0003;
+                margin: 1em;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding-left: 1em;
+                padding-right: 1em;
+                border-radius: 7.5em;
+                border: #00ffa4;
+                border-width: 0.3em;
+                border-style: inset;
+            }
+
+            #scoreboard {
+                float: right;
+                width: 20%;
+            }
+        </style>
+    </head>
+    <body>
+    <embed id="iframe" src="RoyalTrashpres.pdf#toolbar=0&navpanes=0&scrollbar=0" frameborder="0" border="0" cellspacing="0" />
+      <div id="scoreboard">
+            <h1>Topplista</h1>
+            <div id="scorelist">
+
+            </div>
+      </div>
+    <script type="text/javascript" language="javascript">
+        document.body.onload = function () {
+            document.readyState
+            var createCORSRequest = function (method, url) {
+                var xhr = new XMLHttpRequest();
+                if ("withCredentials" in xhr) {
+                    // Most browsers.
+                    xhr.open(method, url, true);
+                } else if (typeof XDomainRequest != "undefined") {
+                    // IE8 & IE9
+                    xhr = new XDomainRequest();
+                    xhr.open(method, url);
+                } else {
+                    // CORS not supported.
+                    xhr = null;
+                }
+                return xhr;
+            };
+
+            var url = 'http://royaltrashapp.azurewebsites.net/api/highscore/getbyscore';
+            var method = 'GET';
+
+            setInterval(() => {
+                //console.log('poke')
+                var xhr = createCORSRequest(method, url);
+
+                xhr.onload = function () {
+                    // Success code goes here.
+                    //console.log(xhr.response);
+                    var data = JSON.parse(xhr.response);
+                    var list = document.getElementById('scorelist');
+                    list.innerHTML = ""
+                    data.map((data) => {
+                        list.innerHTML += '<div class="item"><p class"name">' + data.hs_username + '</p><p class="score">' + data.hs_score + '</p></div>'
+                    })
+                };
+
+                xhr.onerror = function () {
+                    // Error code goes here.
+                };
+
+                xhr.send();
+            }, 3000)
+            var iframe = document.getElementById('iframe');
+
+            iframe.style = 'height:100%; width: 80%';
+        }
+    </script>
+    </body>
+</html>

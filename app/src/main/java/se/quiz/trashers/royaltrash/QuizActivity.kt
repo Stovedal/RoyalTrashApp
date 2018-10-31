@@ -12,7 +12,6 @@ import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 
 class QuizActivity : AppCompatActivity() {
-    var points = 0
     private val delayMillis = 15000L
     var questions:List<DBrequests.Question>? = null
     private var answers: Answers = Answers()
@@ -35,14 +34,15 @@ class QuizActivity : AppCompatActivity() {
 
         questionBasedQuiz(questionNumber)
     }
+
     var blocker = false
     private fun questionBasedQuiz(questionNumber: Int) {
-        launch {
+        val firstQ = launch {
             //todo handle network fail
             val firstQuestion = DBrequests().getRandomQuestion()
-            launch(UI) {
-                question(firstQuestion)
-            }
+            val currentRound = answers.round
+            questionCycle(firstQuestion, currentRound)
+
         }
         val loadedQs = launch {
             //todo handle network fail
@@ -52,42 +52,56 @@ class QuizActivity : AppCompatActivity() {
         launch {
             var currentRound = answers.round
             loadedQs.join()
-            while (currentRound == answers.round) {}
-            //todo description for forts question
-            waitForTimeoutOrTap()
+            firstQ.join()
+            //todo description for first question
             questions!!.forEach {
                 if ((currentRound == (questions!!.size - 1) && !blocker) || !answers.latestCorrect) {
                     blocker = true
                     endgame()
                 }
                 currentRound = answers.round
-                var description: DBrequests.Description? = null
-                val qDescription = launch {
-                    try {
-                        description = DBrequests().getDescription(it.q_id)
-                    } catch (e:Exception) {
-                        println(e.message)
-                    }
-                }
-
-                val qCoroutine = launch(UI) {
-                    question(it)
-                }
-                qCoroutine.join()
-                while (currentRound == answers.round) {}
-                qDescription.cancel()
-
-
-                if (description != null) {
-                    launch(UI) {
-                        question_text.text = description!!.description
-                    }
-                }
-                waitForTimeoutOrTap()
+                questionCycle(it, currentRound)
             }
         }
     }
 
+    /**
+     * Shows a question and attempts to get a description for that question.
+     * If there is a description it will be showed after the question has been answered.
+     * There is also a function that waits for user input or a timeout so the user has time
+     * to read the descripton.
+     * @param question the question
+     * @param round the integer describing the current round, the function will proceed to the next round when answers.round changes
+     * @see Answers
+     * @see DBrequests.Question
+     */
+    suspend fun questionCycle(question:DBrequests.Question, round:Int) {
+        var description: DBrequests.Description? = null
+        val qDescription = launch {
+            try {
+                description = DBrequests().getDescription(question.q_id)
+            } catch (e:Exception) {
+                println(e.message)
+            }
+        }
+        launch(UI) {
+            question(question)
+        }
+        while (round == answers.round) {}
+        qDescription.cancel()
+
+        if (description != null) {
+            launch(UI) {
+                question_text.text = description!!.description
+            }
+        }
+        waitForTimeoutOrTap()
+    }
+
+    /**
+     * Waits for the next button to be pressed or the timeout in milliseconds
+     * @see delayMillis
+     */
     suspend fun waitForTimeoutOrTap() {
         val waitingThing = launch {
             delay(delayMillis)
@@ -108,6 +122,7 @@ class QuizActivity : AppCompatActivity() {
 
     /**
      * @param question
+     * @see DBrequests.Question
      */
     private fun question(question: DBrequests.Question) {
         val alternatives:MutableList<String> = mutableListOf(question.answer, question.alternative1)
@@ -146,7 +161,6 @@ class QuizActivity : AppCompatActivity() {
 
                 if (buttons[buttonAdresses.get(0)] == clickedButton) {
                     buttonColor(clickedButton, "true")
-                    points += 1
                     answers.addAnswer(0, true)
                     val progressAnimator = ObjectAnimator.ofInt(progressBar,
                             "progress", progressBar.progress, progressBar.progress + 100)
@@ -164,7 +178,7 @@ class QuizActivity : AppCompatActivity() {
 
     private fun endgame() {
         val intent = Intent(this, ThrowingTrashActivity::class.java)
-        intent.putExtra("score", points)
+        intent.putExtra("score", answers.getAnswers().size)
         startActivity(intent)
     }
 

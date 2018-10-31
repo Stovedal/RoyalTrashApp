@@ -16,7 +16,6 @@
                 margin: 1em;
             }
 
-
             #scorelist .item {
                 box-shadow: 0.1em 0.3em 0.5em #0003;
                 margin: 1em;
@@ -63,6 +62,17 @@
                 }
                 return xhr;
             };
+
+            document.addEventListener("click", function () {
+                var
+                    el = document.body
+                    , rfs =
+                        el.requestFullScreen
+                        || el.webkitRequestFullScreen
+                        || el.mozRequestFullScreen
+                    ;
+                rfs.call(el);
+            });
 
             var url = 'http://royaltrashapp.azurewebsites.net/api/highscore/getbyscore';
             var method = 'GET';

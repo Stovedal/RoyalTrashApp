@@ -18,6 +18,10 @@ import kotlinx.coroutines.experimental.withTimeout
 import org.w3c.dom.Text
 import java.lang.Thread.sleep
 
+
+/**
+ * ScoresAdapter is used to implement the Recyclerview given a list of scores to show.
+ */
 class ScoresAdapter(private val scores: ArrayList<DBrequests.Highscore>, private val userPosition: Int) : RecyclerView.Adapter<ScoresAdapter.MyViewHolder>() {
 
     public val userPos = userPosition

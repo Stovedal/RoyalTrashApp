@@ -19,6 +19,10 @@ import kotlinx.android.synthetic.main.score_item_leader.*
 import org.w3c.dom.Text
 import java.lang.Math.abs
 
+/**
+ * Activity controlling the highscore-view.
+ *
+ */
 
 class ScoreBoardActivity : AppCompatActivity() {
 
@@ -35,16 +39,23 @@ class ScoreBoardActivity : AppCompatActivity() {
         viewManager = LinearLayoutManager(this)
 
 
-
+        /**
+         * Get data about the user
+         */
         val data = getSharedPreferences("Data", 0)
         val username = data!!.getString("Username", null)
         val userlat = data.getString("lat", null)
         val userlng = data.getString("lng", null)
-        println("User lat long is $userlat  $userlng")
+
 
 
         launch {
+            /**
+             * Get scores from  database
+             * and fill the recycleview.
+             */
             scores =  DBrequests().apiGetHighscores().toCollection(ArrayList())
+
             launch(UI){
                 var userposition = scores.indexOf(scores.find { it.hs_username == username })
                 viewAdapter = ScoresAdapter(scores, userposition)
@@ -56,12 +67,13 @@ class ScoreBoardActivity : AppCompatActivity() {
 
                 }
 
+                //Create the scroll-to-your-score button.
                 score_item_leader.findViewById<TextView>(R.id.down_text).text = scores.get(userposition).hs_username
                 score_item_leader.findViewById<TextView>(R.id.score_count).text = scores.get(userposition).hs_score.toString() + 'p'
                 recyclerView.setOnScrollChangeListener({
                     v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                    if((recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()<userposition &&
-                            (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()>userposition){
+                    if((recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()<=userposition &&
+                            (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()>=userposition){
                         score_item_leader.visibility= View.INVISIBLE
                     } else if (userposition==0){
                         score_item_leader.visibility= View.INVISIBLE
@@ -83,6 +95,7 @@ class ScoreBoardActivity : AppCompatActivity() {
                     }
                 }
 
+                //Create and set handles for the slider which controls which scores to be filtered out
                 if(userlat!=null && userlng!=null){
                     score_radius_text.text = "Visar toppspelare inom : 100 km radie"
                     score_radius.setProgress(100);
@@ -108,7 +121,6 @@ class ScoreBoardActivity : AppCompatActivity() {
                                     println("lat: " + abs(userlat.toFloat()-it.lat.toFloat()) + " lng: " + abs(userlat.toFloat()-it.lng.toFloat()) + " i: " + delta)
                                     println("lat " + userlat.toFloat() + " - " + it.lat.toFloat() + " is " + abs(userlat.toFloat()-it.lat.toFloat()))
                                     abs(userlat.toFloat()-it.lat.toFloat()) < delta && abs(userlat.toFloat()-it.lng.toFloat()) < delta
-
                                 } else {
                                     false
                                 }

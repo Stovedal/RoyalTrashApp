@@ -114,17 +114,22 @@ class ScoreBoardActivity : AppCompatActivity() {
 
                             score_radius_text.text = "Visar toppspelare inom : $i km radie"
                             val delta = i.toFloat()*2
-                            val newScores = scores.filter{
+
+                            var newScores = scores.filter{
                                 it ->
+                                if(i==0){
+                                    true
+                                }
                                 if(it.hs_username == data!!.getString("Username", null)){
                                     true
                                 } else if(it.lat!=null && it.lng!=null){
-                                    println("lat: " + abs(userlat.toFloat()-it.lat.toFloat()) + " lng: " + abs(userlat.toFloat()-it.lng.toFloat()) + " i: " + delta)
-                                    println("lat " + userlat.toFloat() + " - " + it.lat.toFloat() + " is " + abs(userlat.toFloat()-it.lat.toFloat()))
                                     abs(userlat.toFloat()-it.lat.toFloat()) < delta && abs(userlat.toFloat()-it.lng.toFloat()) < delta
                                 } else {
                                     false
                                 }
+                            }
+                            if(i == 100){
+                                newScores = scores
                             }
 
                             userposition = newScores.indexOf(newScores.find { it.hs_username == username })

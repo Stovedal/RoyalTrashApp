@@ -7,9 +7,9 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_quiz.*
 import android.view.View
 import android.widget.Button
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class QuizActivity : AppCompatActivity() {
     private val delayMillis = 15000L
@@ -41,12 +41,16 @@ class QuizActivity : AppCompatActivity() {
             //todo handle network fail
             val firstQuestion = DBrequests().getRandomQuestion()
             val currentRound = answers.round
+            println("first Q")
             questionCycle(firstQuestion, currentRound)
+
 
         }
         val loadedQs = launch {
             //todo handle network fail
             questions = DBrequests().getQuestions(questionNumber - 1)
+            println("all Qs")
+
         }
 
         launch {
@@ -61,6 +65,7 @@ class QuizActivity : AppCompatActivity() {
                 }
                 currentRound = answers.round
                 questionCycle(it, currentRound)
+                println("Q no ${answers.round}")
             }
         }
     }
@@ -103,6 +108,7 @@ class QuizActivity : AppCompatActivity() {
      * @see delayMillis
      */
     suspend fun waitForTimeoutOrTap() {
+        println("timeout or tap")
         val waitingThing = launch {
             delay(delayMillis)
         }

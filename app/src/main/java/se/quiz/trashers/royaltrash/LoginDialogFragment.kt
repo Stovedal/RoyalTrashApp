@@ -10,8 +10,8 @@ import android.widget.Button
 import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_login_dialog.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.launch
 
 
 class LoginDialogFragment : DialogFragment(){

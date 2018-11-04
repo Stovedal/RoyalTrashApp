@@ -123,7 +123,7 @@ class ThrowingTrashActivity : AppCompatActivity(),PauseDialogFragment.FragmentCo
     }
     private fun DisplayInstructions(Score:String){
         val ft = getSupportFragmentManager().beginTransaction()
-        val newFragment = PauseDialogFragment.newInstance(Score)
+        val newFragment = PauseDialogFragment.newInstance(getString(R.string.trash_sort_help, Score))
         newFragment.isCancelable = false
         newFragment.show(ft, "dialog")
     }

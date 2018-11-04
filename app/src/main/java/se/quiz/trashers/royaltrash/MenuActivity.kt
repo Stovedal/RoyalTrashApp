@@ -1,6 +1,7 @@
 package se.quiz.trashers.royaltrash
 
 import android.animation.TimeAnimator
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -30,7 +31,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
 
     private var data: SharedPreferences? = null
     private var DisplayingFragment = false
-    private var Version = 2//hehe
+    private var Version = 42//hehe
 
     //Location stuffs
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -186,14 +187,18 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
         newFragment.show(ft, "dialog")
     }
 
+    var ClickTime = 0L
     override fun onBackPressed() {
-        if (DisplayingFragment){
-            //fragment is displayed, do nothing!
-            println("fragment displayed")
-        } else {
-            super.onBackPressed();
-            //fragment are not displayed use standard back behavior
+        //ClickTime = System.currentTimeMillis();
+        var Tmp_Time = System.currentTimeMillis();
+        if(Tmp_Time-ClickTime < 2000L){
+            finish();
+            System.exit(0);
+        }else{
+            Toast.makeText(this, "tryck bakåt igen för att avsluta appen", Toast.LENGTH_SHORT).show()
+            ClickTime = System.currentTimeMillis();
         }
+        //fragment are not displayed use standard back behavior
     }
 }
 

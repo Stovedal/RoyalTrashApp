@@ -7,16 +7,36 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_quiz.*
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 
-class QuizActivity : AppCompatActivity() {
+class QuizActivity : AppCompatActivity(),PauseDialogFragment.FragmentCommunication{
     private val delayMillis = 15000L
     var questions:List<DBrequests.Question>? = null
     private var answers: Answers = Answers()
     lateinit var buttons:List<Button>
 
+    var LockedByFragment = false;
+    var newFragment:PauseDialogFragment? = null;
+    override fun fragmentCommunicationStart() {
+        //nexttap...
+        LockedByFragment = false;
+        println("Fragment done!, starting!")
+    }
+
+    private fun DisplayInstructions(Score:String){
+        var ft = getSupportFragmentManager().beginTransaction()
+        if(newFragment != null){//prevent dead fragments..
+            try {
+                newFragment!!.dismissAllowingStateLoss()
+            }catch (E:Exception){}
+        }
+        newFragment = PauseDialogFragment.newInstance(Score)
+        newFragment!!.isCancelable = false
+        newFragment!!.show(ft, "dialog")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,7 +115,23 @@ class QuizActivity : AppCompatActivity() {
                 question_text.text = description!!.description
             }
         }
-        waitForTimeoutOrTap()
+        LockedByFragment = true;
+        DisplayInstructions("klicka för att fortsätta");
+        var msPassed = 0;
+        while(LockedByFragment){
+            delay(50)
+            msPassed += 50;
+            if(msPassed > delayMillis){
+                LockedByFragment = false;
+                if(newFragment != null){//prevent dead fragments..
+                    try {
+                        newFragment!!.dismissAllowingStateLoss()
+                    }catch (E:Exception){}
+                }
+            }
+            //this is a lock
+        }
+        //waitForTimeoutOrTap()
     }
 
     /**
@@ -202,6 +238,19 @@ class QuizActivity : AppCompatActivity() {
             it.setOnClickListener(null)
         }
 
+    }
+    var ClickTime = 0L
+    override fun onBackPressed() {
+        //ClickTime = System.currentTimeMillis();
+        var Tmp_Time = System.currentTimeMillis();
+        if(Tmp_Time-ClickTime < 2000L){
+            val intent = Intent(this, MenuActivity::class.java)
+            startActivity(intent)
+        }else{
+            Toast.makeText(this, "tryck bakåt igen för att avsluta", Toast.LENGTH_SHORT).show()
+            ClickTime = System.currentTimeMillis();
+        }
+        //fragment are not displayed use standard back behavior
     }
 
     override fun onResume() {

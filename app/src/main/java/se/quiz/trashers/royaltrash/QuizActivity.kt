@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.activity_quiz.*
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_throwing_trash.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
@@ -17,6 +18,7 @@ class QuizActivity : AppCompatActivity(),PauseDialogFragment.FragmentCommunicati
     var questions:List<DBrequests.Question>? = null
     private var answers: Answers = Answers()
     lateinit var buttons:List<Button>
+    private var Eggs = 0;
 
     var LockedByFragment = false;
     var newFragment:PauseDialogFragment? = null;
@@ -51,6 +53,17 @@ class QuizActivity : AppCompatActivity(),PauseDialogFragment.FragmentCommunicati
                 "progress", progressBar.progress, progressBar.progress + 100)
         progressAnimator.setDuration(1000)
         progressAnimator.start()
+
+        var data = getSharedPreferences("Data", 0)
+        Eggs = data!!.getInt("Eggs", -1)
+        if(Eggs > 7){
+            quizLayout.setBackgroundResource(R.drawable.bg_egg)
+            quiz_button1.setBackgroundResource(R.drawable.button_egg)
+            quiz_button2.setBackgroundResource(R.drawable.button_egg)
+            quiz_button3.setBackgroundResource(R.drawable.button_egg)
+            quiz_button4.setBackgroundResource(R.drawable.button_egg)
+        }
+
 
         questionBasedQuiz(questionNumber)
     }
@@ -223,12 +236,22 @@ class QuizActivity : AppCompatActivity(),PauseDialogFragment.FragmentCommunicati
             "true" -> {button.setBackgroundResource(R.drawable.quiz_button_true)}
             "false" -> {button.setBackgroundResource(R.drawable.quiz_button_false)}
             "disabled" -> {
-                button.setBackgroundResource(R.drawable.quiz_button_disabled)
+                if(Eggs > 7){
+                    button.setBackgroundResource(R.drawable.button_egg)
+                }else{
+                    button.setBackgroundResource(R.drawable.quiz_button_disabled)
+                }
                 button.setEnabled(false)
             }
-            else -> {button.setBackgroundResource(R.drawable.button)
+            else -> {
+                if(Eggs > 7){
+                    button.setBackgroundResource(R.drawable.button_egg)
+                }else{
+                    button.setBackgroundResource(R.drawable.button)
+                }
                 button.setEnabled(true)
                 button.visibility = View.VISIBLE
+
             }
         }
     }

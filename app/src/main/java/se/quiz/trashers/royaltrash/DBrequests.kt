@@ -69,13 +69,14 @@ class DBrequests {
 
 
     fun apiGetHighscoreByUsername(username:String):Array<Highscore>{
-        val res = URL("http://royaltrashapp.azurewebsites.net/api/highscore/FindByUsername/$username").readText(Charsets.UTF_8)
+        val res = URL("http://royaltrashapp.azurewebsites.net/api/highscore/FindByUsername/"+username).readText(Charsets.UTF_8)
+        println("Req:" + res)
         //val highScoreUsers = ob.fromJson(res, Highscore::class.java)
         val gson = Gson()
         val highscoreArray = gson.fromJson(res, Array<Highscore>::class.java)
 
-        //println(highscoreArray[0].hs_id)
-        //println(highscoreArray[0])
+        println(highscoreArray[0].hs_id)
+        println(highscoreArray[0])
 
         return highscoreArray
     }

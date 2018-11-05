@@ -81,12 +81,14 @@ class ThrowingTrashActivity : AppCompatActivity(),PauseDialogFragment.FragmentCo
     private var constraintLayout:ConstraintLayout? =  null
     private var timeLeft = 10
     private var QuizScore = 0
+    private val Eggs = 0;
     private var TimeHandler = Handler()
     private var starAnim = AnimatedObj(0,4,5,R.drawable.star_sprite,256,256)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_throwing_trash)
+
         QuizScore = intent.getIntExtra("score", 0)
         timeLeft += QuizScore
         DisplayInstructions(timeLeft.toString())
@@ -115,6 +117,14 @@ class ThrowingTrashActivity : AppCompatActivity(),PauseDialogFragment.FragmentCo
             true
         })
         dragable_test.setOnTouchListener(listener)
+
+        var data = getSharedPreferences("Data", 0)
+        val Eggs = data!!.getInt("Eggs", -1)
+        if(Eggs > 7){
+            playfield.setBackgroundResource(R.drawable.bg_egg)
+        }
+
+
     }
 
     override fun fragmentCommunicationStart() {

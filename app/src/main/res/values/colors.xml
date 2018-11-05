@@ -8,6 +8,10 @@
     <color name="bg_2">#fdbbbb</color>
     <color name="bg_3">#c0454545</color>
 
+    <color name="bg_4">#14ae1a</color>
+    <color name="bg_5">#7dfff200</color>
+    <color name="bg_6">#cc000000</color>
+
     <color name="white">#ffffff</color>
     <color name="gold">#d6bd3e</color>
     <color name="materialBlack">#212121</color>
@@ -21,6 +25,9 @@
 
     <color name="colorButtonNormal">#7ef0fcff</color>
     <color name="colorButtonNormalDark">#718ca8ac</color>
+
+    <color name="colorButtonNormal_Egg">#c11d7b3a</color>
+    <color name="colorButtonNormalDark_Egg">#b4024000</color>
 
     <color name="colorButtonDisabled">#13545454</color>
 

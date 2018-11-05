@@ -1,22 +1,14 @@
 package se.quiz.trashers.royaltrash
 
-import android.animation.Animator
 import android.animation.ValueAnimator
-import android.animation.ValueAnimator.INFINITE
 import android.graphics.Color
 import android.support.design.card.MaterialCardView
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
-import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.coroutines.experimental.NonCancellable.cancel
-import kotlinx.coroutines.experimental.withTimeout
-import org.w3c.dom.Text
-import java.lang.Thread.sleep
 
 
 /**

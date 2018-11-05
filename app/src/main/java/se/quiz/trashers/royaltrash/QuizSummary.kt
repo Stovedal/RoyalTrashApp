@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_quiz_summary.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
-import kotlin.math.roundToInt
-
+import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.launch
 
 class QuizSummary : AppCompatActivity() {
 

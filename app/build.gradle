@@ -17,8 +17,8 @@ android {
         applicationId "se.quiz.trashers.royaltrash"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 119
-        versionName "1.1.9"
+        versionCode 1114
+        versionName "1.1.14"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     testOptions {

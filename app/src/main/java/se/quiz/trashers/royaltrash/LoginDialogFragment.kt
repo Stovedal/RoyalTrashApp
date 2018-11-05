@@ -92,8 +92,12 @@ class LoginDialogFragment : DialogFragment(){
             }
             if(scores != null) {
                 try {
-                    if (scores!![0].hs_username.toLowerCase() == username) {
-                        foundUser = true
+                    if(scores!!.isNotEmpty()) {
+                        if (scores!![0].hs_username.toLowerCase() == username) {
+                            foundUser = true
+                        }
+                    }else{
+
                     }
                 }catch (E:Exception){
                     println("ERROR: " + E)

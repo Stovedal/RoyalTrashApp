@@ -1,24 +1,42 @@
 package se.quiz.trashers.royaltrash
 
+<<<<<<< HEAD
 
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+=======
+import android.animation.TimeAnimator
+import android.app.PendingIntent.getActivity
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.graphics.*
+import android.support.v7.app.AppCompatActivity
+>>>>>>> master
 import android.os.Bundle
 import android.os.Looper
+import android.support.design.R.styleable.View
 import android.support.v4.app.ActivityCompat
+<<<<<<< HEAD
 import android.support.v7.app.AppCompatActivity
+=======
+import android.text.style.BackgroundColorSpan
+import android.widget.ImageView
+
+
+>>>>>>> master
 import com.google.android.gms.location.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_menu.*
 import kotlinx.coroutines.launch
 
-
 class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunication {
 
     private var data: SharedPreferences? = null
     private var DisplayingFragment = false
-    private var Version = 2//hehe
+    private var Version = 45//hehe
+    private var eggsCraked = 0
 
     //Location stuffs
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -37,17 +55,50 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
     }
 
 
-
+    var starAnim2 = AnimatedObj(0, 7, 8, R.drawable.egg,270 , 313)
+    var starAnim = AnimatedObj(0, 4, 5, R.drawable.trashyrotate_sprite4, 338, 480)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
-        var starAnim = AnimatedObj(0, 4, 5, R.drawable.trashyrotate_sprite4, 338, 480)
-            starAnim = ThrowingTrashActivity().CreatanimateSpriteImages(starAnim, getResources())
-            ThrowingTrashActivity().startAnimateimg(starAnim, animation_holder2)
-            animation_holder2.setOnClickListener {
-            ThrowingTrashActivity().startAnimateimg(starAnim, animation_holder2)
+
+
+        //var starAnim2 = AnimatedObj(0, 7, 8, R.drawable.egg,270 , 312)
+        //var starAnim = AnimatedObj(0, 4, 5, R.drawable.trashyrotate_sprite4, 338, 480)
+
+        data = getSharedPreferences("Data", 0)
+        data!!.edit().putInt("Eggs", 0).commit()
+
+        starAnim2 = ThrowingTrashActivity().CreatanimateSpriteImages(starAnim2, getResources())
+        //ThrowingTrashActivity().startAnimateimg(starAnim2, animation_holder3)
+
+        starAnim = ThrowingTrashActivity().CreatanimateSpriteImages(starAnim, getResources())
+        ThrowingTrashActivity().startAnimateimg(starAnim, animation_holder2)
+
+        animation_holder3.setImageDrawable(null)
+        animation_holder2.setOnClickListener {
+            eggsCraked ++
+            if(eggsCraked < 8){
+                ThrowingTrashActivity().startAnimateimg(starAnim, animation_holder2)
+                animation_holder3.setImageDrawable(null)
+            }else{
+                data = getSharedPreferences("Data", 0)
+                data!!.edit().putInt("Eggs", eggsCraked).commit()
+                animation_holder2.setImageDrawable(null)
+                mainmenu.setBackgroundResource(R.drawable.bg_egg)
+                start_button.setBackgroundResource(R.drawable.button_egg)
+                highscores_button.setBackgroundResource(R.drawable.button_egg)
+                highscores_button.setTextColor(Color.WHITE)
+                start_button.setTextColor(Color.WHITE)
+                usernamefield.bringToFront()
+                usernamefield.setTextColor(Color.BLACK)
+                ThrowingTrashActivity().startAnimateimg(starAnim2, animation_holder3)
+            }
+
+
         }
+
+
 
         start_button.setOnClickListener {
             val intent = Intent(this, QuizActivity::class.java)
@@ -174,14 +225,18 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
         newFragment.show(ft, "dialog")
     }
 
+    var ClickTime = 0L
     override fun onBackPressed() {
-        if (DisplayingFragment){
-            //fragment is displayed, do nothing!
-            println("fragment displayed")
-        } else {
-            super.onBackPressed();
-            //fragment are not displayed use standard back behavior
+        //ClickTime = System.currentTimeMillis();
+        var Tmp_Time = System.currentTimeMillis();
+        if(Tmp_Time-ClickTime < 2000L){
+            finish();
+            System.exit(0);
+        }else{
+            Toast.makeText(this, "tryck bakåt igen för att avsluta appen", Toast.LENGTH_SHORT).show()
+            ClickTime = System.currentTimeMillis();
         }
+        //fragment are not displayed use standard back behavior
     }
 }
 

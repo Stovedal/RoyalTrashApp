@@ -7,19 +7,12 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_quiz.*
 import android.view.View
 import android.widget.Button
-<<<<<<< HEAD
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.android.Main
 import kotlinx.coroutines.android.UI
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-=======
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_throwing_trash.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
->>>>>>> master
 
 class QuizActivity : AppCompatActivity(),PauseDialogFragment.FragmentCommunication{
     private val delayMillis = 15000L

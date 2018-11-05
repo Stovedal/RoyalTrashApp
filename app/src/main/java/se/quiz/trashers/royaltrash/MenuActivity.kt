@@ -1,31 +1,14 @@
 package se.quiz.trashers.royaltrash
 
-<<<<<<< HEAD
-
-import android.content.Intent
-import android.content.SharedPreferences
-import android.content.pm.PackageManager
-=======
-import android.animation.TimeAnimator
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.support.v7.app.AppCompatActivity
->>>>>>> master
 import android.os.Bundle
 import android.os.Looper
-import android.support.design.R.styleable.View
 import android.support.v4.app.ActivityCompat
-<<<<<<< HEAD
-import android.support.v7.app.AppCompatActivity
-=======
-import android.text.style.BackgroundColorSpan
-import android.widget.ImageView
-
-
->>>>>>> master
+import android.widget.Toast
 import com.google.android.gms.location.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_menu.*

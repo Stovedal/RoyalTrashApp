@@ -1,24 +1,27 @@
 *.iml
+
 .gradle
+
 /local.properties
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/vcs.xml
-/.idea/*
+
+.idea/*
+
 .DS_Store
+
 /build
+
 /captures
+
 .externalNativeBuild
 
-.idea/caches/build_file_checksums.ser
-
-.idea/misc.xml
-
 *.afdesign
-
-.vscode/*
 
 app/release/*
 
 icons/*
+
+.idea/caches/*
+
+.idea/misc.xml
+
+.vscode/*

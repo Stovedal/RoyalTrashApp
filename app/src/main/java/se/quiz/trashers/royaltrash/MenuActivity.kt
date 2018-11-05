@@ -1,30 +1,18 @@
 package se.quiz.trashers.royaltrash
 
-import android.animation.TimeAnimator
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.os.Looper
-import android.support.design.R.styleable.View
 import android.support.v4.app.ActivityCompat
-import android.text.style.BackgroundColorSpan
-import android.widget.ImageView
-
-
+import android.widget.Toast
 import com.google.android.gms.location.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_menu.*
-import kotlinx.android.synthetic.main.activity_throwing_trash.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
-import java.util.HashMap
-import android.widget.Toast
-
+import kotlinx.coroutines.launch
 
 class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunication {
 
@@ -145,7 +133,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
     private fun buildLocationCallback(){
         locationCallback = object :LocationCallback(){
             override fun onLocationResult(p0: LocationResult?) {
-                launch {
+                launch() {
                     val location_ = p0!!.locations.get(p0!!.locations.size-1) //Get last location
                     val username = data!!.getString("Username", null)
                     try {

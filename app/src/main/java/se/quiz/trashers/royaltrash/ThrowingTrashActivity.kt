@@ -19,10 +19,10 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.BitmapFactory
 import android.widget.Toast
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class AnimatedObj(var frame:Int = 0,var rows:Int, var columns:Int,var imageID:Int,var width:Int,var height:Int ){

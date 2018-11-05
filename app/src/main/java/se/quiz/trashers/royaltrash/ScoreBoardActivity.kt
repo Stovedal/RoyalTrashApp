@@ -1,22 +1,17 @@
 package se.quiz.trashers.royaltrash
 
-import android.graphics.Color
 import android.os.Bundle
-import android.support.design.card.MaterialCardView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_score_board.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
-import android.support.v7.widget.DividerItemDecoration
 import android.view.View
-import android.widget.*
-import android.widget.LinearLayout.HORIZONTAL
-import com.google.android.gms.vision.text.Line
-import kotlinx.android.synthetic.main.score_item.*
+import android.widget.SeekBar
+import android.widget.TextView
+import kotlinx.android.synthetic.main.content_score_board.*
 import kotlinx.android.synthetic.main.score_item_leader.*
-import org.w3c.dom.Text
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.android.Main
+import kotlinx.coroutines.launch
 import java.lang.Math.abs
 
 /**
@@ -57,7 +52,7 @@ class ScoreBoardActivity : AppCompatActivity() {
             scores =  DBrequests().apiGetHighscores().toCollection(ArrayList())
             score_radius.isEnabled = true;
 
-            launch(UI){
+            launch(Dispatchers.Main){
                 var userposition = scores.indexOf(scores.find { it.hs_username == username })
                 viewAdapter = ScoresAdapter(scores, userposition)
                 recyclerView = findViewById(R.id.score_scroll)

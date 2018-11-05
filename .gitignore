@@ -1,18 +1,36 @@
 *.iml
+
 .gradle
+
 /local.properties
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/vcs.xml
-/.idea/*
+
+.idea/*
+
 .DS_Store
+
 /build
+
 /captures
+
 .externalNativeBuild
 
-.idea/caches/build_file_checksums.ser
+*.afdesign
+
+app/release/*
+
+icons/*
+
+.idea/caches/*
 
 .idea/misc.xml
 
-*.afdesign
+/.idea/misc.xml
+
+
+.vscode/settings.json
+
+.idea/caches/build_file_checksums.ser
+
+questions.json
+
+.idea/caches/build_file_checksums.ser

@@ -1,0 +1,76 @@
+[
+    {
+        "question": "Koldioxidhalten i atmosfären har uppmätts kontinuerligt sedan 1950.  Hur mycket har halten ökat sedan dess?",
+        "C1answer": "cirka 10%",
+        "C2answer": "cirka 90%",
+        "C3answer": "cirka 30%",
+        "C4answer": "cirka 120% .. cirka 60%",
+        "description": ""
+    },
+    {
+        "question": "Teorin ODT (Optimal Distinctiveness Theory) säger att vi alla har två olika behov. Dels att få vara med, att höra till men också att få vara en individ, att kunna skärma oss från andra.",
+        "C1answer": "Sant",
+        "C2answer": "Falskt",
+        "C3answer": "",
+        "C4answer": "",
+        "description": ""
+    },
+    {
+        "question": "Vilket av följande påståenden kan ses som rekyleffekten?",
+        "C1answer": "Sjunkande kostnader gör att vi får pengar över till annan konsumtion.",
+        "C2answer": "Resursbrist ökar priset på resursen.",
+        "C3answer": "Sjunkande driftskostnader tillåter ett ökat nyttjande.",
+        "C4answer": "Nya, effektivare, tekniker skapar nya behov och ny efterfrågan.",
+        "description": ""
+    },
+    {
+        "question": "Vilket uttalande motsvarar bäst T i formeln I=PAT?",
+        "C1answer": "T motsvarar inversen till Teknikutveckling. En faktor som minskar med ökande utveckling.",
+        "C2answer": "T motsvarar Teknikutveckling för minskad hållbarhetsbelastning. En faktor som ökar med ökande utveckling.",
+        "C3answer": "T motsvarar inversen till teknikutveckling för konsumtionsreduktion. En faktor som minskar med ökande utveckling.",
+        "C4answer": "",
+        "description": ""
+    },
+    {
+        "question": "Vilken av följande utsagor stämmer bäst med begreppet svag hållbarhet?",
+        "C1answer": "Mänsklighetens välbefinnande minskar inte över generationerna",
+        "C2answer": "Naturkapitalet minskar inte",
+        "C3answer": "Summan av de olika kapitalslagen minskar inte",
+        "C4answer": "De socio-ekologiska systemens resiliens bibehålls över tiden",
+        "description": ""
+    },
+    {
+        "question": "Endast följande faser ingår i LCA: definition av mål och omfattning, inventering, miljöpåverkan och tolkning?",
+        "C1answer": "Sant",
+        "C2answer": "Falskt",
+        "C3answer": "",
+        "C4answer": "",
+        "description": ""
+    },
+    {
+        "question": "Användningen av ordet resiliens i hållbarhetssammanhang motsvaras bäst av:",
+        "C1answer": "Systemet hittar ett nytt jämviktsläge efter en störning tack vare interaktion med andra system.",
+        "C2answer": "Systemet hittar ett nytt jämviktsläge efter störning.",
+        "C3answer": "Systemet återvänder till det ursprungliga jämviktsläget efter störning.",
+        "C4answer": "Systemet påverkas inte av en störning",
+        "description": ""
+    },
+
+
+
+
+    {
+        "question": "Vad är ett slutet kretslopp?",
+        "C1answer": "Resurser som går att användas om igen",
+        "C2answer": "Resurser INTE som går att användas om igen",
+        "C3answer": "",
+        "C4answer": ""
+    },
+    {
+        "question": "Vad är ett brutet kretslopp?",
+        "C1answer": "Resurser INTE som går att användas om igen",
+        "C2answer": "Resurser som går att användas om igen",
+        "C3answer": "",
+        "C4answer": ""
+    }
+]

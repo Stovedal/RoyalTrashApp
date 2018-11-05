@@ -16,3 +16,9 @@
 .idea/misc.xml
 
 *.afdesign
+
+.vscode/*
+
+app/release/*
+
+icons/*

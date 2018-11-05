@@ -95,7 +95,7 @@ class MenuActivity : AppCompatActivity(),LoginDialogFragment.FragmentCommunicati
         }
 
         //ENABLE this to reset the username att app startup
-        //resetapp()
+        resetapp()
         versionCheck()
 
         LoadApp()

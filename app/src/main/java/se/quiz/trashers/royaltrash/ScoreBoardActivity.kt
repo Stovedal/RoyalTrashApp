@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
 import kotlinx.android.synthetic.main.content_score_board.*
+import kotlinx.android.synthetic.main.score_item.view.*
 import kotlinx.android.synthetic.main.score_item_leader.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.android.Main
@@ -85,9 +86,19 @@ class ScoreBoardActivity : AppCompatActivity() {
 
                 score_item_leader.setOnClickListener{
                     if((recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() < userposition){
-                        recyclerView.smoothScrollToPosition(userposition+2)
+                        if(userposition>= scores.size-2){
+                            recyclerView.smoothScrollToPosition(scores.size)
+                        } else {
+                            recyclerView.smoothScrollToPosition(userposition+2)
+                        }
+
                     } else {
-                        recyclerView.smoothScrollToPosition(userposition-2)
+                        if(userposition>=2){
+                            recyclerView.smoothScrollToPosition(userposition-2)
+                        } else {
+                            recyclerView.smoothScrollToPosition(0)
+                        }
+
                     }
                 }
 
@@ -136,6 +147,7 @@ class ScoreBoardActivity : AppCompatActivity() {
 
                     })
                 } else {
+                    println("Disabling slider " + userlat + " " + userlng + " " + data.getString("lat", null) + " " + data.getString("lng", null))
                     score_radius.isEnabled = false
                 }
 

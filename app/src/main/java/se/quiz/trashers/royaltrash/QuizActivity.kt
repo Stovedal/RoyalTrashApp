@@ -7,6 +7,8 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_quiz.*
 import android.view.View
 import android.widget.Button
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.android.Main
 import kotlinx.coroutines.android.UI
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -81,6 +83,7 @@ class QuizActivity : AppCompatActivity() {
      * @see DBrequests.Question
      */
     suspend fun questionCycle(question:DBrequests.Question, round:Int) {
+        val static = "RoyalTrash"
         var description: DBrequests.Description? = null
         val qDescription = launch {
             try {
@@ -89,10 +92,12 @@ class QuizActivity : AppCompatActivity() {
                 println(e.message)
             }
         }
-        launch(UI) {
+        launch(Dispatchers.Main) {
             question(question)
         }
-        while (round == answers.round) {}
+        while (round == answers.round) {
+            delay(5)
+        }
         qDescription.cancel()
 
         if (description != null) {
